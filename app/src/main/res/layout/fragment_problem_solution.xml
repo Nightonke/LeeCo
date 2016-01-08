@@ -5,11 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="match_parent"
+    <com.nightonke.leetcoder.CodeView
+        android:id="@+id/code"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Problem Solution"
+        android:layout_width="match_parent"
         />
 
 </LinearLayout>

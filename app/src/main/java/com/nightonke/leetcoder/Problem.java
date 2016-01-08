@@ -31,12 +31,10 @@ public class Problem {
                 "<p>Empty cells are indicated by the character <code>'.'</code>.</p>\n" +
                 "\n" +
                 "<p>You may assume that there will be only one unique solution.</p>\n" +
-                "\n" +
                 "<p>\n" +
                 "<img src=\"http://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Sudoku-by-L2G-20050714.svg/250px-Sudoku-by-L2G-20050714.svg.png\" /><br />\n" +
                 "<p style=\"font-size: 11px\">A sudoku puzzle...</p>\n" +
                 "</p>\n" +
-                "\n" +
                 "<p>\n" +
                 "<img src=\"http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Sudoku-by-L2G-20050714_solution.svg/250px-Sudoku-by-L2G-20050714_solution.svg.png\" /><br />\n" +
                 "<p style=\"font-size: 11px\">...and its solution numbers marked in red.\n" +

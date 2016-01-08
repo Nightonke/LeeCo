@@ -2,9 +2,13 @@ package com.nightonke.leetcoder;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.*;
+import android.support.v4.BuildConfig;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -23,11 +28,13 @@ import java.util.ArrayList;
 public class ProblemContentFragment extends Fragment {
 
     private ProblemActivity activity;
+    private Context mContext;
 
     private LinearLayout content;
 
     @Override
     public void onAttach(Context context) {
+        mContext = context;
         super.onAttach(context);
 
         if (context instanceof ProblemActivity){
@@ -52,35 +59,44 @@ public class ProblemContentFragment extends Fragment {
         ArrayList<String> contents = new ArrayList<>();
         String contentString = problem.getContent();
         int st = 0;
-        int ed = 0;
+        int ed;
         while (true) {
-            ed = contentString.indexOf("<p>\\n<img src=\"", st);
+            ed = contentString.indexOf("<p>\n<img src=\"", st);
             if (ed == -1) break;
 
             // [st, ed) is text
             String textString = contentString.substring(st, ed);
 
-            int edOfSrc = contentString.indexOf("\" /><br />\\n");
+            int edOfSrc = contentString.indexOf("\" /><br />\n", ed);
             // [ed + 14, edOfSrc) is image
             String imageString = contentString.substring(ed + 14, edOfSrc);
+            Log.d("LeetCoder", "Image: " + imageString);
 
             // remove the imageString from the contentString
-            contentString = contentString.substring(st, ed) + contentString.substring(edOfSrc + 11);
+            contentString = contentString.substring(0, ed) + contentString.substring(edOfSrc + 11);
 
             // add the text and image
             TextView textView = new TextView(activity);
             textView.setText(Html.fromHtml(textString));
             ImageView imageView = new ImageView(activity);
-            Picasso.with(activity).load(imageString).into(imageView);
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            Picasso.with(activity)
+                    .load(httpToHttps(imageString))
+                    .placeholder(R.drawable.rocket)
+                    .into(imageView);
             content.addView(textView);
             content.addView(imageView);
 
             // set the position for next
-            st = edOfSrc;
+            st = ed;
         }
         TextView textView = new TextView(activity);
         textView.setText(Html.fromHtml(contentString.substring(st)));
         content.addView(textView);
+    }
+
+    private String httpToHttps(String string) {
+        return string.replaceAll("http", "https");
     }
 
 }
