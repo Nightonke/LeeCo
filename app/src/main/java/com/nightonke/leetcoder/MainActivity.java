@@ -10,8 +10,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.sufficientlysecure.htmltextview.HtmlTextView;
-
 public class MainActivity extends AppCompatActivity {
 
     private Context mContext;

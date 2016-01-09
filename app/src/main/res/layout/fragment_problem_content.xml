@@ -16,16 +16,12 @@
             android:orientation="vertical"
             >
 
-            <LinearLayout
+            <com.nightonke.leetcoder.RichText
                 android:id="@+id/content"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:orientation="vertical"
-                >
-
-            </LinearLayout>
+                android:padding="10dp"
+                />
 
         </LinearLayout>
 

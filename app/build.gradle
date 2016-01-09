@@ -28,13 +28,13 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
 
-    // html text view
-    compile 'org.sufficientlysecure:html-textview:1.3'
-
     // image load
     compile 'com.squareup.picasso:picasso:2.5.2'
 
     // smart tab
     compile 'com.ogaclejapan.smarttablayout:library:1.6.0@aar'
     compile 'com.ogaclejapan.smarttablayout:utils-v4:1.6.0@aar'
+
+    // web view
+    compile 'com.thefinestartist:finestwebview:1.1.1'
 }

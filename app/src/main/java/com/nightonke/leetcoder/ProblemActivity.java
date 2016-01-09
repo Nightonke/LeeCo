@@ -45,6 +45,7 @@ public class ProblemActivity extends AppCompatActivity {
                 .create());
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setOffscreenPageLimit(4);
 
         viewPagerTab = (SmartTabLayout) findViewById(R.id.viewpagertab);
         setupTab();
