@@ -1,7 +1,7 @@
 package com.nightonke.leetcoder;
 
 import android.content.Context;
-import android.content.res.Resources;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -11,20 +11,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindListener;
+
 
 public class ProblemActivity extends AppCompatActivity {
 
+    public ProblemTest problemTest;
+    public Problem_Index problem_index;
     public Problem problem;
 
     private Context mContext;
 
     private ViewPager viewPager;
     private SmartTabLayout viewPagerTab;
+    private FragmentPagerItemAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +43,12 @@ public class ProblemActivity extends AppCompatActivity {
 
         mContext = this;
 
-        problem = new Problem();
-        problem.createTestProblem();
+        getData();
 
-        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
+        problemTest = new ProblemTest();
+        problemTest.createTestProblem();
+
+        adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
                 .add("", ProblemContentFragment.class)
                 .add("", ProblemSolutionFragment.class)
@@ -52,6 +64,66 @@ public class ProblemActivity extends AppCompatActivity {
 
         viewPager.setAdapter(adapter);
         viewPagerTab.setViewPager(viewPager);
+    }
+
+    private void getData() {
+        // test problem 37
+        getTest();
+    }
+
+    private void getTest() {
+        problem_index = new Problem_Index();
+        problem_index.setId(37);
+        problem_index.setTitle("Sudoku Solver");
+        problem_index.setLevel("Hard");
+        problem_index.setLike(12);
+        problem_index.setSummary("Write a program to solve a Sudoku puzzle by filling the empty cells.");
+        List<String> tags = new ArrayList<>();
+        tags.add("Backtracking");
+        tags.add("Hash Table");
+        problem_index.setTags(tags);
+
+        problem = new Problem();
+        problem.setId(problem_index.getId());
+
+        Toast.makeText(mContext, "Loading...", Toast.LENGTH_SHORT).show();
+
+        BmobQuery<Problem> query = new BmobQuery<>();
+        query.addWhereEqualTo("id", problem.getId());
+        query.setLimit(1);
+        query.findObjects(mContext, new FindListener<Problem>() {
+            @Override
+            public void onSuccess(List<Problem> list) {
+                Toast.makeText(mContext, "Query successfully", Toast.LENGTH_SHORT).show();
+                problem.setContent(list.get(0).getContent());
+                problem.setSolution(list.get(0).getSolution());
+                problem.setDiscussLink(list.get(0).getDiscussLink());
+                problem.setProblemLink(list.get(0).getProblemLink());
+                problem.setSimilarProblems(list.get(0).getSimilarProblems());
+                problem.show();
+
+                Fragment contentFragment = adapter.getPage(0);
+
+                if (contentFragment != null) {
+                    if (contentFragment instanceof ProblemContentFragment) {
+                        ((ProblemContentFragment) contentFragment).setContent();
+                    }
+                }
+
+                Fragment solutionFragment = adapter.getPage(1);
+
+                if (solutionFragment != null) {
+                    if (solutionFragment instanceof ProblemSolutionFragment) {
+                        ((ProblemSolutionFragment) solutionFragment).setCode();
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                Toast.makeText(mContext, "Query failed " + s, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setupTab() {

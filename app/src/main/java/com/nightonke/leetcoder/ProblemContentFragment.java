@@ -41,12 +41,11 @@ public class ProblemContentFragment extends Fragment {
         content = (RichText)contentFragment.findViewById(R.id.content);
 
         setListener();
-        setContent();
 
         return contentFragment;
     }
 
-    private void setContent() {
+    public void setContent() {
         Problem problem = activity.problem;
         content.setRichText(problem.getContent());
     }

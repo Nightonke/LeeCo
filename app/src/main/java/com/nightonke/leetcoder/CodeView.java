@@ -76,7 +76,7 @@ public class CodeView extends WebView {
         this.context = context;
 
         //初始化等待Dialog
-        progressDialog = ProgressDialog.show(context, "请等待", "正在载入...", true);
+//        progressDialog = ProgressDialog.show(context, "请等待", "正在载入...", true);
 
         //初始化CodeView的样式
         this.setScrollBarStyle(SCROLLBARS_INSIDE_OVERLAY);
@@ -91,9 +91,9 @@ public class CodeView extends WebView {
         this.setWebChromeClient(new WebChromeClient(){
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-                if(newProgress >= 100 && progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                }
+//                if(newProgress >= 100 && progressDialog.isShowing()) {
+//                    progressDialog.dismiss();
+//                }
             }
         });
     }
@@ -157,7 +157,7 @@ public class CodeView extends WebView {
     public void setDirSource(File dir) {
 
         //先启动等待Dialog
-        progressDialog.show();
+//        progressDialog.show();
 
         //更新文件对象
         this.codeFile = dir;
@@ -185,7 +185,7 @@ public class CodeView extends WebView {
 //        try {
 //            Log.e("PATH----->", content);
 //            this.loadUrl(dir.toURI().toURL().toString());
-        this.loadDataWithBaseURL(STYLE_DIR, HTMLcode.HTMLHEAD + content + HTMLcode.HTMLTAIL, "text/html", null, null);
+        this.loadDataWithBaseURL(STYLE_DIR, HTMLcode.getHTMLHEAD() + content + HTMLcode.getHTMLTAIL(), "text/html", null, null);
 //        } catch (MalformedURLException e) {
 //            e.printStackTrace();
 //        }
@@ -233,13 +233,37 @@ public class CodeView extends WebView {
     /////////////////////////////////////////////////////////////////////////////////////
 
     public static class HTMLcode {
-        public static String HTMLHEAD = "<head> <script src=\"code.js\"></script> " +
-                "<link href=\"code.css\" rel=\"stylesheet\"> " +
-                "</head>" +
-                "<body bgcolor=\"#272822\"> " +
-                "    <pre class=\"line-numbers\"><code class=\"language-javascript\">";
 
-        public static String HTMLTAIL = "</code></pre></body>";
+        private static String JS = "okaidia.js";
+        private static String CSS = "okaidia.css";
+
+        HTMLcode() {
+
+        }
+
+        private static void set() {
+            if ("okaidia".equals(Utils.CODE_TYPE)) {
+                JS = "okaidia.js";
+                CSS = "okaidia.css";
+            }
+            if ("prism".equals(Utils.CODE_TYPE)) {
+                JS = "prism.js";
+                CSS = "prism.css";
+            }
+        }
+
+        public static String getHTMLHEAD() {
+            set();
+            return "<head> <script src=\"" + JS + "\"></script> " +
+                    "<link href=\"" + CSS + "\" rel=\"stylesheet\"> " +
+                    "</head>" +
+                    "<body bgcolor=\"#272822\"> " +
+                    "    <pre class=\"line-numbers\"><code class=\"language-javascript\">";
+        }
+
+        public static String getHTMLTAIL() {
+            return "</code></pre></body>";
+        }
     }
 
     interface OnCodeChangedListener {
