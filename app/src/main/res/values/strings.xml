@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">LeetCoder</string>
+
+    <string name="original_problem">View in Web</string>
+    <string name="reload">Reload</string>
+    <string name="loading">Loading...</string>
 </resources>

@@ -1,16 +1,18 @@
 package com.nightonke.leetcoder;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
@@ -24,7 +26,7 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 
 
-public class ProblemActivity extends AppCompatActivity {
+public class ProblemActivity extends AppCompatActivity implements ProblemContentFragment.ReloadListener {
 
     public ProblemTest problemTest;
     public Problem_Index problem_index;
@@ -36,14 +38,14 @@ public class ProblemActivity extends AppCompatActivity {
     private SmartTabLayout viewPagerTab;
     private FragmentPagerItemAdapter adapter;
 
+    private TextView title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_problem);
 
         mContext = this;
-
-        getData();
 
         problemTest = new ProblemTest();
         problemTest.createTestProblem();
@@ -64,6 +66,11 @@ public class ProblemActivity extends AppCompatActivity {
 
         viewPager.setAdapter(adapter);
         viewPagerTab.setViewPager(viewPager);
+
+        title = (TextView)findViewById(R.id.title);
+        title.setText("Sudoku Solver");
+
+        getData();
     }
 
     private void getData() {
@@ -122,6 +129,13 @@ public class ProblemActivity extends AppCompatActivity {
             @Override
             public void onError(int i, String s) {
                 Toast.makeText(mContext, "Query failed " + s, Toast.LENGTH_SHORT).show();
+
+                Fragment contentFragment = adapter.getPage(0);
+                if (contentFragment != null) {
+                    if (contentFragment instanceof ProblemContentFragment) {
+                        ((ProblemContentFragment) contentFragment).setReload();
+                    }
+                }
             }
         });
     }
@@ -135,16 +149,16 @@ public class ProblemActivity extends AppCompatActivity {
                 ImageView icon = (ImageView) inflater.inflate(R.layout.tab_icon, container, false);
                 switch (position) {
                     case 0:
-                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.flash));
+                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.content_icon));
                         break;
                     case 1:
-                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.flash));
+                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.solution_icon));
                         break;
                     case 2:
-                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.flash));
+                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.discuss_icon));
                         break;
                     case 3:
-                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.flash));
+                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.comment_icon));
                         break;
                     default:
                         throw new IllegalStateException("Invalid position: " + position);
@@ -152,5 +166,10 @@ public class ProblemActivity extends AppCompatActivity {
                 return icon;
             }
         });
+    }
+
+    @Override
+    public void reload() {
+        getTest();
     }
 }

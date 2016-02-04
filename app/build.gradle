@@ -39,10 +39,11 @@ dependencies {
     compile 'com.ogaclejapan.smarttablayout:utils-v4:1.6.0@aar'
 
     // web view
-    compile 'com.thefinestartist:finestwebview:1.1.1'
+    compile 'com.thefinestartist:finestwebview:1.1.2'
 
     // Bmob
     compile 'cn.bmob.android:bmob-sdk:3.4.5'
-    compile 'com.squareup.okhttp:okhttp:2.4.0'
-    compile 'com.squareup.okio:okio:1.4.0'
+
+    // tag view
+    compile 'me.gujun.android.taggroup:library:1.4@aar'
 }

@@ -17,4 +17,52 @@
         <item name="windowActionModeOverlay">true</item>
     </style>
 
+    <style name="LeetCoderSimilarProblemGroup">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="atg_isAppendMode">false</item>
+        <item name="atg_inputHint">@string/add_tag</item>
+        <item name="atg_borderColor">@color/similar_problem_background</item>
+        <item name="atg_textColor">@android:color/white</item>
+        <item name="atg_backgroundColor">@color/similar_problem_background</item>
+        <item name="atg_dashBorderColor">@color/similar_problem_background</item>
+        <item name="atg_inputHintColor">@color/similar_problem_background</item>
+        <item name="atg_inputTextColor">@color/similar_problem_background</item>
+        <item name="atg_checkedBorderColor">@color/similar_problem_background</item>
+        <item name="atg_checkedTextColor">@color/similar_problem_background</item>
+        <item name="atg_checkedMarkerColor">@color/similar_problem_background</item>
+        <item name="atg_checkedBackgroundColor">@color/similar_problem_background</item>
+        <item name="atg_pressedBackgroundColor">@color/similar_problem_background</item>
+        <item name="atg_borderStrokeWidth">0.5dp</item>
+        <item name="atg_textSize">13sp</item>
+        <item name="atg_horizontalSpacing">8dp</item>
+        <item name="atg_verticalSpacing">4dp</item>
+        <item name="atg_horizontalPadding">12dp</item>
+        <item name="atg_verticalPadding">3dp</item>
+    </style>
+
+    <style name="LeetCoderTagGroup">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="atg_isAppendMode">false</item>
+        <item name="atg_inputHint">@string/add_tag</item>
+        <item name="atg_borderColor">@color/colorAccent</item>
+        <item name="atg_textColor">@android:color/white</item>
+        <item name="atg_backgroundColor">@color/colorAccent</item>
+        <item name="atg_dashBorderColor">@color/colorAccent</item>
+        <item name="atg_inputHintColor">@color/colorAccent</item>
+        <item name="atg_inputTextColor">@color/colorAccent</item>
+        <item name="atg_checkedBorderColor">@color/colorAccent</item>
+        <item name="atg_checkedTextColor">@color/colorAccent</item>
+        <item name="atg_checkedMarkerColor">@color/colorAccent</item>
+        <item name="atg_checkedBackgroundColor">@color/colorAccent</item>
+        <item name="atg_pressedBackgroundColor">@color/colorAccent</item>
+        <item name="atg_borderStrokeWidth">0.5dp</item>
+        <item name="atg_textSize">13sp</item>
+        <item name="atg_horizontalSpacing">8dp</item>
+        <item name="atg_verticalSpacing">4dp</item>
+        <item name="atg_horizontalPadding">12dp</item>
+        <item name="atg_verticalPadding">3dp</item>
+    </style>
+
 </resources>

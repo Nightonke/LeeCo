@@ -16,7 +16,7 @@ public class LeetCoderApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
-        Bmob.initialize(this, "9a4bdd4236a81824ac48ce7296ecd186");
+        Bmob.initialize(this, BmobKey.BMOB_KEY);
     }
 
     public static Context getAppContext() {

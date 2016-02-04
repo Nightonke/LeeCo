@@ -1,11 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/problem_content_background"
+    >
+
+    <RelativeLayout
+        android:id="@+id/loading_layout"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        >
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_height="50dp"
+            android:layout_width="50dp"
+            android:layout_centerInParent="true"
+            />
+
+        <TextView
+            android:id="@+id/reload"
+            android:layout_height="25dp"
+            android:layout_width="200dp"
+            android:layout_below="@id/progressBar"
+            android:background="@drawable/button_original_problem"
+            android:textColor="@color/finestWhite"
+            android:text="@string/reload"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            />
+
+    </RelativeLayout>
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         >
@@ -14,17 +44,38 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:orientation="vertical"
+            android:padding="10dp"
             >
+
+            <me.gujun.android.taggroup.TagGroup
+                android:id="@+id/tags"
+                android:paddingBottom="10dp"
+                style="@style/LeetCoderTagGroup" />
 
             <com.nightonke.leetcoder.RichText
                 android:id="@+id/content"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:padding="10dp"
                 />
+
+            <TextView
+                android:id="@+id/original_problem"
+                android:layout_height="25dp"
+                android:layout_width="match_parent"
+                android:background="@drawable/button_original_problem"
+                android:textColor="@color/finestWhite"
+                android:text="@string/original_problem"
+                android:gravity="center"
+                />
+
+            <me.gujun.android.taggroup.TagGroup
+                android:id="@+id/similar_problem"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                style="@style/LeetCoderSimilarProblemGroup" />
 
         </LinearLayout>
 
     </ScrollView>
 
-</LinearLayout>
+</FrameLayout>
