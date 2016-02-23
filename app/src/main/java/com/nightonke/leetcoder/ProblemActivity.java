@@ -1,12 +1,18 @@
 package com.nightonke.leetcoder;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -27,6 +34,7 @@ import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
 
 
 public class ProblemActivity extends AppCompatActivity
@@ -244,16 +252,16 @@ public class ProblemActivity extends AppCompatActivity
                 ImageView icon = (ImageView) inflater.inflate(R.layout.tab_icon, container, false);
                 switch (position) {
                     case 0:
-                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.content_icon));
+                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.icon_content));
                         break;
                     case 1:
-                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.solution_icon));
+                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.icon_solution));
                         break;
                     case 2:
-                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.discuss_icon));
+                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.icon_discuss));
                         break;
                     case 3:
-                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.comment_icon));
+                        icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.icon_comment));
                         break;
                     default:
                         throw new IllegalStateException("Invalid position: " + position);
@@ -288,6 +296,62 @@ public class ProblemActivity extends AppCompatActivity
                         break;
                     case 1:
                         // bug of solution
+                        new MaterialDialog.Builder(mContext)
+                                .title(R.string.feedback_title)
+                                .items(R.array.feedback_types)
+                                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                                    @Override
+                                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                        if (which == 4) {
+                                            inputFeedback();
+                                        } else if (which == 3) {
+                                            new MaterialDialog.Builder(mContext)
+                                                    .title(R.string.better_solution_title)
+                                                    .content(R.string.better_solution_content)
+                                                    .positiveText(R.string.better_solution_write)
+                                                    .negativeText(R.string.better_solution_copy)
+                                                    .neutralText(R.string.cancel)
+                                                    .forceStacking(true)
+                                                    .onAny(new MaterialDialog.SingleButtonCallback() {
+                                                        @Override
+                                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                            if (which == DialogAction.POSITIVE) {
+                                                                final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+                                                                emailIntent.setType("plain/text");
+                                                                emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"Nightonke@outlook.com"});
+                                                                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Better Solution For " + problem_index.getTitle());
+                                                                emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "");
+                                                                mContext.startActivity(Intent.createChooser(emailIntent, mContext.getResources().getString(R.string.better_solution_email_title)));
+                                                            } else if (which == DialogAction.NEGATIVE) {
+                                                                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                                                                ClipData clip = ClipData.newPlainText("Email address copied.", "Nightonke@outlook.com");
+                                                                clipboard.setPrimaryClip(clip);
+                                                                Toast.makeText(mContext, R.string.better_solution_copied, Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    })
+                                                    .show();
+                                        } else {
+                                            ProblemBug problemBug = new ProblemBug();
+                                            problemBug.setId(problem.getId());
+                                            problemBug.setContent(mContext.getResources().getStringArray(R.array.feedback_types)[which]);
+                                            problemBug.save(LeetCoderApplication.getAppContext(), new SaveListener() {
+                                                @Override
+                                                public void onSuccess() {
+                                                    Toast.makeText(mContext, R.string.feedback_send_successfully, Toast.LENGTH_SHORT).show();
+                                                }
+                                                @Override
+                                                public void onFailure(int code, String arg0) {
+                                                    Toast.makeText(mContext, R.string.feedback_send_failed, Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }
+                                        dialog.dismiss();
+                                        return true;
+                                    }
+                                })
+                                .negativeText(R.string.cancel)
+                                .show();
                         break;
                     case 2:
                         // sort
@@ -317,5 +381,70 @@ public class ProblemActivity extends AppCompatActivity
                 }
                 break;
         }
+    }
+
+    private MaterialDialog inputDialog;
+    private void inputFeedback() {
+        final int min = 1;
+        final int max = 400;
+        inputDialog = new MaterialDialog.Builder(mContext)
+                .title(R.string.feedback_title)
+                .negativeText(R.string.cancel)
+                .positiveText(R.string.ok)
+                .content("")
+                .inputType(InputType.TYPE_CLASS_TEXT)
+                .input(mContext.getResources().getString(R.string.feedback_hint), "", new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        int count = LeetCoderUtil.textCounter(String.valueOf(String.valueOf(input)));
+                        dialog.setContent(
+                                LeetCoderUtil.getDialogContent(mContext,
+                                        "",
+                                        count + "/" + min + "-" + max,
+                                        (min <= count && count <= max)));
+                        dialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
+                        if (!(min <= count && count <= max)) {
+                            dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
+                        }
+                    }
+                })
+                .onAny(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                        if (dialogAction == DialogAction.POSITIVE) {
+                            // send
+                            ProblemBug problemBug = new ProblemBug();
+                            problemBug.setId(problem.getId());
+                            problemBug.setContent(materialDialog.getInputEditText().getText().toString());
+                            problemBug.save(LeetCoderApplication.getAppContext(), new SaveListener() {
+                                @Override
+                                public void onSuccess() {
+                                    Toast.makeText(mContext, R.string.feedback_send_successfully, Toast.LENGTH_SHORT).show();
+                                }
+                                @Override
+                                public void onFailure(int code, String arg0) {
+                                    Toast.makeText(mContext, R.string.feedback_send_failed, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }
+                })
+                .showListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        int count = LeetCoderUtil.textCounter(String.valueOf(""));
+                        inputDialog.setContent(
+                                LeetCoderUtil.getDialogContent(mContext,
+                                        "",
+                                        count + "/" + min + "-" + max,
+                                        (min <= count && count <= max)));
+                        inputDialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
+                        if (!(min <= count && count <= max)) {
+                            inputDialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
+                        }
+                    }
+                })
+                .alwaysCallInputCallback()
+                .show();
     }
 }

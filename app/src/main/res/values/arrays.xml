@@ -9,4 +9,12 @@
         <item>Most views</item>
     </string-array>
 
+    <string-array name="feedback_types">
+        <item>Problem content is incorrect.</item>
+        <item>Solution is incorrect.</item>
+        <item>Problem discuss is incorrect.</item>
+        <item>I have better solutions!</item>
+        <item>Others...</item>
+    </string-array>
+
 </resources>

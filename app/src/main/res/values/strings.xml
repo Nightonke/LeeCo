@@ -2,11 +2,22 @@
     <string name="app_name">LeetCoder</string>
 
     <string name="cancel">cancel</string>
+    <string name="ok">OK</string>
 
     <string name="original_problem">View in Web</string>
     <string name="reload">Reload</string>
     <string name="loading">Loading...</string>
 
+    <string name="feedback_title">Feedback</string>
+    <string name="feedback_hint">Write feedback here</string>
+    <string name="feedback_send_successfully">Your feedback has been sent! Thank you!</string>
+    <string name="feedback_send_failed">Failed to send your feedback.</string>
+    <string name="better_solution_title">Better Solution</string>
+    <string name="better_solution_email_title">Send Your Better Solution</string>
+    <string name="better_solution_content">You can send your better solution and the problem title to me. After checking your wonderful solution, I will update the solution. Thanks for making LeetCoder better! My email address is Nightonke@outlook.com</string>
+    <string name="better_solution_copy">Copy email address</string>
+    <string name="better_solution_copied">Email address copied.</string>
+    <string name="better_solution_write">Write the email</string>
     <string name="sort_title">Sort By</string>
     <string name="sort_content">Sort by</string>
 </resources>

@@ -21,4 +21,6 @@
     <color name="discuss_date">#000000</color>
     <color name="discuss_asker">#3B5998</color>
     <color name="discuss_other_number">#000000</color>
+
+    <color name="error_red">#E91E63</color>
 </resources>
