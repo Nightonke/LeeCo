@@ -34,14 +34,23 @@
 
     </RelativeLayout>
 
-    <com.nightonke.leetcoder.CodeView
-        android:id="@+id/code"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:layout_marginLeft="-4dp"
         android:layout_marginRight="-4dp"
         android:layout_marginTop="-4dp"
         android:layout_marginBottom="-3dp"
-        />
+        >
+
+        <com.nightonke.leetcoder.CodeView
+            android:id="@+id/code"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:scrollbars="none"
+            />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </FrameLayout>

@@ -3,12 +3,14 @@ package com.nightonke.leetcoder;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,8 +21,13 @@ import java.io.IOException;
  * Created by Weiping on 2016/1/8.
  */
 
-public class ProblemSolutionFragment extends Fragment implements View.OnClickListener {
+public class ProblemSolutionFragment extends Fragment
+        implements
+        View.OnClickListener,
+        SwipeRefreshLayout.OnRefreshListener {
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private Boolean isRefreshing = false;
     private RelativeLayout reloadLayout;
     private ProgressBar progressBar;
     private TextView reload;
@@ -53,15 +60,22 @@ public class ProblemSolutionFragment extends Fragment implements View.OnClickLis
         reload.setText(mContext.getResources().getString(R.string.loading));
         reload.setOnClickListener(this);
 
+        swipeRefreshLayout = (SwipeRefreshLayout)solutionFragment.findViewById(R.id.refresh_layout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setVisibility(View.GONE);
         code = (CodeView)solutionFragment.findViewById(R.id.code);
         code.getSettings().setLoadWithOverviewMode(true);
         code.getSettings().setUseWideViewPort(true);
-        code.setVisibility(View.GONE);
 
         return solutionFragment;
     }
 
     public void setCode() {
+        reload.setText(mContext.getResources().getString(R.string.reload));  // for refreshing
+        reloadLayout.setVisibility(View.GONE);
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
+
         Problem problem = activity.problem;
         copyCode(problem.getSolution());
 
@@ -72,7 +86,12 @@ public class ProblemSolutionFragment extends Fragment implements View.OnClickLis
         }
         code.getSettings().setLoadWithOverviewMode(true);
         code.getSettings().setUseWideViewPort(true);
-        code.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
+
+        if (isRefreshing) {
+            isRefreshing = false;
+            swipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     private void copyCode(String codeString) {
@@ -90,12 +109,20 @@ public class ProblemSolutionFragment extends Fragment implements View.OnClickLis
     }
 
     public void setLoading() {
+        if (isRefreshing) {
+            return;
+        }
+
         reloadLayout.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
         reload.setText(mContext.getResources().getString(R.string.loading));
     }
 
     public void setReload() {
+        if (isRefreshing) {
+            return;
+        }
+
         reloadLayout.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
         reload.setText(mContext.getResources().getString(R.string.reload));
@@ -115,6 +142,12 @@ public class ProblemSolutionFragment extends Fragment implements View.OnClickLis
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        isRefreshing = true;
+        onClick(reload);
     }
 
     public interface ReloadListener {
