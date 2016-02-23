@@ -34,48 +34,56 @@
 
     </RelativeLayout>
 
-    <ScrollView
-        android:id="@+id/scrollView"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         >
 
-        <LinearLayout
-            android:layout_height="wrap_content"
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:padding="10dp"
             >
 
-            <me.gujun.android.taggroup.TagGroup
-                android:id="@+id/tags"
-                android:paddingBottom="10dp"
-                style="@style/LeetCoderTagGroup" />
-
-            <com.nightonke.leetcoder.RichText
-                android:id="@+id/content"
+            <LinearLayout
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                />
+                android:orientation="vertical"
+                android:padding="10dp"
+                >
 
-            <TextView
-                android:id="@+id/original_problem"
-                android:layout_height="25dp"
-                android:layout_width="match_parent"
-                android:background="@drawable/button_original_problem"
-                android:textColor="@color/finestWhite"
-                android:text="@string/original_problem"
-                android:gravity="center"
-                />
+                <me.gujun.android.taggroup.TagGroup
+                    android:id="@+id/tags"
+                    android:paddingBottom="10dp"
+                    style="@style/LeetCoderTagGroup" />
 
-            <me.gujun.android.taggroup.TagGroup
-                android:id="@+id/similar_problem"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                style="@style/LeetCoderSimilarProblemGroup" />
+                <com.nightonke.leetcoder.RichText
+                    android:id="@+id/content"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    />
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/original_problem"
+                    android:layout_height="25dp"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/button_original_problem"
+                    android:textColor="@color/finestWhite"
+                    android:text="@string/original_problem"
+                    android:gravity="center"
+                    />
 
-    </ScrollView>
+                <me.gujun.android.taggroup.TagGroup
+                    android:id="@+id/similar_problem"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    style="@style/LeetCoderSimilarProblemGroup" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </FrameLayout>

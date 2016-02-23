@@ -95,6 +95,21 @@ public class ProblemActivity extends AppCompatActivity implements ProblemContent
 
         Toast.makeText(mContext, "Loading...", Toast.LENGTH_SHORT).show();
 
+        // set loading
+        Fragment contentFragment = adapter.getPage(0);
+        if (contentFragment != null) {
+            if (contentFragment instanceof ProblemContentFragment) {
+                ((ProblemContentFragment) contentFragment).setLoading();
+            }
+        }
+
+        Fragment solutionFragment = adapter.getPage(1);
+        if (solutionFragment != null) {
+            if (solutionFragment instanceof ProblemSolutionFragment) {
+                ((ProblemSolutionFragment) solutionFragment).setLoading();
+            }
+        }
+
         BmobQuery<Problem> query = new BmobQuery<>();
         query.addWhereEqualTo("id", problem.getId());
         query.setLimit(1);
@@ -134,6 +149,13 @@ public class ProblemActivity extends AppCompatActivity implements ProblemContent
                 if (contentFragment != null) {
                     if (contentFragment instanceof ProblemContentFragment) {
                         ((ProblemContentFragment) contentFragment).setReload();
+                    }
+                }
+
+                Fragment solutionFragment = adapter.getPage(1);
+                if (solutionFragment != null) {
+                    if (solutionFragment instanceof ProblemSolutionFragment) {
+                        ((ProblemSolutionFragment) solutionFragment).setReload();
                     }
                 }
             }
