@@ -7,7 +7,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,9 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 
 
-public class ProblemActivity extends AppCompatActivity implements ProblemContentFragment.ReloadListener {
+public class ProblemActivity extends AppCompatActivity
+        implements
+        ProblemContentFragment.ReloadListener {
 
     public ProblemTest problemTest;
     public Problem_Index problem_index;
@@ -110,6 +111,13 @@ public class ProblemActivity extends AppCompatActivity implements ProblemContent
             }
         }
 
+        Fragment discussFragment = adapter.getPage(2);
+        if (discussFragment != null) {
+            if (discussFragment instanceof ProblemDiscussFragment) {
+                ((ProblemDiscussFragment) discussFragment).setLoading();
+            }
+        }
+
         BmobQuery<Problem> query = new BmobQuery<>();
         query.addWhereEqualTo("id", problem.getId());
         query.setLimit(1);
@@ -125,7 +133,6 @@ public class ProblemActivity extends AppCompatActivity implements ProblemContent
                 problem.show();
 
                 Fragment contentFragment = adapter.getPage(0);
-
                 if (contentFragment != null) {
                     if (contentFragment instanceof ProblemContentFragment) {
                         ((ProblemContentFragment) contentFragment).setContent();
@@ -133,10 +140,16 @@ public class ProblemActivity extends AppCompatActivity implements ProblemContent
                 }
 
                 Fragment solutionFragment = adapter.getPage(1);
-
                 if (solutionFragment != null) {
                     if (solutionFragment instanceof ProblemSolutionFragment) {
                         ((ProblemSolutionFragment) solutionFragment).setCode();
+                    }
+                }
+
+                Fragment discussFragment = adapter.getPage(2);
+                if (discussFragment != null) {
+                    if (discussFragment instanceof ProblemDiscussFragment) {
+                        ((ProblemDiscussFragment) discussFragment).setDiscuss();
                     }
                 }
             }
@@ -156,6 +169,13 @@ public class ProblemActivity extends AppCompatActivity implements ProblemContent
                 if (solutionFragment != null) {
                     if (solutionFragment instanceof ProblemSolutionFragment) {
                         ((ProblemSolutionFragment) solutionFragment).setReload();
+                    }
+                }
+
+                Fragment discussFragment = adapter.getPage(2);
+                if (discussFragment != null) {
+                    if (discussFragment instanceof ProblemDiscussFragment) {
+                        ((ProblemDiscussFragment) discussFragment).setReload();
                     }
                 }
             }

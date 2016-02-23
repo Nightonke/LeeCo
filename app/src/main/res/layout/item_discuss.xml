@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/base_layout"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:orientation="horizontal"
+    android:background="?android:attr/selectableItemBackground">
+
+    <RelativeLayout
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        >
+
+        <View
+            android:id="@+id/number_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:background="@drawable/background_vote"
+            />
+
+        <me.grantland.widget.AutofitTextView
+            android:id="@+id/number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="+123"
+            android:textSize="25sp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            />
+
+        <TextView
+            android:id="@+id/number_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="votes"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="@android:color/black"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
+        >
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="Straight Forward Java Solution Using Backtracking"
+            android:textColor="@color/discuss_title"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="3dp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_above="@id/other_number_layout"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="asked "
+                android:textSize="13sp"
+                />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Apr 3, 2015"
+                android:textSize="13sp"
+                android:textColor="@color/discuss_date"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text=" by "
+                android:textSize="13sp"
+                />
+
+            <TextView
+                android:id="@+id/asker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="kun12 (3,630 points)"
+                android:textSize="13sp"
+                android:textColor="@color/discuss_asker"
+                android:textStyle="bold"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/other_number_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="3dp"
+            >
+
+            <TextView
+                android:id="@+id/other_number_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="3"
+                android:textSize="13sp"
+                android:textColor="@color/discuss_other_number"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/other_number_text_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text=" answers   "
+                android:textSize="13sp"
+                />
+
+            <TextView
+                android:id="@+id/other_number_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="3908"
+                android:textSize="13sp"
+                android:textColor="@color/discuss_other_number"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/other_number_text_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text=" views"
+                android:textSize="13sp"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

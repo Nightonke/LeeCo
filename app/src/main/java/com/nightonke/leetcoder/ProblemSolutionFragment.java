@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -134,12 +133,7 @@ public class ProblemSolutionFragment extends Fragment
             case R.id.reload:
                 if (reload.getText().toString().equals(mContext.getResources().getString(R.string.loading))) return;
                 reload.setText(mContext.getResources().getString(R.string.loading));
-                try {
-                    ((ReloadListener)activity)
-                            .reload();
-                } catch (ClassCastException cce){
-                    cce.printStackTrace();
-                }
+                activity.reload();
                 break;
         }
     }
@@ -150,7 +144,4 @@ public class ProblemSolutionFragment extends Fragment
         onClick(reload);
     }
 
-    public interface ReloadListener {
-        void reload();
-    }
 }

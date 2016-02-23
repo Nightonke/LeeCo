@@ -156,12 +156,7 @@ public class ProblemContentFragment extends Fragment
             case R.id.reload:
                 if (reload.getText().toString().equals(mContext.getResources().getString(R.string.loading))) return;
                 reload.setText(mContext.getResources().getString(R.string.loading));
-                try {
-                    ((ReloadListener)activity)
-                            .reload();
-                } catch (ClassCastException cce){
-                    cce.printStackTrace();
-                }
+                activity.reload();
                 break;
             case R.id.original_problem:
                 new FinestWebView.Builder(activity).show(activity.problem.getProblemLink());

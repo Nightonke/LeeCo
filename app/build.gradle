@@ -46,4 +46,10 @@ dependencies {
 
     // tag view
     compile 'me.gujun.android.taggroup:library:1.4@aar'
+
+    // super recycler view
+    compile 'com.malinskiy:superrecyclerview:1.1.2'
+
+    // auto fit textview
+    compile 'me.grantland:autofittextview:0.2.+'
 }

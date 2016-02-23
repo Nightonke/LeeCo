@@ -1,15 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/problem_content_background">
 
-    <TextView
+    <WebView
+        android:id="@+id/discuss"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Problem Discuss"
+        android:visibility="gone"
         />
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/loading_layout"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        >
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_height="50dp"
+            android:layout_width="50dp"
+            android:layout_centerInParent="true"
+            />
+
+        <TextView
+            android:id="@+id/reload"
+            android:layout_height="25dp"
+            android:layout_width="200dp"
+            android:layout_below="@id/progressBar"
+            android:background="@drawable/button_original_problem"
+            android:textColor="@color/finestWhite"
+            android:text="@string/reload"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            />
+
+    </RelativeLayout>
+
+    <com.malinskiy.superrecyclerview.SuperRecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_empty="@layout/super_recyclerview_discuss_empty"
+        app:layout_moreProgress="@layout/super_recyclerview_discuss_more"
+        app:layout_progress="@layout/super_recyclerview_discuss_progress"
+        app:mainLayoutId="@layout/layout_recyclerview_verticalscroll"
+        app:recyclerClipToPadding="false"
+        app:recyclerPadding="16dp"
+        app:scrollbarStyle="insideInset"/>
+
+</FrameLayout>

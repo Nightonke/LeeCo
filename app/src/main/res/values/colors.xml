@@ -13,4 +13,12 @@
     <color name="button_original_problem_press">#f3bb6d</color>
 
     <color name="problem_content_background">#F5F2F0</color>
+
+    <color name="vote_background">#E7F7FF</color>
+    <color name="answer_background">#D9F5BB</color>
+    <color name="view_background">#FFE9D5</color>
+    <color name="discuss_title">#428BCA</color>
+    <color name="discuss_date">#000000</color>
+    <color name="discuss_asker">#3B5998</color>
+    <color name="discuss_other_number">#000000</color>
 </resources>
