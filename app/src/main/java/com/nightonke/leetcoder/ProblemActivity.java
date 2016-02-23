@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
@@ -290,6 +291,25 @@ public class ProblemActivity extends AppCompatActivity
                         break;
                     case 2:
                         // sort
+                        final Fragment discussFragment = adapter.getPage(2);
+                        if (discussFragment != null) {
+                            if (discussFragment instanceof ProblemDiscussFragment) {
+                                new MaterialDialog.Builder(mContext)
+                                        .title(R.string.sort_title)
+                                        .items(R.array.sort_types)
+                                        .itemsCallbackSingleChoice(((ProblemDiscussFragment) discussFragment).sortType, new MaterialDialog.ListCallbackSingleChoice() {
+                                            @Override
+                                            public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                                ((ProblemDiscussFragment) discussFragment).sort(which);
+                                                Toast.makeText(mContext, "Sorting...", Toast.LENGTH_SHORT).show();
+                                                dialog.dismiss();
+                                                return true;
+                                            }
+                                        })
+                                        .negativeText(R.string.cancel)
+                                        .show();
+                            }
+                        }
                         break;
                     case 3:
                         // add comment

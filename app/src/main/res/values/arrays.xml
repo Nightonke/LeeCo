@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="sort_types">
+        <item>Recent</item>
+        <item>Hot</item>
+        <item>Most votes</item>
+        <item>Most answers</item>
+        <item>Most views</item>
+    </string-array>
+
+</resources>

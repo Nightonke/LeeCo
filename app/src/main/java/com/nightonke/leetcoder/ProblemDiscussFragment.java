@@ -43,7 +43,7 @@ public class ProblemDiscussFragment extends Fragment
     public static final int SORT_BY_ANSWER = 3;
     public static final int SORT_BY_VIEW = 4;
 
-    public static final String[] SORT_STRINGS = new String[]{"", "?sort=hot", "?sort=votes", "?sort=answers", "?sort=views"};
+    public static final String[] SORT_STRINGS = new String[]{"?sort=recent", "?sort=hot", "?sort=votes", "?sort=answers", "?sort=views"};
 
     public static int sortType = SORT_BY_VOTE;
 
@@ -112,6 +112,7 @@ public class ProblemDiscussFragment extends Fragment
     }
 
     public void sort(int newSortType) {
+        discusses = new ArrayList<>();
         sortType = newSortType;
         setDiscuss();
     }
