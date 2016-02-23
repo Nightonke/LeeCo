@@ -2,16 +2,14 @@ package com.nightonke.leetcoder;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import me.grantland.widget.AutofitTextView;
 
@@ -52,57 +50,80 @@ public class ProblemDiscussFragmentAdapter
             case ProblemDiscussFragment.SORT_BY_VOTE:
                 holder.numberBackground.setBackgroundResource(R.drawable.background_vote);
                 holder.number.setText(discusses.get(position).getVote());
-                vote = Integer.getInteger(discusses.get(position).getVote());
+                vote = stringToInt(discusses.get(position).getVote());
                 if (Math.abs(vote) == 1) holder.numberText.setText("vote");
                 else holder.numberText.setText("votes");
                 holder.otherNumber1.setText(discusses.get(position).getAnswer());
-                answer = Integer.getInteger(discusses.get(position).getAnswer());
-                if (Math.abs(answer) == 1) holder.otherNumberText1.setText("answer");
-                else holder.otherNumberText1.setText("answers");
+                answer = stringToInt(discusses.get(position).getAnswer());
+                if (Math.abs(answer) == 1) holder.otherNumberText1.setText(" answer ");
+                else holder.otherNumberText1.setText(" answers ");
                 holder.otherNumber2.setText(discusses.get(position).getView());
-                view = Integer.getInteger(discusses.get(position).getView());
-                if (Math.abs(view) == 1) holder.otherNumberText2.setText("view");
-                else holder.otherNumberText2.setText("views");
+                view = stringToInt(discusses.get(position).getView());
+                if (Math.abs(view) == 1) holder.otherNumberText2.setText(" view");
+                else holder.otherNumberText2.setText(" views");
                 break;
             case ProblemDiscussFragment.SORT_BY_ANSWER:
                 holder.numberBackground.setBackgroundResource(R.drawable.background_answer);
                 holder.number.setText(discusses.get(position).getAnswer());
-                answer = Integer.getInteger(discusses.get(position).getAnswer());
+                answer = stringToInt(discusses.get(position).getAnswer());
                 if (Math.abs(answer) == 1) holder.numberText.setText("answer");
                 else holder.numberText.setText("answers");
                 holder.otherNumber1.setText(discusses.get(position).getVote());
-                vote = Integer.getInteger(discusses.get(position).getVote());
-                if (Math.abs(vote) == 1) holder.otherNumberText1.setText("vote");
-                else holder.otherNumberText1.setText("votes");
+                vote = stringToInt(discusses.get(position).getVote());
+                if (Math.abs(vote) == 1) holder.otherNumberText1.setText(" vote ");
+                else holder.otherNumberText1.setText(" votes ");
                 holder.otherNumber2.setText(discusses.get(position).getView());
-                view = Integer.getInteger(discusses.get(position).getView());
-                if (Math.abs(view) == 1) holder.otherNumberText2.setText("view");
-                else holder.otherNumberText2.setText("views");
+                view = stringToInt(discusses.get(position).getView());
+                if (Math.abs(view) == 1) holder.otherNumberText2.setText(" view");
+                else holder.otherNumberText2.setText(" views");
                 break;
             case ProblemDiscussFragment.SORT_BY_VIEW:
                 holder.numberBackground.setBackgroundResource(R.drawable.background_view);
                 holder.number.setText(discusses.get(position).getView());
-                view = Integer.getInteger(discusses.get(position).getView());
+                view = stringToInt(discusses.get(position).getView());
                 if (Math.abs(view) == 1) holder.numberText.setText("view");
                 else holder.numberText.setText("views");
                 holder.otherNumber1.setText(discusses.get(position).getVote());
-                vote = Integer.getInteger(discusses.get(position).getVote());
-                if (Math.abs(vote) == 1) holder.otherNumberText1.setText("vote");
-                else holder.otherNumberText1.setText("votes");
+                vote = stringToInt(discusses.get(position).getVote());
+                if (Math.abs(vote) == 1) holder.otherNumberText1.setText(" vote ");
+                else holder.otherNumberText1.setText(" votes ");
                 holder.otherNumber2.setText(discusses.get(position).getAnswer());
-                answer = Integer.getInteger(discusses.get(position).getAnswer());
-                if (Math.abs(answer) == 1) holder.otherNumberText2.setText("answer");
-                else holder.otherNumberText2.setText("answers");
+                answer = stringToInt(discusses.get(position).getAnswer());
+                if (Math.abs(answer) == 1) holder.otherNumberText2.setText(" answer");
+                else holder.otherNumberText2.setText(" answers");
                 break;
         }
-        holder.title.setText(discusses.get(position).getTitile());
+        holder.title.setText(discusses.get(position).getTitle());
         holder.date.setText(discusses.get(position).getDate());
         holder.asker.setText(discusses.get(position).getAsker());
+    }
+
+    private int stringToInt(String string) {
+        if (string.charAt(0) == '+') {
+            try {
+                return Integer.valueOf(string.substring(1));
+            } catch (NumberFormatException n) {
+                return 0;
+            }
+
+        }
+        else {
+            try {
+                return Integer.valueOf(string);
+            } catch (NumberFormatException n) {
+                return 0;
+            }
+        }
     }
 
     @Override
     public int getItemCount() {
         return discusses.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

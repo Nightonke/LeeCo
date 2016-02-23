@@ -23,7 +23,7 @@
         <me.grantland.widget.AutofitTextView
             android:id="@+id/number"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:text="+123"
             android:textSize="25sp"
@@ -31,6 +31,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:textColor="@android:color/black"
+            android:paddingBottom="10dp"
             />
 
         <TextView
@@ -42,7 +43,7 @@
             android:textSize="12sp"
             android:textColor="@android:color/black"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="15dp"
             />
 
     </RelativeLayout>
@@ -68,57 +69,6 @@
             android:textStyle="bold"
             android:layout_marginTop="3dp"
             />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_above="@id/other_number_layout"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text="asked "
-                android:textSize="13sp"
-                />
-
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text="Apr 3, 2015"
-                android:textSize="13sp"
-                android:textColor="@color/discuss_date"
-                android:textStyle="bold"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text=" by "
-                android:textSize="13sp"
-                />
-
-            <TextView
-                android:id="@+id/asker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text="kun12 (3,630 points)"
-                android:textSize="13sp"
-                android:textColor="@color/discuss_asker"
-                android:textStyle="bold"
-                />
-
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/other_number_layout"
@@ -171,6 +121,58 @@
                 android:ellipsize="end"
                 android:text=" views"
                 android:textSize="13sp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/date_ask_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_above="@id/other_number_layout"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="asked "
+                android:textSize="13sp"
+                />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Apr 3, 2015"
+                android:textSize="13sp"
+                android:textColor="@color/discuss_date"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text=" by "
+                android:textSize="13sp"
+                />
+
+            <TextView
+                android:id="@+id/asker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="kun12 (3,630 points)"
+                android:textSize="13sp"
+                android:textColor="@color/discuss_asker"
+                android:textStyle="bold"
                 />
 
         </LinearLayout>

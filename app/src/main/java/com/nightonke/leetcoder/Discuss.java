@@ -8,7 +8,7 @@ public class Discuss {
     private String vote = "0";
     private String answer = "0";
     private String view = "0";
-    private String titile = "Title";
+    private String title = "Title";
     private String date = "mm dd, yyyy";
     private String asker = "Nightonke";
     private String url = "";
@@ -37,12 +37,12 @@ public class Discuss {
         this.date = date;
     }
 
-    public String getTitile() {
-        return titile;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTitile(String titile) {
-        this.titile = titile;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getView() {

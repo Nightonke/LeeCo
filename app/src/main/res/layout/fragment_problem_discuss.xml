@@ -49,7 +49,6 @@
         app:layout_progress="@layout/super_recyclerview_discuss_progress"
         app:mainLayoutId="@layout/layout_recyclerview_verticalscroll"
         app:recyclerClipToPadding="false"
-        app:recyclerPadding="16dp"
-        app:scrollbarStyle="insideInset"/>
+        app:scrollbarStyle="insideOverlay"/>
 
 </FrameLayout>

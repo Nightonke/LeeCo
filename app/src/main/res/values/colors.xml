@@ -12,7 +12,7 @@
     <color name="button_original_problem">#f0ad4e</color>
     <color name="button_original_problem_press">#f3bb6d</color>
 
-    <color name="problem_content_background">#F5F2F0</color>
+    <color name="problem_content_background">#FFFFFF</color>
 
     <color name="vote_background">#E7F7FF</color>
     <color name="answer_background">#D9F5BB</color>

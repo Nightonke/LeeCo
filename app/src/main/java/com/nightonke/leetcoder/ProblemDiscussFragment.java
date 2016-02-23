@@ -2,7 +2,10 @@ package com.nightonke.leetcoder;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
@@ -32,6 +35,8 @@ public class ProblemDiscussFragment extends Fragment
         OnMoreListener,
         ProblemDiscussFragmentAdapter.OnItemClickListener {
 
+    public final int NOTIFICAION_ADAPTER = 1;
+
     public static final int SORT_BY_TIME = 0;
     public static final int SORT_BY_HOT = 1;
     public static final int SORT_BY_VOTE = 2;
@@ -46,6 +51,8 @@ public class ProblemDiscussFragment extends Fragment
 
     public static int sortType = SORT_BY_VOTE;
     public static String sortString = SORT_BY_VOTE_STRING;
+
+    private boolean end = false;
 
     private SuperRecyclerView superRecyclerView;
     private ProblemDiscussFragmentAdapter adapter;
@@ -85,9 +92,11 @@ public class ProblemDiscussFragment extends Fragment
 
         superRecyclerView = (SuperRecyclerView) discussFragment.findViewById(R.id.recyclerview);
         superRecyclerView.getSwipeToRefresh().setColorSchemeResources(R.color.colorPrimary);
-        superRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        superRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         superRecyclerView.setRefreshListener(this);
-        superRecyclerView.setupMoreListener(this, Integer.MAX_VALUE);
+        // Todo
+//        superRecyclerView.setupMoreListener(this, Integer.MAX_VALUE);
+        superRecyclerView.getMoreProgressView().setDrawingCacheBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
         adapter = new ProblemDiscussFragmentAdapter(discusses, this);
         superRecyclerView.setAdapter(adapter);
         superRecyclerView.setVisibility(View.INVISIBLE);
@@ -108,14 +117,16 @@ public class ProblemDiscussFragment extends Fragment
     }
 
     public void setDiscuss() {
-        Problem problem = activity.problem;
         if (BuildConfig.DEBUG) {
-            Log.d("LeetCoder", problem.getDiscussLink());
+            Log.d("LeetCoder", "onMoreAsked start from: " + discusses.size());
         }
+        Problem problem = activity.problem;
         if (!sortString.equals(problem.getDiscussLink().substring(problem.getDiscussLink().length() - sortString.length(), problem.getDiscussLink().length()))) {
-            problem.setDiscussLink(problem.getDiscussLink() + sortString);
+            discuss.loadUrl(problem.getDiscussLink() + sortString + "&start=" + discusses.size());
+        } else {
+            discuss.loadUrl(problem.getDiscussLink() + "&start=" + discusses.size());
         }
-        discuss.loadUrl(problem.getDiscussLink());
+
         discuss.getSettings().setLoadWithOverviewMode(true);
         discuss.getSettings().setUseWideViewPort(true);
         discuss.getSettings().setJavaScriptEnabled(true);
@@ -175,7 +186,21 @@ public class ProblemDiscussFragment extends Fragment
 
     @Override
     public void onMoreAsked(int overallItemsCount, int itemsBeforeMore, int maxLastVisiblePosition) {
-
+        if (BuildConfig.DEBUG) {
+            Log.d("LeetCoder", "onMoreAsked start from: " + discusses.size() + ", end: " + end);
+        }
+        if (end) {
+            superRecyclerView.hideMoreProgress();
+        } else {
+            Problem problem = activity.problem;
+            if (!sortString.equals(problem.getDiscussLink().substring(problem.getDiscussLink().length() - sortString.length(), problem.getDiscussLink().length()))) {
+                Log.d("LeetCoder", problem.getDiscussLink() + sortString + "&start=" + discusses.size());
+                discuss.loadUrl(problem.getDiscussLink() + sortString + "&start=" + discusses.size());
+            } else {
+                Log.d("LeetCoder", problem.getDiscussLink() + "&start=" + discusses.size());
+                discuss.loadUrl(problem.getDiscussLink() + "&start=" + discusses.size());
+            }
+        }
     }
 
     @Override
@@ -188,15 +213,87 @@ public class ProblemDiscussFragment extends Fragment
         @SuppressWarnings("unused")
         public void processHTML(String html) {
             getDiscusses(html);
-            adapter.notifyDataSetChanged();
-            if (BuildConfig.DEBUG) {
-                Log.d("LeetCoder", html);
-            }
+            Message msg = new Message();
+            msg.what = NOTIFICAION_ADAPTER;
+            handler.sendMessage(msg);
         }
     }
 
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == NOTIFICAION_ADAPTER) {
+                adapter = new ProblemDiscussFragmentAdapter(discusses, ProblemDiscussFragment.this);
+                superRecyclerView.setAdapter(adapter);
+                if (superRecyclerView != null) superRecyclerView.hideMoreProgress();
+                end = false;
+            }
+        }
+    };
+
+    private final String VOTE_START_STRING = "<span class=\"qa-netvote-count-data\">";
+    private final String VOTE_END_STRING = "</span>";
+    private final String ANSWER_START_STRING = "<span class=\"qa-a-count-data\">";
+    private final String ANSWER_END_STRING = "</span>";
+    private final String VIEW_START_STRING = "<span class=\"qa-view-count-data\">";
+    private final String VIEW_END_STRING = "</span>";
+    private final String TITLE_START_STRING = "<div class=\"qa-q-item-title\">";
+    private final String TITLE_END_STRING = "</span></a>";
+    private final String DATE_START_STRING = "<span class=\"qa-q-item-when-data\">";
+    private final String DATE_END_STRING = "</span>";
+    private final String ASKER_START_STRING = "class=\"qa-user-link\">";
+    private final String ASKER_END_STRING = "</a></span>";
+    private final String URL_START_STRING = "<div class=\"qa-q-item-title\">\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t\t\t<a href=\"../../";
+    private final String URL_END_STRING = "\"><span";
     private void getDiscusses(String html) {
-        discusses = new ArrayList<>();
-        adapter.notifyDataSetChanged();
+        if ("<head><head></head><body></body></head>".equals(html)) {
+            end = true;
+            return;
+        }
+
+        int position = 0;
+        int count = 0;
+        while (position != -1) {
+            Discuss discuss = new Discuss();
+            position = html.indexOf(VOTE_START_STRING, position);
+
+            if(position != -1){
+                count++;
+
+                int endPosition = html.indexOf(VOTE_END_STRING, position);
+                discuss.setVote(html.substring(position + VOTE_START_STRING.length(), endPosition));
+
+                position = html.indexOf(ANSWER_START_STRING, position);
+                endPosition = html.indexOf(ANSWER_END_STRING, position);
+                discuss.setAnswer(html.substring(position + ANSWER_START_STRING.length(), endPosition));
+
+                position = html.indexOf(VIEW_START_STRING, position);
+                endPosition = html.indexOf(VIEW_END_STRING, position);
+                discuss.setView(html.substring(position + VIEW_START_STRING.length(), endPosition));
+
+                position = html.indexOf(TITLE_START_STRING, position);
+                endPosition = html.indexOf(TITLE_END_STRING, position);
+                int offset = endPosition - 1;
+                while (!"\">".equals(html.substring(offset, offset + 2))) offset--;
+                discuss.setTitle(html.substring(offset + 2, endPosition));
+
+                position = html.indexOf(URL_START_STRING, position);
+                endPosition = html.indexOf(URL_END_STRING, position);
+                discuss.setUrl("https://leetcode.com/discuss/" + html.substring(position + URL_START_STRING.length(), endPosition));
+
+                position = html.indexOf(DATE_START_STRING, position);
+                endPosition = html.indexOf(DATE_END_STRING, position);
+                discuss.setDate(html.substring(position + DATE_START_STRING.length(), endPosition));
+
+                position = html.indexOf(ASKER_START_STRING, position);
+                endPosition = html.indexOf(ASKER_END_STRING, position);
+                discuss.setAsker(html.substring(position + ASKER_START_STRING.length(), endPosition));
+
+                discusses.add(discuss);
+            }
+        }
+
+        if (count < 20) end = true;
     }
 }
