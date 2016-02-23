@@ -43,14 +43,9 @@ public class ProblemDiscussFragment extends Fragment
     public static final int SORT_BY_ANSWER = 3;
     public static final int SORT_BY_VIEW = 4;
 
-    public static final String SORT_BY_TIME_STRING = "";
-    public static final String SORT_BY_HOT_STRING = "?sort=hot";
-    public static final String SORT_BY_VOTE_STRING = "?sort=votes";
-    public static final String SORT_BY_ANSWER_STRING = "?sort=answers";
-    public static final String SORT_BY_VIEW_STRING = "?sort=views";
+    public static final String[] SORT_STRINGS = new String[]{"", "?sort=hot", "?sort=votes", "?sort=answers", "?sort=views"};
 
     public static int sortType = SORT_BY_VOTE;
-    public static String sortString = SORT_BY_VOTE_STRING;
 
     private boolean end = false;
 
@@ -116,13 +111,18 @@ public class ProblemDiscussFragment extends Fragment
         return discussFragment;
     }
 
+    public void sort(int newSortType) {
+        sortType = newSortType;
+        setDiscuss();
+    }
+
     public void setDiscuss() {
         if (BuildConfig.DEBUG) {
             Log.d("LeetCoder", "onMoreAsked start from: " + discusses.size());
         }
         Problem problem = activity.problem;
-        if (!sortString.equals(problem.getDiscussLink().substring(problem.getDiscussLink().length() - sortString.length(), problem.getDiscussLink().length()))) {
-            discuss.loadUrl(problem.getDiscussLink() + sortString + "&start=" + discusses.size());
+        if (!SORT_STRINGS[sortType].equals(problem.getDiscussLink().substring(problem.getDiscussLink().length() - SORT_STRINGS[sortType].length(), problem.getDiscussLink().length()))) {
+            discuss.loadUrl(problem.getDiscussLink() + SORT_STRINGS[sortType] + "&start=" + discusses.size());
         } else {
             discuss.loadUrl(problem.getDiscussLink() + "&start=" + discusses.size());
         }
@@ -193,9 +193,9 @@ public class ProblemDiscussFragment extends Fragment
             superRecyclerView.hideMoreProgress();
         } else {
             Problem problem = activity.problem;
-            if (!sortString.equals(problem.getDiscussLink().substring(problem.getDiscussLink().length() - sortString.length(), problem.getDiscussLink().length()))) {
-                Log.d("LeetCoder", problem.getDiscussLink() + sortString + "&start=" + discusses.size());
-                discuss.loadUrl(problem.getDiscussLink() + sortString + "&start=" + discusses.size());
+            if (!SORT_STRINGS[sortType].equals(problem.getDiscussLink().substring(problem.getDiscussLink().length() - SORT_STRINGS[sortType].length(), problem.getDiscussLink().length()))) {
+                Log.d("LeetCoder", problem.getDiscussLink() + SORT_STRINGS[sortType] + "&start=" + discusses.size());
+                discuss.loadUrl(problem.getDiscussLink() + SORT_STRINGS[sortType] + "&start=" + discusses.size());
             } else {
                 Log.d("LeetCoder", problem.getDiscussLink() + "&start=" + discusses.size());
                 discuss.loadUrl(problem.getDiscussLink() + "&start=" + discusses.size());

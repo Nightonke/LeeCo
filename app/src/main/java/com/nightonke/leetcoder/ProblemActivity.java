@@ -10,10 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
@@ -27,7 +30,8 @@ import cn.bmob.v3.listener.FindListener;
 
 public class ProblemActivity extends AppCompatActivity
         implements
-        ProblemContentFragment.ReloadListener {
+        ProblemContentFragment.ReloadListener,
+        View.OnClickListener {
 
     public ProblemTest problemTest;
     public Problem_Index problem_index;
@@ -35,11 +39,17 @@ public class ProblemActivity extends AppCompatActivity
 
     private Context mContext;
 
+    private int lastPagerPosition = 0;
     private ViewPager viewPager;
     private SmartTabLayout viewPagerTab;
     private FragmentPagerItemAdapter adapter;
 
     private TextView title;
+    private FrameLayout icon;
+    private ImageView contentImageView;
+    private ImageView solutionImageView;
+    private ImageView discussImageView;
+    private ImageView commentImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +76,52 @@ public class ProblemActivity extends AppCompatActivity
         setupTab();
 
         viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                getIcon(position).setVisibility(View.VISIBLE);
+                if (position > lastPagerPosition) {
+                    YoYo.with(Techniques.BounceInUp)
+                            .duration(500)
+                            .playOn(getIcon(position));
+                    YoYo.with(Techniques.FadeOutUp)
+                            .duration(300)
+                            .playOn(getIcon(lastPagerPosition));
+                } else if (position < lastPagerPosition) {
+                    YoYo.with(Techniques.BounceInDown)
+                            .duration(500)
+                            .playOn(getIcon(position));
+                    YoYo.with(Techniques.FadeOutDown)
+                            .duration(300)
+                            .playOn(getIcon(lastPagerPosition));
+                }
+                lastPagerPosition = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         viewPagerTab.setViewPager(viewPager);
 
         title = (TextView)findViewById(R.id.title);
         title.setText("Sudoku Solver");
+
+        icon = (FrameLayout)findViewById(R.id.icon);
+        icon.setOnClickListener(this);
+        contentImageView = (ImageView)findViewById(R.id.content_icon);
+        solutionImageView = (ImageView)findViewById(R.id.solution_icon);
+        solutionImageView.setVisibility(View.INVISIBLE);
+        discussImageView = (ImageView)findViewById(R.id.discuss_icon);
+        discussImageView.setVisibility(View.INVISIBLE);
+        commentImageView = (ImageView)findViewById(R.id.comment_icon);
+        commentImageView.setVisibility(View.INVISIBLE);
 
         getData();
     }
@@ -210,8 +262,40 @@ public class ProblemActivity extends AppCompatActivity
         });
     }
 
+    private View getIcon(int i) {
+        switch (i) {
+            case 0: return contentImageView;
+            case 1: return solutionImageView;
+            case 2: return discussImageView;
+            case 3: return commentImageView;
+        }
+        return null;
+    }
+
     @Override
     public void reload() {
         getTest();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (R.id.icon) {
+            case R.id.icon:
+                switch (viewPager.getCurrentItem()) {
+                    case 0:
+                        // like
+                        break;
+                    case 1:
+                        // bug of solution
+                        break;
+                    case 2:
+                        // sort
+                        break;
+                    case 3:
+                        // add comment
+                        break;
+                }
+                break;
+        }
     }
 }
