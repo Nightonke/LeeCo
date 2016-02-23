@@ -63,4 +63,7 @@ dependencies {
     compile('com.github.afollestad.material-dialogs:core:0.8.5.4@aar') {
         transitive = true
     }
+
+    // cult view
+    compile 'com.github.ppamorim:cult:0.1.5'
 }
