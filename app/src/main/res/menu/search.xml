@@ -3,6 +3,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/action_sort"
+        android:name="sort"
+        android:title="@string/sort"
+        android:icon="@drawable/icon_sort_primary"
+        app:showAsAction="ifRoom"/>
+
     <item android:id="@+id/action_search"
         android:name="search"
         android:title="@string/search"

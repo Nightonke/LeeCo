@@ -4,6 +4,7 @@
     <string name="cancel">cancel</string>
     <string name="ok">OK</string>
     <string name="search">Search</string>
+    <string name="sort">Sort</string>
 
     <string name="original_problem">View in Web</string>
     <string name="reload">Reload</string>

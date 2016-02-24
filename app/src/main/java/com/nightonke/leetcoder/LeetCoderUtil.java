@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -11,6 +12,9 @@ import android.text.style.AlignmentSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
+
+import java.lang.reflect.Field;
 
 /**
  * Created by Weiping on 2016/2/24.
@@ -51,6 +55,18 @@ public class LeetCoderUtil {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
         }
+    }
+
+    public static TextView getActionBarTextView(Toolbar mToolBar) {
+        TextView titleTextView = null;
+        try {
+            Field f = mToolBar.getClass().getDeclaredField("mTitleTextView");
+            f.setAccessible(true);
+            titleTextView = (TextView) f.get(mToolBar);
+        } catch (NoSuchFieldException e) {
+        } catch (IllegalAccessException e) {
+        }
+        return titleTextView;
     }
 
 
