@@ -244,9 +244,8 @@ public class ProblemDiscussFragment extends Fragment
     private final String DATE_END_STRING = "</span>";
     private final String ASKER_START_STRING = "class=\"qa-user-link\">";
     private final String ASKER_END_STRING = "</a></span>";
-    private final String URL_START_STRING = "<div class=\"qa-q-item-title\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t<a href=\"../../";
-    private final String URL_END_STRING = "\"><span";
+    private final String URL_START_STRING = "<a href=\"../../";
+    private final String URL_END_STRING = "\">";
     private void getDiscusses(String html) {
         if ("<head><head></head><body></body></head>".equals(html)) {
             end = true;
@@ -274,14 +273,19 @@ public class ProblemDiscussFragment extends Fragment
                 discuss.setView(html.substring(position + VIEW_START_STRING.length(), endPosition));
 
                 position = html.indexOf(TITLE_START_STRING, position + 1);
+
+                int urlStartPosition = html.indexOf(URL_START_STRING, position + 1) + URL_START_STRING.length();
+                int urlEndPostion = html.indexOf(URL_END_STRING, urlStartPosition);
+                discuss.setUrl("https://leetcode.com/discuss/" + html.substring(urlStartPosition, urlEndPostion));
+
                 endPosition = html.indexOf(TITLE_END_STRING, position);
                 int offset = endPosition - 1;
                 while (!"\">".equals(html.substring(offset, offset + 2))) offset--;
                 discuss.setTitle(html.substring(offset + 2, endPosition));
 
-                position = html.indexOf(URL_START_STRING, position + 1);
-                endPosition = html.indexOf(URL_END_STRING, position);
-                discuss.setUrl("https://leetcode.com/discuss/" + html.substring(position + URL_START_STRING.length(), endPosition));
+//                position = html.indexOf(URL_START_STRING, position + 1);
+//                endPosition = html.indexOf(URL_END_STRING, position);
+//                discuss.setUrl("https://leetcode.com/discuss/" + html.substring(position + URL_START_STRING.length(), endPosition));
 
                 position = html.indexOf(DATE_START_STRING, position + 1);
                 endPosition = html.indexOf(DATE_END_STRING, position);
