@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/cult_view"
+    android:clickable="false"
+    android:focusable="false">
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_left"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.ogaclejapan.smarttablayout.SmartTabLayout
+                android:id="@+id/smart_tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/colorPrimary"
+                app:stl_indicatorAlwaysInCenter="false"
+                app:stl_indicatorInFront="false"
+                app:stl_indicatorInterpolation="smart"
+                app:stl_indicatorColor="@color/white"
+                app:stl_indicatorThickness="4dp"
+                app:stl_indicatorCornerRadius="2dp"
+                app:stl_underlineThickness="0dp"
+                app:stl_dividerThickness="0dp"
+                app:stl_defaultTabBackground="?attr/selectableItemBackground"
+                app:stl_defaultTabTextAllCaps="false"
+                app:stl_defaultTabTextColor="@color/white"
+                app:stl_defaultTabTextSize="16sp"
+                app:stl_defaultTabTextHorizontalPadding="12dp"
+                app:stl_defaultTabTextMinWidth="0dp"
+                app:stl_distributeEvenly="true"/>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/drawer_base"
+            android:layout_width="280dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@color/white"/>
+
+    </android.support.v4.widget.DrawerLayout>
+
+</FrameLayout>
