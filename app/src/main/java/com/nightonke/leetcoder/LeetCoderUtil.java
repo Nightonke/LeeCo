@@ -69,6 +69,16 @@ public class LeetCoderUtil {
         return titleTextView;
     }
 
+    public static String getTextDrawableString(String string) {
+        int blankPosition = string.indexOf(" ");
+        if (blankPosition == -1 || blankPosition == string.length() - 1) {
+            if (string.length() == 1) return string.toUpperCase();
+            else return string.substring(0, 2).toUpperCase();
+        } else {
+            return string.substring(0, 1).toUpperCase() + string.substring(blankPosition + 1, blankPosition + 2).toUpperCase();
+        }
+    }
+
 
 
 

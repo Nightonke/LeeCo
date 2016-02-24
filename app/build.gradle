@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 repositories {
     jcenter()
     maven { url "https://jitpack.io" }
+    maven { url 'http://dl.bintray.com/amulyakhare/maven' }
 }
 
 android {
@@ -66,4 +67,7 @@ dependencies {
 
     // cult view
     compile 'com.github.ppamorim:cult:0.1.5'
+
+    // text drawable
+    compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 }

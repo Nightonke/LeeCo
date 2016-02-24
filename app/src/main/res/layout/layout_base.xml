@@ -13,39 +13,76 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:orientation="vertical"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white">
+            android:background="@color/white"
+            >
 
-            <com.ogaclejapan.smarttablayout.SmartTabLayout
-                android:id="@+id/smart_tab_layout"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@color/colorPrimary"
-                app:stl_indicatorAlwaysInCenter="false"
-                app:stl_indicatorInFront="false"
-                app:stl_indicatorInterpolation="smart"
-                app:stl_indicatorColor="@color/white"
-                app:stl_indicatorThickness="4dp"
-                app:stl_indicatorCornerRadius="2dp"
-                app:stl_underlineThickness="0dp"
-                app:stl_dividerThickness="0dp"
-                app:stl_defaultTabBackground="?attr/selectableItemBackground"
-                app:stl_defaultTabTextAllCaps="false"
-                app:stl_defaultTabTextColor="@color/white"
-                app:stl_defaultTabTextSize="16sp"
-                app:stl_defaultTabTextHorizontalPadding="12dp"
-                app:stl_defaultTabTextMinWidth="0dp"
-                app:stl_distributeEvenly="true"/>
+                android:layout_height="match_parent"
+                android:background="@color/white">
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/view_pager"
+                <com.ogaclejapan.smarttablayout.SmartTabLayout
+                    android:id="@+id/smart_tab_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@color/colorPrimary"
+                    app:stl_indicatorAlwaysInCenter="false"
+                    app:stl_indicatorInFront="false"
+                    app:stl_indicatorInterpolation="smart"
+                    app:stl_indicatorColor="@color/white"
+                    app:stl_indicatorThickness="4dp"
+                    app:stl_indicatorCornerRadius="2dp"
+                    app:stl_underlineThickness="0dp"
+                    app:stl_dividerThickness="0dp"
+                    app:stl_defaultTabBackground="?attr/selectableItemBackground"
+                    app:stl_defaultTabTextAllCaps="false"
+                    app:stl_defaultTabTextColor="@color/white"
+                    app:stl_defaultTabTextSize="16sp"
+                    app:stl_defaultTabTextHorizontalPadding="12dp"
+                    app:stl_defaultTabTextMinWidth="0dp"
+                    app:stl_distributeEvenly="true"/>
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/loading_layout"
+                android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                >
 
-        </LinearLayout>
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_height="50dp"
+                    android:layout_width="50dp"
+                    android:layout_centerInParent="true"
+                    android:indeterminate="true"
+                    />
+
+                <TextView
+                    android:id="@+id/reload"
+                    android:layout_height="25dp"
+                    android:layout_width="200dp"
+                    android:layout_below="@id/progressBar"
+                    android:background="@drawable/button_original_problem"
+                    android:textColor="@color/finestWhite"
+                    android:text="@string/reload"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_centerHorizontal="true"
+                    />
+
+            </RelativeLayout>
+
+        </FrameLayout>
 
         <FrameLayout
             android:id="@+id/drawer_base"

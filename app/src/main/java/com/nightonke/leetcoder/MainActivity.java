@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -13,19 +14,31 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.github.ppamorim.cult.CultView;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindListener;
 
 public class MainActivity extends AppCompatActivity
         implements
@@ -35,10 +48,15 @@ public class MainActivity extends AppCompatActivity
 
     private CultView cultView;
     private ActionBarDrawerToggle mDrawerToggle;
-    private FragmentPagerItemAdapter adapter;
     private DrawerLayout drawerLayout;
+
+    private RelativeLayout reloadLayout;
+    private ProgressBar progressBar;
+    private TextView reload;
+
     private SmartTabLayout smartTabLayout;
     private ViewPager viewPager;
+    private FragmentPagerItemAdapter adapter;
 
     private View searchLayout;
     private EditText searchInput;
@@ -56,8 +74,6 @@ public class MainActivity extends AppCompatActivity
 
         cultView = (CultView)findViewById(R.id.cult_view);
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_left);
-        viewPager = (ViewPager)findViewById(R.id.view_pager);
-        smartTabLayout = (SmartTabLayout)findViewById(R.id.smart_tab_layout);
 
         searchLayout = View.inflate(mContext, R.layout.fragment_search, null);
         searchInput = (EditText)searchLayout.findViewById(R.id.search_edit_text);
@@ -120,6 +136,19 @@ public class MainActivity extends AppCompatActivity
         mDrawerToggle = new ActionBarDrawerToggle(this ,drawerLayout, R.string.ok, R.string.cancel);
         mDrawerToggle.syncState();
         drawerLayout.setDrawerListener(mDrawerToggle);
+
+        reloadLayout = (RelativeLayout)findViewById(R.id.loading_layout);
+        reloadLayout.setVisibility(View.VISIBLE);
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+        reload = (TextView)findViewById(R.id.reload);
+        reload.setText(mContext.getResources().getString(R.string.loading));
+        reload.setOnClickListener(this);
+
+        viewPager = (ViewPager)findViewById(R.id.view_pager);
+        smartTabLayout = (SmartTabLayout)findViewById(R.id.smart_tab_layout);
+
+        getData();
     }
 
     @Override
@@ -146,11 +175,6 @@ public class MainActivity extends AppCompatActivity
             drawable.mutate();
             drawable.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
         }
-//        drawable = menu.findItem(android.R.id.home).getIcon();
-//        if (drawable != null) {
-//            drawable.mutate();
-//            drawable.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
-//        }
         return true;
     }
 
@@ -162,6 +186,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_search:
                 cultView.showSlide();
                 showKeyboard();
+                return true;
+            case R.id.action_sort:
+                sort();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -216,6 +243,64 @@ public class MainActivity extends AppCompatActivity
             case R.id.erase:
                 searchInput.setText("");
                 break;
+            case R.id.reload:
+
+                break;
         }
+    }
+
+    private void sort() {
+
+    }
+
+    private void getData() {
+        BmobQuery<Problem_Index> query = new BmobQuery<Problem_Index>();
+        query.addWhereGreaterThan("id", -1);
+        query.setLimit(Integer.MAX_VALUE);
+        query.findObjects(LeetCoderApplication.getAppContext(), new FindListener<Problem_Index>() {
+            @Override
+            public void onSuccess(List<Problem_Index> object) {
+                if (BuildConfig.DEBUG) {
+                    Log.d("LeetCoder", "Get " + object.size() + " problem indices");
+                }
+                LeetCoderApplication.categories = new ArrayList<>();
+                LeetCoderApplication.categoriesTag = new ArrayList<>();
+                HashMap<String, ArrayList<Problem_Index>> hash = new HashMap<String, ArrayList<Problem_Index>>();
+                for (Problem_Index problemIndex : object) {
+                    List<String> tags = problemIndex.getTags();
+                    for (String tag : tags) {
+                        if (hash.containsKey(tag)) {
+                            hash.get(tag).add(problemIndex);
+                        } else {
+                            ArrayList<Problem_Index> category = new ArrayList<Problem_Index>();
+                            category.add(problemIndex);
+                            hash.put(tag, category);
+                        }
+                    }
+                }
+                FragmentPagerItems pages = new FragmentPagerItems(mContext);
+                for (HashMap.Entry<String, ArrayList<Problem_Index>> entry : hash.entrySet()) {
+                    LeetCoderApplication.categoriesTag.add(entry.getKey());
+                    LeetCoderApplication.categories.add(entry.getValue());
+                    pages.add(FragmentPagerItem.of(entry.getKey(), CategoryFragment.class));
+                }
+                adapter = new FragmentPagerItemAdapter(
+                        getSupportFragmentManager(), pages);
+                viewPager.setOffscreenPageLimit(1);
+                viewPager.setAdapter(adapter);
+
+                reload.setText(mContext.getResources().getString(R.string.reload));  // for refreshing
+                reloadLayout.setVisibility(View.GONE);
+            }
+            @Override
+            public void onError(int code, String msg) {
+                if (BuildConfig.DEBUG) {
+                    Log.d("LeetCoder", "Get problem indices failed: " + msg);
+                }
+                reloadLayout.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
+                reload.setText(mContext.getResources().getString(R.string.reload));
+            }
+        });
     }
 }
