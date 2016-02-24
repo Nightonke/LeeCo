@@ -6,6 +6,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -16,19 +17,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
 
+import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.listener.SaveListener;
 
 public class MainActivity extends AppCompatActivity {
 
     private Context mContext;
 
+    private Button setting;
     private Button button;
     private Button eachProblem;
     private Button upload;
@@ -38,9 +43,9 @@ public class MainActivity extends AppCompatActivity {
 
     private Random random = new Random();
 
-    private ArrayList<Problem_Index> problemIndices = new ArrayList<>();
-    private ArrayList<Problem> problems = new ArrayList<>();
-    private ArrayList<String> problemLinks = new ArrayList<>();
+    private List<BmobObject> problemIndices = new ArrayList<>();
+    private List<BmobObject> problems = new ArrayList<>();
+    private List<String> problemLinks = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +54,37 @@ public class MainActivity extends AppCompatActivity {
 
         mContext = this;
 
+        setting = (Button)findViewById(R.id.set);
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new MaterialDialog.Builder(mContext)
+                        .title("Start Position")
+                        .inputType(InputType.TYPE_CLASS_NUMBER)
+                        .cancelable(false)
+                        .positiveText("OK")
+                        .negativeText("CANCEL")
+                        .input("", "", new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                                dialog.dismiss();
+                                startPosition = Integer.valueOf(String.valueOf(input));
+                                new MaterialDialog.Builder(mContext)
+                                        .title("End Position")
+                                        .inputType(InputType.TYPE_CLASS_NUMBER)
+                                        .cancelable(false)
+                                        .positiveText("OK")
+                                        .negativeText("CANCEL")
+                                        .input("", "", new MaterialDialog.InputCallback() {
+                                            @Override
+                                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                                                maxCount = Integer.valueOf(String.valueOf(input));
+                                            }
+                                        }).show();
+                            }
+                        }).show();
+            }
+        });
         button = (Button)findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,10 +158,10 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             if (msg.what == 1) {
                 count++;
-                button.setText(count + "/" + maxCount);
+                button.setText(count + "/" + (maxCount - startPosition));
             }
             if (msg.what == 2) {
-                eachProblem.setText(problems.size() + "/" + maxCount);
+                eachProblem.setText(problems.size() + "/" + (maxCount - startPosition));
             }
             if (msg.what == 3) {
                 if (urlCounter >= problemLinks.size()) return;
@@ -136,6 +172,10 @@ public class MainActivity extends AppCompatActivity {
             }
             if (msg.what == 4) {
                 upload.setText((uploadCount / 2) + "/" + maxCount);
+            }
+            if (msg.what == 5) {
+                upload.setText("FINISH");
+                if (upload.getText().toString().equals("FINISH")) upload.setText("FINISH-ALL");
             }
         }
     };
@@ -159,11 +199,12 @@ public class MainActivity extends AppCompatActivity {
             "                  \n" +
             "                </tr>";
 
-    private int maxCount = 50;
+    private int startPosition = 10;
+    private int maxCount = 20;
     private void getData(String html) {
         Log.d("LeetCoder", "get Data");
         int position = 0;
-        int count = 0;
+        int count = -1;
         while (position != -1) {
             Problem_Index problemIndex = new Problem_Index();
             position = html.indexOf(ID_START_STRING, position);
@@ -171,7 +212,12 @@ public class MainActivity extends AppCompatActivity {
             if(position != -1){
                 count++;
 
-                if (count > maxCount) break;
+                if (count < startPosition) {
+                    position++;
+                    continue;
+                }
+
+                if (count >= maxCount) break;
 
                 int endPosition = html.indexOf(ID_END_STRING, position);
                 problemIndex.setId(Integer.valueOf(html.substring(position + ID_START_STRING.length(), endPosition)));
@@ -260,7 +306,8 @@ public class MainActivity extends AppCompatActivity {
                 tagPosition = q;
             }
         }
-        for (Problem_Index problemIndex : problemIndices) {
+        for (BmobObject b : problemIndices) {
+            Problem_Index problemIndex = (Problem_Index) b;
             if (problemIndex.getId() == id) {
                 problemIndex.setTags(tags);
                 int c = html.indexOf(SUMMARY_START_STRING);
@@ -311,7 +358,7 @@ public class MainActivity extends AppCompatActivity {
         problem.setDiscussLink("https://leetcode.com" + html.substring(position + DISCUSS_START_STRING.length(), endPosition));
 
         for (int i = 0; i < problemLinks.size(); i++) {
-            if (problemIndices.get(i).getId() == id) {
+            if (((Problem_Index)problemIndices.get(i)).getId() == id) {
                 problem.setProblemLink(problemLinks.get(i));
                 break;
             }
@@ -327,58 +374,51 @@ public class MainActivity extends AppCompatActivity {
 
     private int uploadCount = 0;
     private void uploadData() {
-        Collections.sort(problemIndices, new Comparator<Problem_Index>() {
+        Collections.sort(problemIndices, new Comparator<BmobObject>() {
             @Override
-            public int compare(Problem_Index lhs, Problem_Index rhs) {
-                if (lhs.getId() < rhs.getId()) return -1;
-                else if (lhs.getId() > rhs.getId()) return 1;
+            public int compare(BmobObject lhs, BmobObject rhs) {
+                if (((Problem_Index)lhs).getId() < ((Problem_Index)rhs).getId()) return -1;
+                else if (((Problem_Index)lhs).getId() > ((Problem_Index)rhs).getId()) return 1;
                 else return 0;
             }
         });
 
-        Collections.sort(problems, new Comparator<Problem>() {
+        Collections.sort(problems, new Comparator<BmobObject>() {
             @Override
-            public int compare(Problem lhs, Problem rhs) {
-                if (lhs.getId() < rhs.getId()) return -1;
-                else if (lhs.getId() > rhs.getId()) return 1;
+            public int compare(BmobObject lhs, BmobObject rhs) {
+                if (((Problem)lhs).getId() < ((Problem)rhs).getId()) return -1;
+                else if (((Problem)lhs).getId() > ((Problem)rhs).getId()) return 1;
                 else return 0;
             }
         });
 
-        for (final Problem_Index problemIndex : problemIndices) {
-            problemIndex.save(LeetCoderApplication.getAppContext(), new SaveListener() {
-                @Override
-                public void onSuccess() {
-                    uploadCount++;
-                    Message msg = new Message();
-                    msg.what = 4;
-                    handler.sendMessage(msg);
-                    Log.d("LeetCoder", "Save index S: " + problemIndex.getId());
-                }
-                @Override
-                public void onFailure(int i, String s) {
-                    Log.d("LeetCoder", "Save index F: " + problemIndex.getId());
-                }
-            });
-        }
+        new BmobObject().insertBatch(LeetCoderApplication.getAppContext(), problemIndices, new SaveListener() {
+            @Override
+            public void onSuccess() {
+                Message msg = new Message();
+                msg.what = 5;
+                handler.sendMessage(msg);
+                Log.d("LeetCoder", "Save S: " + msg);
+            }
+            @Override
+            public void onFailure(int code, String msg) {
+                Log.d("LeetCoder", "Save F: " + msg);
+            }
+        });
 
-        for (final Problem problem : problems) {
-            problem.save(LeetCoderApplication.getAppContext(), new SaveListener() {
-                @Override
-                public void onSuccess() {
-                    uploadCount++;
-                    Message msg = new Message();
-                    msg.what = 4;
-                    handler.sendMessage(msg);
-                    Log.d("LeetCoder", "Save problem S: " + problem.getId());
-                }
-                @Override
-                public void onFailure(int i, String s) {
-                    Log.d("LeetCoder", "Save problem F: " + problem.getId());
-                }
-            });
-        }
-
+        new BmobObject().insertBatch(LeetCoderApplication.getAppContext(), problems, new SaveListener() {
+            @Override
+            public void onSuccess() {
+                Message msg = new Message();
+                msg.what = 5;
+                handler.sendMessage(msg);
+                Log.d("LeetCoder", "Save S: " + msg);
+            }
+            @Override
+            public void onFailure(int code, String msg) {
+                Log.d("LeetCoder", "Save F: " + msg);
+            }
+        });
     }
 
 }
