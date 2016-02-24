@@ -42,7 +42,6 @@ public class ProblemActivity extends AppCompatActivity
         ProblemContentFragment.ReloadListener,
         View.OnClickListener {
 
-    public ProblemTest problemTest;
     public Problem_Index problem_index;
     public Problem problem;
 
@@ -66,9 +65,6 @@ public class ProblemActivity extends AppCompatActivity
         setContentView(R.layout.activity_problem);
 
         mContext = this;
-
-        problemTest = new ProblemTest();
-        problemTest.createTestProblem();
 
         adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
@@ -120,7 +116,6 @@ public class ProblemActivity extends AppCompatActivity
         viewPagerTab.setViewPager(viewPager);
 
         title = (TextView)findViewById(R.id.title);
-        title.setText("Sudoku Solver");
 
         icon = (FrameLayout)findViewById(R.id.icon);
         icon.setOnClickListener(this);
@@ -132,26 +127,15 @@ public class ProblemActivity extends AppCompatActivity
         commentImageView = (ImageView)findViewById(R.id.comment_icon);
         commentImageView.setVisibility(View.INVISIBLE);
 
+        problem_index = LeetCoderApplication.categories.
+                get(getIntent().getIntExtra("categoryPosition", -1)).
+                get(getIntent().getIntExtra("problemPosition", -1));
+        title.setText(problem_index.getTitle());
+
         getData();
     }
 
     private void getData() {
-        // test problem 37
-        getTest();
-    }
-
-    private void getTest() {
-        problem_index = new Problem_Index();
-        problem_index.setId(37);
-        problem_index.setTitle("Sudoku Solver");
-        problem_index.setLevel("Hard");
-        problem_index.setLike(12);
-        problem_index.setSummary("Write a program to solve a Sudoku puzzle by filling the empty cells.");
-        List<String> tags = new ArrayList<>();
-        tags.add("Backtracking");
-        tags.add("Hash Table");
-        problem_index.setTags(tags);
-
         problem = new Problem();
         problem.setId(problem_index.getId());
 
@@ -283,7 +267,7 @@ public class ProblemActivity extends AppCompatActivity
 
     @Override
     public void reload() {
-        getTest();
+        getData();
     }
 
     @Override

@@ -1,7 +1,5 @@
 package com.nightonke.leetcoder;
 
-import android.util.Log;
-
 import java.util.List;
 
 /**
@@ -28,8 +26,21 @@ public class Utils {
         }
     }
 
+    private static final int shouldHasLines = 100;
     public static String toLine(String string) {
-        return string.replaceAll("\\$\\$\\$", "\n");
+        if (string == null || "".equals(string)) string = "class Solution {$$$public:$$$    bool LeetCoder() {$$$        if (noSolution) {$$$            clickTheFeedbackIconAtTheTopRightCorner();$$$            chooseIHaveBetterSolutions();$$$            submitASolution();$$$            waitYourWonderfulSolutionToBeUpdatedToLeetCoder();$$$        }$$$    }$$$    $$$private:$$$    bool noSolution = true;$$$    void clickTheFeedbackIconAtTheTopRightCorner();$$$    void chooseIHaveBetterSolutions();$$$    void submitASolution();$$$    void waitYourWonderfulSolutionToBeUpdatedToLeetCoder();$$$};$$$";
+        string = string.replaceAll("\\$\\$\\$", "\n");
+        int lines = 0;
+        int linePosition = 0;
+        while (linePosition != -1) {
+            linePosition = string.indexOf("\n", linePosition + 1);
+            if (linePosition != -1) lines++;
+        }
+        while (lines < shouldHasLines) {
+            string += "\n";
+            lines++;
+        }
+        return string;
     }
 
 }

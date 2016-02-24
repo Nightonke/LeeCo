@@ -255,9 +255,9 @@ public class ProblemDiscussFragment extends Fragment
 
         int position = 0;
         int count = 0;
-        while (position != -1) {
+        while (position != -1 && count < 20) {
             Discuss discuss = new Discuss();
-            position = html.indexOf(VOTE_START_STRING, position);
+            position = html.indexOf(VOTE_START_STRING, position + 1);
 
             if(position != -1){
                 count++;
@@ -265,29 +265,29 @@ public class ProblemDiscussFragment extends Fragment
                 int endPosition = html.indexOf(VOTE_END_STRING, position);
                 discuss.setVote(html.substring(position + VOTE_START_STRING.length(), endPosition));
 
-                position = html.indexOf(ANSWER_START_STRING, position);
+                position = html.indexOf(ANSWER_START_STRING, position + 1);
                 endPosition = html.indexOf(ANSWER_END_STRING, position);
                 discuss.setAnswer(html.substring(position + ANSWER_START_STRING.length(), endPosition));
 
-                position = html.indexOf(VIEW_START_STRING, position);
+                position = html.indexOf(VIEW_START_STRING, position + 1);
                 endPosition = html.indexOf(VIEW_END_STRING, position);
                 discuss.setView(html.substring(position + VIEW_START_STRING.length(), endPosition));
 
-                position = html.indexOf(TITLE_START_STRING, position);
+                position = html.indexOf(TITLE_START_STRING, position + 1);
                 endPosition = html.indexOf(TITLE_END_STRING, position);
                 int offset = endPosition - 1;
                 while (!"\">".equals(html.substring(offset, offset + 2))) offset--;
                 discuss.setTitle(html.substring(offset + 2, endPosition));
 
-                position = html.indexOf(URL_START_STRING, position);
+                position = html.indexOf(URL_START_STRING, position + 1);
                 endPosition = html.indexOf(URL_END_STRING, position);
                 discuss.setUrl("https://leetcode.com/discuss/" + html.substring(position + URL_START_STRING.length(), endPosition));
 
-                position = html.indexOf(DATE_START_STRING, position);
+                position = html.indexOf(DATE_START_STRING, position + 1);
                 endPosition = html.indexOf(DATE_END_STRING, position);
                 discuss.setDate(html.substring(position + DATE_START_STRING.length(), endPosition));
 
-                position = html.indexOf(ASKER_START_STRING, position);
+                position = html.indexOf(ASKER_START_STRING, position + 1);
                 endPosition = html.indexOf(ASKER_END_STRING, position);
                 discuss.setAsker(html.substring(position + ASKER_START_STRING.length(), endPosition));
 

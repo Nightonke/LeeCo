@@ -6,9 +6,11 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +36,8 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,7 +46,8 @@ import cn.bmob.v3.listener.FindListener;
 
 public class MainActivity extends AppCompatActivity
         implements
-        View.OnClickListener {
+        View.OnClickListener,
+        CategoryFragment.OnRefreshListener {
 
     private Context mContext;
 
@@ -253,13 +258,16 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private boolean gettingData = false;
     private void getData() {
+        gettingData = true;
         BmobQuery<Problem_Index> query = new BmobQuery<Problem_Index>();
         query.addWhereGreaterThan("id", -1);
         query.setLimit(Integer.MAX_VALUE);
         query.findObjects(LeetCoderApplication.getAppContext(), new FindListener<Problem_Index>() {
             @Override
             public void onSuccess(List<Problem_Index> object) {
+                gettingData = false;
                 if (BuildConfig.DEBUG) {
                     Log.d("LeetCoder", "Get " + object.size() + " problem indices");
                 }
@@ -278,22 +286,35 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                 }
-                FragmentPagerItems pages = new FragmentPagerItems(mContext);
                 for (HashMap.Entry<String, ArrayList<Problem_Index>> entry : hash.entrySet()) {
                     LeetCoderApplication.categoriesTag.add(entry.getKey());
-                    LeetCoderApplication.categories.add(entry.getValue());
-                    pages.add(FragmentPagerItem.of(entry.getKey(), CategoryFragment.class));
+                }
+                Collections.sort(LeetCoderApplication.categoriesTag, new Comparator<String>() {
+                    @Override
+                    public int compare(String lhs, String rhs) {
+                        return lhs.compareTo(rhs);
+                    }
+                });
+                FragmentPagerItems pages = new FragmentPagerItems(mContext);
+                for (String tag : LeetCoderApplication.categoriesTag) {
+                    LeetCoderApplication.categories.add(hash.get(tag));
+                    pages.add(FragmentPagerItem.of(tag, CategoryFragment.class));
                 }
                 adapter = new FragmentPagerItemAdapter(
                         getSupportFragmentManager(), pages);
                 viewPager.setOffscreenPageLimit(1);
                 viewPager.setAdapter(adapter);
+                smartTabLayout.setViewPager(viewPager);
 
                 reload.setText(mContext.getResources().getString(R.string.reload));  // for refreshing
                 reloadLayout.setVisibility(View.GONE);
             }
             @Override
             public void onError(int code, String msg) {
+                gettingData = false;
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    ((CategoryFragment)adapter.getPage(i)).stopRefresh();
+                }
                 if (BuildConfig.DEBUG) {
                     Log.d("LeetCoder", "Get problem indices failed: " + msg);
                 }
@@ -302,5 +323,15 @@ public class MainActivity extends AppCompatActivity
                 reload.setText(mContext.getResources().getString(R.string.reload));
             }
         });
+    }
+
+    private SwipeRefreshLayout swipeRefreshLayout;
+    @Override
+    public void onRefresh(SwipeRefreshLayout swipeRefreshLayout) {
+        if (gettingData) swipeRefreshLayout.setRefreshing(false);
+        else {
+            this.swipeRefreshLayout = swipeRefreshLayout;
+            getData();
+        }
     }
 }

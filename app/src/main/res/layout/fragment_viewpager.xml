@@ -23,33 +23,28 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white">
+                android:background="@color/colorPrimary">
 
                 <com.ogaclejapan.smarttablayout.SmartTabLayout
                     android:id="@+id/smart_tab_layout"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:background="@color/colorPrimary"
-                    app:stl_indicatorAlwaysInCenter="false"
-                    app:stl_indicatorInFront="false"
-                    app:stl_indicatorInterpolation="smart"
-                    app:stl_indicatorColor="@color/white"
-                    app:stl_indicatorThickness="4dp"
-                    app:stl_indicatorCornerRadius="2dp"
-                    app:stl_underlineThickness="0dp"
-                    app:stl_dividerThickness="0dp"
-                    app:stl_defaultTabBackground="?attr/selectableItemBackground"
-                    app:stl_defaultTabTextAllCaps="false"
+                    android:paddingBottom="4dp"
                     app:stl_defaultTabTextColor="@color/white"
-                    app:stl_defaultTabTextSize="16sp"
-                    app:stl_defaultTabTextHorizontalPadding="12dp"
-                    app:stl_defaultTabTextMinWidth="0dp"
-                    app:stl_distributeEvenly="true"/>
+                    app:stl_defaultTabTextHorizontalPadding="24dp"
+                    app:stl_indicatorColor="@color/white"
+                    app:stl_indicatorCornerRadius="1.5dp"
+                    app:stl_indicatorInterpolation="smart"
+                    app:stl_indicatorThickness="3dp"
+                    app:stl_underlineColor="@android:color/transparent"
+                    app:stl_dividerColor="@color/white"
+                    />
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/view_pager"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    android:background="@color/white"/>
 
             </LinearLayout>
 
@@ -57,6 +52,7 @@
                 android:id="@+id/loading_layout"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
+                android:background="@color/white"
                 >
 
                 <ProgressBar
@@ -64,7 +60,6 @@
                     android:layout_height="50dp"
                     android:layout_width="50dp"
                     android:layout_centerInParent="true"
-                    android:indeterminate="true"
                     />
 
                 <TextView

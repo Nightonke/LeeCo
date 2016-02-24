@@ -1,10 +1,12 @@
 package com.nightonke.leetcoder;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +20,8 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
  */
 public class CategoryFragment extends Fragment
         implements
-        CategoryFragmentAdapter.OnItemClickListener {
+        CategoryFragmentAdapter.OnItemClickListener,
+        SwipeRefreshLayout.OnRefreshListener {
 
     public static final int SORT_BY_ID = 0;
     public static final int SORT_BY_ID_REVERSE = 1;
@@ -33,6 +36,11 @@ public class CategoryFragment extends Fragment
 
     private Context mContext;
 
+    private int categoryPosition = -1;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private OnRefreshListener onRefreshListener;
+
     private SuperRecyclerView superRecyclerView;
     private CategoryFragmentAdapter adapter;
 
@@ -40,6 +48,10 @@ public class CategoryFragment extends Fragment
     public void onAttach(Context context) {
         mContext = context;
         super.onAttach(context);
+
+        if (context instanceof OnRefreshListener){
+            onRefreshListener = (OnRefreshListener)context;
+        }
     }
 
     @Override
@@ -47,6 +59,7 @@ public class CategoryFragment extends Fragment
                              @Nullable Bundle savedInstanceState) {
         View categoryFragment = inflater.inflate(R.layout.fragment_category, container, false);
         superRecyclerView = (SuperRecyclerView)categoryFragment.findViewById(R.id.recyclerview);
+        swipeRefreshLayout = (SwipeRefreshLayout)categoryFragment.findViewById(R.id.refresh_layout);
         return categoryFragment;
     }
 
@@ -54,15 +67,35 @@ public class CategoryFragment extends Fragment
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        int position = FragmentPagerItem.getPosition(getArguments());
+        categoryPosition = FragmentPagerItem.getPosition(getArguments());
 
         superRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        adapter = new CategoryFragmentAdapter(position, this);
+        adapter = new CategoryFragmentAdapter(categoryPosition, this);
         superRecyclerView.setAdapter(adapter);
+
+        swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(mContext, R.color.colorPrimary));
+        swipeRefreshLayout.setOnRefreshListener(this);
     }
 
     @Override
     public void onItemClick(int position) {
+        Intent intent = new Intent(mContext, ProblemActivity.class);
+        intent.putExtra("categoryPosition", categoryPosition);
+        intent.putExtra("problemPosition", position);
+        intent.putExtra("id", LeetCoderApplication.categories.get(categoryPosition).get(position).getId());
+        mContext.startActivity(intent);
+    }
 
+    @Override
+    public void onRefresh() {
+        onRefreshListener.onRefresh(swipeRefreshLayout);
+    }
+
+    public interface OnRefreshListener {
+        void onRefresh(SwipeRefreshLayout swipeRefreshLayout);
+    }
+
+    public void stopRefresh() {
+        if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
     }
 }

@@ -3,6 +3,8 @@ package com.nightonke.leetcoder;
 import android.app.Application;
 import android.content.Context;
 
+import com.squareup.leakcanary.LeakCanary;
+
 import java.util.ArrayList;
 
 import cn.bmob.v3.Bmob;
@@ -22,6 +24,7 @@ public class LeetCoderApplication extends Application {
         super.onCreate();
         mContext = getApplicationContext();
         Bmob.initialize(this, BmobKey.BMOB_KEY);
+        LeakCanary.install(this);
     }
 
     public static Context getAppContext() {

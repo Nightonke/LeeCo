@@ -48,9 +48,9 @@ public class CategoryFragmentAdapter
         });
         String title = LeetCoderApplication.categories.get(pagePosition).get(position).getTitle();
         TextDrawable drawable = TextDrawable.builder()
-                .buildRoundRect(
+                .buildRound(
                         LeetCoderUtil.getTextDrawableString(title),
-                        Color.RED, 10); // radius in px
+                        LeetCoderUtil.GetRandomColor());
         holder.drawable.setImageDrawable(drawable);
         holder.title.setText(title);
         holder.summary.setText(LeetCoderApplication.categories.get(pagePosition).get(position).getSummary());
@@ -78,7 +78,7 @@ public class CategoryFragmentAdapter
         public ImageView drawable;
         public TextView title;
         public TextView summary;
-        public TagTextView like;
+        public TextView like;
 
         public ViewHolder(View v) {
             super(v);
@@ -86,7 +86,7 @@ public class CategoryFragmentAdapter
             drawable = (ImageView) v.findViewById(R.id.imageview);
             title = (TextView)v.findViewById(R.id.title);
             summary = (TextView)v.findViewById(R.id.summary);
-            like = (TagTextView)v.findViewById(R.id.like);
+            like = (TextView)v.findViewById(R.id.like);
         }
     }
 

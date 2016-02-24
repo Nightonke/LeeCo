@@ -14,7 +14,7 @@
         android:layout_margin="5dp"
         />
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -23,59 +23,66 @@
         android:layout_marginRight="5dp"
         >
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="Self Crossing"
+            android:textColor="@color/discuss_title"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="3dp"
+            />
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_above="@+id/summary"
             >
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text="Self Crossing"
-                android:textColor="@color/discuss_title"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginTop="3dp"
+            <ImageView
+                android:layout_height="20dp"
+                android:layout_width="20dp"
+                android:background="@drawable/icon_like_red"
                 />
 
             <TextView
-                android:id="@+id/summary"
+                android:id="@+id/like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:text="You are given an array x of n positive number..."
+                android:layout_gravity="center_vertical"
+                android:textStyle="bold"
+                android:text="132 Likes"
                 android:textSize="13sp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="3dp"
+                android:textColor="@color/like_red"
                 />
-
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="1">
-
-            <com.nightonke.leetcoder.TagTextView
-                android:id="@+id/like"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:text="35 Likes"
-                android:background="@color/error_red"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:textSize="13sp"
-                android:textColor="@color/white"/>
 
         </LinearLayout>
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="You are given an array x of n positive number..."
+            android:textSize="13sp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="3dp"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5sp"
+            android:background="?android:attr/listDivider"
+            android:layout_alignParentBottom="true"
+            />
+
+    </RelativeLayout>
 
 </LinearLayout>

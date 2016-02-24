@@ -5,15 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.malinskiy.superrecyclerview.SuperRecyclerView
-        android:id="@+id/recyclerview"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_empty="@layout/super_recyclerview_category_empty"
-        app:layout_moreProgress="@layout/super_recyclerview_category_more"
-        app:layout_progress="@layout/super_recyclerview_category_progress"
-        app:mainLayoutId="@layout/layout_recyclerview_verticalscroll"
-        app:recyclerClipToPadding="false"
-        app:scrollbarStyle="insideOverlay"/>
+        >
+
+        <com.malinskiy.superrecyclerview.SuperRecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            app:layout_empty="@layout/super_recyclerview_category_empty"
+            app:layout_moreProgress="@layout/super_recyclerview_category_more"
+            app:layout_progress="@layout/super_recyclerview_category_progress"
+            app:mainLayoutId="@layout/layout_recyclerview_verticalscroll"
+            app:recyclerClipToPadding="false"
+            app:scrollbarStyle="insideOverlay"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

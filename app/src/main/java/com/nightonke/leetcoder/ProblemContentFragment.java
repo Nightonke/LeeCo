@@ -101,7 +101,11 @@ public class ProblemContentFragment extends Fragment
 
         content.setRichText(activity.problem.getContent());
         tags.setTags(activity.problem_index.getTags());
-        similarProblems.setTags(activity.problem.getSimilarProblems());
+        if (activity.problem.getSimilarProblems() == null || activity.problem.getSimilarProblems().size() == 0) {
+            similarProblems.setVisibility(View.GONE);
+        } else {
+            similarProblems.setTags(activity.problem.getSimilarProblems());
+        }
 
         if (isRefreshing) {
             isRefreshing = false;

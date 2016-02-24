@@ -11,6 +11,6 @@
         android:layout_height="match_parent"
         app:toolbar_height="64dp"
         app:inner_padding="4dp"
-        app:content_view="@layout/layout_base"/>
+        app:content_view="@layout/fragment_viewpager"/>
 
 </FrameLayout>

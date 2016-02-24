@@ -1,6 +1,7 @@
 package com.nightonke.leetcoder;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import java.lang.reflect.Field;
+import java.util.Random;
 
 /**
  * Created by Weiping on 2016/2/24.
@@ -79,11 +81,47 @@ public class LeetCoderUtil {
         }
     }
 
+    public static int GetRandomColor() {
+        Random random = new Random();
+        int p = random.nextInt(Colors.length);
+        while (Colors[p].equals(lastColor0)
+                || Colors[p].equals(lastColor1)
+                || Colors[p].equals(lastColor2)) {
+            p = random.nextInt(Colors.length);
+        }
+        lastColor0 = lastColor1;
+        lastColor1 = lastColor2;
+        lastColor2 = Colors[p];
+        return Color.parseColor(Colors[p]);
+    }
 
 
 
 
 
+    private static String lastColor0, lastColor1, lastColor2;
+
+    private static Random random;
+
+    private static String[] Colors = {"#F44336",
+            "#E91E63",
+            "#9C27B0",
+            "#673AB7",
+            "#3F51B5",
+            "#2196F3",
+            "#03A9F4",
+            "#00BCD4",
+            "#009688",
+            "#4CAF50",
+            "#8BC34A",
+            "#CDDC39",
+            "#FFEB3B",
+            "#FFC107",
+            "#FF9800",
+            "#FF5722",
+            "#795548",
+            "#9E9E9E",
+            "#607D8B"};
 
     private static LeetCoderUtil ourInstance = new LeetCoderUtil();
 

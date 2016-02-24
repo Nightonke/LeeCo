@@ -23,4 +23,5 @@
     <color name="discuss_other_number">#000000</color>
 
     <color name="error_red">#E91E63</color>
+    <color name="like_red">#FF4081</color>
 </resources>
