@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -114,8 +115,13 @@ public class ProblemActivity extends AppCompatActivity
             }
         });
         viewPagerTab.setViewPager(viewPager);
+        for (int i = 0; i < 4; i++) {
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LeetCoderUtil.getScreenWidth(mContext) / 4, LeetCoderUtil.dpToPx(56));
+            viewPagerTab.getTabAt(i).setLayoutParams(layoutParams);
+        }
 
         title = (TextView)findViewById(R.id.title);
+        title.setSelected(true);
 
         icon = (FrameLayout)findViewById(R.id.icon);
         icon.setOnClickListener(this);
@@ -246,7 +252,9 @@ public class ProblemActivity extends AppCompatActivity
         viewPagerTab.setCustomTabView(new SmartTabLayout.TabProvider() {
             @Override
             public View createTabView(ViewGroup container, int position, PagerAdapter adapter) {
-                ImageView icon = (ImageView) inflater.inflate(R.layout.tab_icon, container, false);
+                ImageView icon = (ImageView)inflater.inflate(R.layout.item_tab_icon, container, false);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LeetCoderUtil.getScreenWidth(mContext) / 4, LeetCoderUtil.dpToPx(56));
+                icon.setLayoutParams(layoutParams);
                 switch (position) {
                     case 0:
                         icon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.icon_content));

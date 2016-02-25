@@ -1,7 +1,9 @@
 package com.nightonke.leetcoder;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,8 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.AlignmentSpan;
 import android.text.style.ForegroundColorSpan;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -137,6 +141,19 @@ public class LeetCoderUtil {
         lastColor1 = lastColor2;
         lastColor2 = Colors[p];
         return Color.parseColor(Colors[p]);
+    }
+
+    public static int getScreenWidth(Context context) {
+        Display display = ((Activity)context).getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return size.x;
+    }
+
+    public static int dpToPx(int dp) {
+        DisplayMetrics displayMetrics = LeetCoderApplication.getAppContext().getResources().getDisplayMetrics();
+        int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        return px;
     }
 
     public static void sortProblemSearchResult(ArrayList<Problem_Index> problemIndices) {

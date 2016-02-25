@@ -46,7 +46,7 @@
             <ImageView
                 android:layout_height="20dp"
                 android:layout_width="20dp"
-                android:background="@drawable/icon_like_red"
+                android:background="@drawable/icon_like_red_small"
                 />
 
             <TextView
