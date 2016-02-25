@@ -24,4 +24,9 @@
     <string name="sort_content">Sort by</string>
 
     <string name="click_to_login">Click to login</string>
+    <string name="settings">Settings</string>
+    <string name="help">Help</string>
+    <string name="feedback">Feedback</string>
+    <string name="about">About LeetCoder</string>
+
 </resources>

@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.daimajia.easing.linear.Linear;
 import com.github.ppamorim.cult.CultView;
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
 import com.nineoldandroids.animation.Animator;
@@ -92,6 +93,11 @@ public class MainActivity extends AppCompatActivity
     private LeetCoderGridView gridView;
     private TagGridViewAdapter tagAdapter;
     private TextView tags;
+
+    private LinearLayout settings;
+    private LinearLayout help;
+    private LinearLayout feedback;
+    private LinearLayout about;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,6 +236,15 @@ public class MainActivity extends AppCompatActivity
         });
         tags = (TextView)findViewById(R.id.tags);
         tags.setText("0 tags");
+
+        settings = (LinearLayout)findViewById(R.id.settings);
+        settings.setOnClickListener(this);
+        help = (LinearLayout)findViewById(R.id.help);
+        help.setOnClickListener(this);
+        feedback = (LinearLayout)findViewById(R.id.feedback);
+        feedback.setOnClickListener(this);
+        about = (LinearLayout)findViewById(R.id.about);
+        about.setOnClickListener(this);
     }
 
     @Override
@@ -332,6 +347,17 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.reload:
 
+                break;
+            case R.id.user_layout:
+
+                break;
+            case R.id.settings:
+                break;
+            case R.id.help:
+                break;
+            case R.id.feedback:
+                break;
+            case R.id.about:
                 break;
         }
     }
