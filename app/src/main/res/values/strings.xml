@@ -16,10 +16,10 @@
     <string name="feedback_send_failed">Failed to send your feedback.</string>
     <string name="better_solution_title">Better Solution</string>
     <string name="better_solution_email_title">Send Your Better Solution</string>
-    <string name="better_solution_content">You can send your better solution and the problem title to me. After checking your wonderful solution, I will update the solution. Thanks for making LeetCoder better! My email address is Nightonke@outlook.com</string>
-    <string name="better_solution_copy">Copy email address</string>
-    <string name="better_solution_copied">Email address copied.</string>
-    <string name="better_solution_write">Write the email</string>
+    <string name="better_solution_content">You can send your better solution and the problem title to me. After checking your wonderful solution, I will update the solution. Thanks for making LeetCoder better! My e-mail address is\nNightonke@outlook.com</string>
+    <string name="better_solution_copy">Copy e-mail address</string>
+    <string name="better_solution_copied">E-mail address copied.</string>
+    <string name="better_solution_write">Write the e-mail</string>
     <string name="sort_title">Sort By</string>
     <string name="sort_content">Sort by</string>
 
@@ -28,5 +28,56 @@
     <string name="help">Help</string>
     <string name="feedback">Feedback</string>
     <string name="about">About LeetCoder</string>
+
+    <string name="logout_title">Sign Out</string>
+    <string name="logout_content">Sure to sign out?</string>
+    <string name="logout_ok">sign out</string>
+    <string name="logout_cancel">cancel</string>
+
+    <string name="login_or_register_title">LeetCoder</string>
+    <string name="login_or_register_content">Welcome to LeetCoder!\nAfter signing in, you can\nCollect your favorite problems\nWrite comments\nVote for comments\nGet votes from comments\nLet\'s join LeetCoder!</string>
+    <string name="login_or_register_login">sign in</string>
+    <string name="login_or_register_register">sign up</string>
+    <string name="login_or_register_cancel">cancel</string>
+
+    <string name="login_title">Sign In</string>
+    <string name="login_user_name_hint">User name</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_ok">sign in</string>
+    <string name="login_forget_password">Forget password</string>
+    <string name="login_cancel">cancel</string>
+    <string name="login_empty_user_name">Empty user name</string>
+    <string name="login_empty_password">Empty password</string>
+    <string name="login_internet_error">Internet disconnected</string>
+    <string name="login_no_user">User not found</string>
+    <string name="login_password_error">Password wrong</string>
+    <string name="login_user_name_or_password_error">Incorrect user name or password</string>
+    <string name="login_ing">Signing in...</string>
+    <string name="login_successfully">Sign in successfully</string>
+
+    <string name="forget_password_title">Forget Password</string>
+    <string name="forget_password_content">Sorry to hear that you forget your password. You can send me an e-mail to get your password back. My e-mail address is\nNightonke@outlook.com</string>
+    <string name="forget_password_write">write the e-mail</string>
+    <string name="forget_password_copy">copy e-mail address</string>
+    <string name="forget_password_cancel">cancel</string>
+    <string name="forget_password_email_title">Get Your Password Back</string>
+    <string name="forget_password_copied">E-mail address copied.</string>
+
+    <string name="register_title">Sign Up</string>
+    <string name="register_user_name_hint">User name</string>
+    <string name="register_user_name_length">20 letters or 10 Chinese character</string>
+    <string name="register_password_hint">Password</string>
+    <string name="register_password_hint_again">Password again</string>
+    <string name="register_ok">sign up</string>
+    <string name="register_cancel">cancel</string>
+    <string name="register_empty_user_name">Empty user name</string>
+    <string name="register_invalid_user_name">Invalid user name</string>
+    <string name="register_empty_password">Empty password</string>
+    <string name="register_empty_password_again">Please type your password again</string>
+    <string name="register_internet_error">Internet disconnected</string>
+    <string name="register_repeat_user">User name existed</string>
+    <string name="register_password_error">Passwords are different</string>
+    <string name="register_ing">Signing up...</string>
+    <string name="register_successfully">Sign up successfully</string>
 
 </resources>

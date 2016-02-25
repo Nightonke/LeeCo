@@ -9,16 +9,16 @@ import cn.bmob.v3.BmobUser;
  */
 public class User extends BmobUser {
 
-    private String nickName;
+    private String nickName = null;
 
     // the sum of votes in comment
-    private int votes;
+    private int votes = 0;
 
     // the object id of comments of this user
-    private ArrayList<String> comments;
+    private ArrayList<String> comments = new ArrayList<>();
 
     // the id of the problem that this user likes
-    private ArrayList<Integer> likeProblems;
+    private ArrayList<Integer> likeProblems = new ArrayList<>();
 
     public ArrayList<String> getComments() {
         return comments;

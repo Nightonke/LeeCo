@@ -104,6 +104,7 @@
                         android:orientation="horizontal"
                         android:background="?android:selectableItemBackground"
                         android:clickable="true"
+                        android:layout_marginTop="7dp"
                         >
 
                         <ImageView
@@ -116,7 +117,7 @@
                             />
 
                         <TextView
-                            android:id="@+id/nickname"
+                            android:id="@+id/username"
                             android:layout_height="48dp"
                             android:layout_width="0dp"
                             android:layout_weight="1"

@@ -1,12 +1,16 @@
 package com.nightonke.leetcoder;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -31,10 +35,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.daimajia.easing.linear.Linear;
 import com.github.ppamorim.cult.CultView;
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
 import com.nineoldandroids.animation.Animator;
@@ -51,7 +55,9 @@ import java.util.HashSet;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
 
 public class MainActivity extends AppCompatActivity
         implements
@@ -87,7 +93,7 @@ public class MainActivity extends AppCompatActivity
     private ArrayList<Problem_Index> searchResult = null;
 
     private LinearLayout userLayout;
-    private TextView nickName;
+    private TextView userName;
     private TextView votes;
 
     private LeetCoderGridView gridView;
@@ -216,7 +222,7 @@ public class MainActivity extends AppCompatActivity
 
         userLayout = (LinearLayout)findViewById(R.id.user_layout);
         userLayout.setOnClickListener(this);
-        nickName = (TextView)findViewById(R.id.nickname);
+        userName = (TextView)findViewById(R.id.username);
         votes = (TextView)findViewById(R.id.votes);
 
         gridView = (LeetCoderGridView)findViewById(R.id.gridview);
@@ -259,6 +265,35 @@ public class MainActivity extends AppCompatActivity
             reload.setText(mContext.getResources().getString(R.string.loading));
             getData();
         }
+        if (LeetCoderApplication.user == null || LeetCoderApplication.likes == null || LeetCoderApplication.comments == null) {
+            LeetCoderApplication.user = BmobUser.getCurrentUser(LeetCoderApplication.getAppContext(), User.class);
+            if (LeetCoderApplication.user == null) {
+                userName.setText(mContext.getResources().getString(R.string.click_to_login));
+                votes.setText("");
+                LeetCoderApplication.likes = null;
+                LeetCoderApplication.comments = null;
+            } else {
+                userName.setText(LeetCoderApplication.user.getUsername());
+                int votesNumber = LeetCoderApplication.user.getVotes();
+                if (votesNumber == 1 || votesNumber == -1) {
+                    votes.setText(votesNumber + " vote");
+                } else {
+                    votes.setText(votesNumber + " votes");
+                }
+                LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
+                LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
+            }
+        } else {
+            userName.setText(LeetCoderApplication.user.getUsername());
+            int votesNumber = LeetCoderApplication.user.getVotes();
+            if (votesNumber == 1 || votesNumber == -1) {
+                votes.setText(votesNumber + " vote");
+            } else {
+                votes.setText(votesNumber + " votes");
+            }
+            LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
+            LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
+        }
     }
 
     @Override
@@ -287,7 +322,7 @@ public class MainActivity extends AppCompatActivity
                 return mDrawerToggle != null && mDrawerToggle.onOptionsItemSelected(item);
             case R.id.action_search:
                 cultView.showSlide();
-                showKeyboard();
+                showKeyboard(searchInput);
                 return true;
             case R.id.action_sort:
                 sort();
@@ -323,14 +358,14 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private void showKeyboard() {
-        searchInput.requestFocus();
-        searchInput.postDelayed(new Runnable() {
+    private void showKeyboard(final View view) {
+        view.requestFocus();
+        view.postDelayed(new Runnable() {
             @Override
             public void run() {
                 InputMethodManager keyboard = (InputMethodManager)
                         getSystemService(Context.INPUT_METHOD_SERVICE);
-                keyboard.showSoftInput(searchInput, 0);
+                keyboard.showSoftInput(view, 0);
             }
         },200);
     }
@@ -349,7 +384,7 @@ public class MainActivity extends AppCompatActivity
 
                 break;
             case R.id.user_layout:
-
+                login();
                 break;
             case R.id.settings:
                 break;
@@ -359,6 +394,247 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.about:
                 break;
+        }
+    }
+
+    private MaterialDialog loginDialog;
+    private View loginView;
+
+    private MaterialDialog registerDialog;
+    private View registerView;
+
+    private void login() {
+        if (LeetCoderApplication.user == null || LeetCoderApplication.likes == null || LeetCoderApplication.comments == null) {
+            LeetCoderApplication.user = BmobUser.getCurrentUser(LeetCoderApplication.getAppContext(), User.class);
+            if (LeetCoderApplication.user == null) {
+                // need to login or register
+                new MaterialDialog.Builder(mContext)
+                        .title(R.string.login_or_register_title)
+                        .content(R.string.login_or_register_content)
+                        .positiveText(R.string.login_or_register_login)
+                        .negativeText(R.string.login_or_register_register)
+                        .neutralText(R.string.login_or_register_cancel)
+                        .cancelable(false)
+                        .onAny(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                if (which == DialogAction.POSITIVE) {
+                                    // login
+                                    loginDialog = new MaterialDialog.Builder(mContext)
+                                            .title(R.string.login_title)
+                                            .customView(R.layout.dialog_login, false)
+                                            .positiveText(R.string.login_ok)
+                                            .negativeText(R.string.login_cancel)
+                                            .neutralText(R.string.login_forget_password)
+                                            .cancelable(false)
+                                            .autoDismiss(false)
+                                            .showListener(new DialogInterface.OnShowListener() {
+                                                @Override
+                                                public void onShow(DialogInterface dialog) {
+                                                    loginView.findViewById(R.id.username).getBackground().mutate().setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
+                                                    loginView.findViewById(R.id.password).getBackground().mutate().setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
+                                                    showKeyboard(loginView.findViewById(R.id.username));
+                                                }
+                                            })
+                                            .dismissListener(new DialogInterface.OnDismissListener() {
+                                                @Override
+                                                public void onDismiss(DialogInterface dialog) {
+                                                    hideKeyboard();
+                                                }
+                                            })
+                                            .onAny(new MaterialDialog.SingleButtonCallback() {
+                                                @Override
+                                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                    if (which == DialogAction.POSITIVE) {
+                                                        // login
+                                                        String userName = ((EditText)loginView.findViewById(R.id.username)).getText().toString();
+                                                        String password = ((EditText)loginView.findViewById(R.id.password)).getText().toString();
+                                                        if ("".equals(userName)) {
+                                                            LeetCoderUtil.showToast(mContext, R.string.login_empty_user_name);
+                                                        } else if ("".equals(password)) {
+                                                            LeetCoderUtil.showToast(mContext, R.string.login_empty_password);
+                                                        } else {
+                                                            LeetCoderUtil.showToast(mContext, R.string.login_ing);
+                                                            LeetCoderApplication.user = new User();
+                                                            LeetCoderApplication.user.setUsername(userName);
+                                                            LeetCoderApplication.user.setPassword(password);
+                                                            LeetCoderApplication.user.login(LeetCoderApplication.getAppContext(), new SaveListener() {
+                                                                @Override
+                                                                public void onSuccess() {
+                                                                    loginDialog.dismiss();
+                                                                    LeetCoderUtil.showToast(mContext, R.string.login_successfully);
+                                                                    MainActivity.this.userName.setText(LeetCoderApplication.user.getUsername());
+                                                                    int votesNumber = LeetCoderApplication.user.getVotes();
+                                                                    if (votesNumber == 1 || votesNumber == -1) {
+                                                                        votes.setText(votesNumber + " vote");
+                                                                    } else {
+                                                                        votes.setText(votesNumber + " votes");
+                                                                    }
+                                                                    LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
+                                                                    LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
+                                                                }
+                                                                @Override
+                                                                public void onFailure(int code, String msg) {
+                                                                    if ("username or password incorrect.".equals(msg)) {
+                                                                        LeetCoderUtil.showToast(mContext, R.string.login_user_name_or_password_error);
+                                                                    } else {
+                                                                        LeetCoderUtil.showToast(mContext, R.string.login_internet_error);
+                                                                    }
+                                                                    if (BuildConfig.DEBUG) Log.d("LeetCoder", "Sign in failed: " + msg);
+                                                                }
+                                                            });
+                                                        }
+                                                    } else if (which == DialogAction.NEGATIVE) {
+                                                        loginDialog.dismiss();
+                                                    } else {
+                                                        // forget password
+                                                        loginDialog.dismiss();
+                                                        new MaterialDialog.Builder(mContext)
+                                                                .title(R.string.forget_password_title)
+                                                                .content(R.string.forget_password_content)
+                                                                .positiveText(R.string.forget_password_write)
+                                                                .negativeText(R.string.forget_password_copy)
+                                                                .neutralText(R.string.forget_password_cancel)
+                                                                .forceStacking(true)
+                                                                .onAny(new MaterialDialog.SingleButtonCallback() {
+                                                                    @Override
+                                                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                                        if (which == DialogAction.POSITIVE) {
+                                                                            final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+                                                                            emailIntent.setType("plain/text");
+                                                                            emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"Nightonke@outlook.com"});
+                                                                            emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Get My Password Back For LeetCoder");
+                                                                            emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "");
+                                                                            mContext.startActivity(Intent.createChooser(emailIntent, mContext.getResources().getString(R.string.forget_password_email_title)));
+                                                                        } else if (which == DialogAction.NEGATIVE) {
+                                                                            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                                                                            ClipData clip = ClipData.newPlainText("Email address copied.", "Nightonke@outlook.com");
+                                                                            clipboard.setPrimaryClip(clip);
+                                                                            LeetCoderUtil.showToast(mContext, R.string.forget_password_copied);
+                                                                        }
+                                                                    }
+                                                                })
+                                                                .show();
+                                                    }
+                                                }
+                                            })
+                                            .show();
+                                    loginView = loginDialog.getCustomView();
+                                } else if (which == DialogAction.NEGATIVE) {
+                                    // register
+                                    registerDialog = new MaterialDialog.Builder(mContext)
+                                            .title(R.string.register_title)
+                                            .customView(R.layout.dialog_register, false)
+                                            .positiveText(R.string.register_ok)
+                                            .negativeText(R.string.register_cancel)
+                                            .cancelable(false)
+                                            .autoDismiss(false)
+                                            .showListener(new DialogInterface.OnShowListener() {
+                                                @Override
+                                                public void onShow(DialogInterface dialog) {
+                                                    registerView.findViewById(R.id.username).getBackground().mutate().setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
+                                                    registerView.findViewById(R.id.password).getBackground().mutate().setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
+                                                    registerView.findViewById(R.id.password_again).getBackground().mutate().setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
+                                                    showKeyboard(registerView.findViewById(R.id.username));
+                                                }
+                                            })
+                                            .dismissListener(new DialogInterface.OnDismissListener() {
+                                                @Override
+                                                public void onDismiss(DialogInterface dialog) {
+                                                    hideKeyboard();
+                                                }
+                                            })
+                                            .onAny(new MaterialDialog.SingleButtonCallback() {
+                                                @Override
+                                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                    if (which == DialogAction.POSITIVE) {
+                                                        // register
+                                                        String userName = ((EditText)registerView.findViewById(R.id.username)).getText().toString();
+                                                        String password = ((EditText)registerView.findViewById(R.id.password)).getText().toString();
+                                                        String passwordAgain = ((EditText)registerView.findViewById(R.id.password_again)).getText().toString();
+                                                        if ("".equals(userName)) {
+                                                            LeetCoderUtil.showToast(mContext, R.string.register_empty_user_name);
+                                                        } else if (LeetCoderUtil.textCounter(userName) > 20) {
+                                                            LeetCoderUtil.showToast(mContext, R.string.register_invalid_user_name);
+                                                        } else if ("".equals(password)) {
+                                                            LeetCoderUtil.showToast(mContext, R.string.register_empty_password);
+                                                        } else if ("".equals(passwordAgain)) {
+                                                            LeetCoderUtil.showToast(mContext, R.string.register_empty_password_again);
+                                                        } else if (!password.equals(passwordAgain)) {
+                                                            LeetCoderUtil.showToast(mContext, R.string.register_password_error);
+                                                        } else {
+                                                            LeetCoderUtil.showToast(mContext, R.string.register_ing);
+                                                            LeetCoderApplication.user = new User();
+                                                            LeetCoderApplication.user.setUsername(userName);
+                                                            LeetCoderApplication.user.setPassword(password);
+                                                            LeetCoderApplication.user.signUp(LeetCoderApplication.getAppContext(), new SaveListener() {
+                                                                @Override
+                                                                public void onSuccess() {
+                                                                    registerDialog.dismiss();
+                                                                    LeetCoderUtil.showToast(mContext, R.string.register_successfully);
+                                                                    MainActivity.this.userName.setText(LeetCoderApplication.user.getUsername());
+                                                                    int votesNumber = LeetCoderApplication.user.getVotes();
+                                                                    if (votesNumber == 1 || votesNumber == -1) {
+                                                                        votes.setText(votesNumber + " vote");
+                                                                    } else {
+                                                                        votes.setText(votesNumber + " votes");
+                                                                    }
+                                                                    LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
+                                                                    LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
+                                                                }
+                                                                @Override
+                                                                public void onFailure(int code, String msg) {
+                                                                    if (msg.charAt(0) == 'u') {
+                                                                        LeetCoderUtil.showToast(mContext, R.string.register_repeat_user);
+                                                                    } else {
+                                                                        LeetCoderUtil.showToast(mContext, R.string.register_internet_error);
+                                                                    }
+                                                                    if (BuildConfig.DEBUG) Log.d("LeetCoder", "Sign up failed: " + msg);
+                                                                }
+                                                            });
+                                                        }
+                                                    } else {
+                                                        registerDialog.dismiss();
+                                                    }
+                                                }
+                                            })
+                                            .show();
+                                    registerView = registerDialog.getCustomView();
+                                }
+                            }
+                        })
+                        .show();
+            } else {
+                userName.setText(LeetCoderApplication.user.getUsername());
+                int votesNumber = LeetCoderApplication.user.getVotes();
+                if (votesNumber == 1 || votesNumber == -1) {
+                    votes.setText(votesNumber + " vote");
+                } else {
+                    votes.setText(votesNumber + " votes");
+                }
+                LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
+            }
+        } else {
+            // log out
+            new MaterialDialog.Builder(mContext)
+                    .title(R.string.logout_title)
+                    .content(R.string.logout_content)
+                    .positiveText(R.string.logout_ok)
+                    .negativeText(R.string.logout_cancel)
+                    .onAny(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            if (which == DialogAction.POSITIVE) {
+                                LeetCoderApplication.user.logOut(LeetCoderApplication.getAppContext());
+                                LeetCoderApplication.user = null;
+                                userName.setText(mContext.getResources().getString(R.string.click_to_login));
+                                votes.setText("");
+                                LeetCoderApplication.likes = null;
+                                LeetCoderApplication.comments = null;
+                            }
+                        }
+                    })
+                    .show();
         }
     }
 

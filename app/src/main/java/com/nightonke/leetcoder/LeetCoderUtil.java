@@ -19,6 +19,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.github.johnpersano.supertoasts.SuperToast;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -164,6 +166,55 @@ public class LeetCoderUtil {
             }
         });
     }
+
+    public static void showToast(Context context, String text, int color) {
+        SuperToast.cancelAllSuperToasts();
+        SuperToast superToast = new SuperToast(context);
+        superToast.setAnimations(SuperToast.Animations.FLYIN);
+        superToast.setDuration(SuperToast.Duration.SHORT);
+        superToast.setTextColor(Color.parseColor("#ffffff"));
+        superToast.setTextSize(SuperToast.TextSize.SMALL);
+        superToast.setText(text);
+        superToast.setBackground(color);
+        superToast.show();
+    }
+
+    private static String lastToast = "";
+    public static void showToast(Context context, String text) {
+        if (context == null) return;
+        if (lastToast.equals(text)) {
+            SuperToast.cancelAllSuperToasts();
+        } else {
+            lastToast = text;
+        }
+        SuperToast superToast = new SuperToast(context);
+        superToast.setAnimations(SuperToast.Animations.FLYIN);
+        superToast.setDuration(SuperToast.Duration.VERY_SHORT);
+        superToast.setTextColor(Color.parseColor("#ffffff"));
+        superToast.setTextSize(SuperToast.TextSize.SMALL);
+        superToast.setText(text);
+        superToast.setBackground(SuperToast.Background.BLUE);
+        superToast.show();
+    }
+
+    public static void showToast(Context context, int textId) {
+        String text = context.getResources().getString(textId);
+        if (context == null) return;
+        if (lastToast.equals(text)) {
+            SuperToast.cancelAllSuperToasts();
+        } else {
+            lastToast = text;
+        }
+        SuperToast superToast = new SuperToast(context);
+        superToast.setAnimations(SuperToast.Animations.FLYIN);
+        superToast.setDuration(SuperToast.Duration.VERY_SHORT);
+        superToast.setTextColor(Color.parseColor("#ffffff"));
+        superToast.setTextSize(SuperToast.TextSize.SMALL);
+        superToast.setText(text);
+        superToast.setBackground(SuperToast.Background.BLUE);
+        superToast.show();
+    }
+
 
 
 

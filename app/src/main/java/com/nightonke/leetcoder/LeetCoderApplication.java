@@ -19,6 +19,10 @@ public class LeetCoderApplication extends Application {
     public static ArrayList<ArrayList<Problem_Index>> categories = null;
     public static ArrayList<String> categoriesTag = null;
 
+    public static User user = null;
+    public static ArrayList<Integer> likes = null;
+    public static ArrayList<String> comments = null;
+
     @Override
     public void onCreate() {
         super.onCreate();
