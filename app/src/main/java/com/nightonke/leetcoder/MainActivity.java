@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -14,6 +12,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -26,10 +25,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.github.ppamorim.cult.CultView;
+import com.malinskiy.superrecyclerview.SuperRecyclerView;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -47,7 +49,9 @@ import cn.bmob.v3.listener.FindListener;
 public class MainActivity extends AppCompatActivity
         implements
         View.OnClickListener,
-        CategoryFragment.OnRefreshListener {
+        CategoryFragment.OnRefreshListener,
+        ProblemSearchResultAdapter.OnItemClickListener,
+        SwipeRefreshLayout.OnRefreshListener {
 
     private Context mContext;
 
@@ -68,6 +72,12 @@ public class MainActivity extends AppCompatActivity
     private ImageView searchCancel;
     private ImageView searchErase;
     private boolean searchEraseShouldShow = true;
+
+    private View searchResultLayout;
+    private SwipeRefreshLayout searchResultRefreshLayout;
+    private SuperRecyclerView searchRecyclerView;
+    private ProblemSearchResultAdapter searchResultAdapter;
+    private ArrayList<Problem_Index> searchResult = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +106,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void afterTextChanged(Editable s) {
+                search(searchInput.getText().toString());
                 if ("".equals(searchInput.getText().toString())) {
                     YoYo.with(Techniques.FadeOutUp)
                             .duration(300)
@@ -125,7 +136,16 @@ public class MainActivity extends AppCompatActivity
         searchErase.setVisibility(View.INVISIBLE);
         cultView.setOutToolbarLayout(searchLayout);
 
-        cultView.setOutContentLayout(R.layout.fragment_search_result);
+        searchResultLayout = View.inflate(mContext, R.layout.fragment_search_result, null);
+        searchResultRefreshLayout = (SwipeRefreshLayout)searchResultLayout.findViewById(R.id.refresh_layout);
+        searchResultRefreshLayout.setColorSchemeColors(ContextCompat.getColor(mContext, R.color.colorPrimary));
+        searchResultRefreshLayout.setOnRefreshListener(this);
+        searchRecyclerView = (SuperRecyclerView)searchResultLayout.findViewById(R.id.recyclerview);
+        searchRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        searchResult = new ArrayList<>();
+        searchResultAdapter = new ProblemSearchResultAdapter(searchResult, this);
+        searchRecyclerView.setAdapter(searchResultAdapter);
+        cultView.setOutContentLayout(searchResultLayout);
 
         ((AppCompatActivity)mContext).setSupportActionBar(cultView.getInnerToolbar());
         cultView.getInnerToolbar().setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
@@ -152,8 +172,6 @@ public class MainActivity extends AppCompatActivity
 
         viewPager = (ViewPager)findViewById(R.id.view_pager);
         smartTabLayout = (SmartTabLayout)findViewById(R.id.smart_tab_layout);
-
-        getData();
     }
 
     @Override
@@ -161,6 +179,12 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         if (mDrawerToggle != null) {
             mDrawerToggle.syncState();
+        }
+        if (LeetCoderApplication.categories == null || LeetCoderApplication.categoriesTag == null) {
+            reloadLayout.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
+            reload.setText(mContext.getResources().getString(R.string.loading));
+            getData();
         }
     }
 
@@ -312,8 +336,12 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onError(int code, String msg) {
                 gettingData = false;
-                for (int i = 0; i < adapter.getCount(); i++) {
-                    ((CategoryFragment)adapter.getPage(i)).stopRefresh();
+                if (adapter != null) {
+                    for (int i = 0; i < adapter.getCount(); i++) {
+                        if (adapter.getPage(i) != null) {
+                            ((CategoryFragment)adapter.getPage(i)).stopRefresh();
+                        }
+                    }
                 }
                 if (BuildConfig.DEBUG) {
                     Log.d("LeetCoder", "Get problem indices failed: " + msg);
@@ -333,5 +361,41 @@ public class MainActivity extends AppCompatActivity
             this.swipeRefreshLayout = swipeRefreshLayout;
             getData();
         }
+    }
+
+    private void search(String s) {
+        searchResult = new ArrayList<>();
+        if (!"".equals(s)) {
+            if (LeetCoderApplication.categories != null && LeetCoderApplication.categoriesTag != null) {
+                HashSet<Integer> ids = new HashSet<>();
+                for (ArrayList<Problem_Index> category : LeetCoderApplication.categories) {
+                    for (Problem_Index problemIndex : category) {
+                        String titleString = problemIndex.getTitle();
+                        if (titleString.contains(s)) {
+                            if (!ids.contains(problemIndex.getId())) {
+                                ids.add(problemIndex.getId());
+                                searchResult.add(problemIndex);
+                            }
+                        }
+                    }
+                }
+                if (BuildConfig.DEBUG) Log.d("LeetCoder", "Search result: " + searchResult.size() + " problem(s)");
+                LeetCoderUtil.sortProblemSearchResult(searchResult);
+            }
+        }
+        if (searchResultRefreshLayout != null) searchResultRefreshLayout.setRefreshing(false);
+        searchResultAdapter = new ProblemSearchResultAdapter(searchResult, this);
+        searchRecyclerView.setAdapter(searchResultAdapter);
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
+    }
+
+    @Override
+    public void onRefresh() {
+        Toast.makeText(mContext, "Researching...", Toast.LENGTH_SHORT).show();
+        search(searchInput.getText().toString());
     }
 }

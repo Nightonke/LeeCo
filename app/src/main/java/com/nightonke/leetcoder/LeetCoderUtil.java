@@ -16,6 +16,9 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 
 /**
@@ -93,6 +96,15 @@ public class LeetCoderUtil {
         lastColor1 = lastColor2;
         lastColor2 = Colors[p];
         return Color.parseColor(Colors[p]);
+    }
+
+    public static void sortProblemSearchResult(ArrayList<Problem_Index> problemIndices) {
+        Collections.sort(problemIndices, new Comparator<Problem_Index>() {
+            @Override
+            public int compare(Problem_Index lhs, Problem_Index rhs) {
+                return lhs.getTitle().compareTo(rhs.getTitle());
+            }
+        });
     }
 
 

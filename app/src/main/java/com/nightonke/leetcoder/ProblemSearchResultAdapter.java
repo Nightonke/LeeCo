@@ -1,7 +1,6 @@
 package com.nightonke.leetcoder;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,20 +13,19 @@ import com.amulyakhare.textdrawable.TextDrawable;
 
 import java.util.ArrayList;
 
-import me.grantland.widget.AutofitTextView;
-
 /**
  * Created by Weiping on 2016/2/23.
  */
-public class CategoryFragmentAdapter
-        extends RecyclerView.Adapter<CategoryFragmentAdapter.ViewHolder> {
+
+public class ProblemSearchResultAdapter
+        extends RecyclerView.Adapter<ProblemSearchResultAdapter.ViewHolder> {
 
     private Context mContext;
-    private int pagePosition;
+    private ArrayList<Problem_Index> searchResults;
     private OnItemClickListener onItemClickListener;
 
-    public CategoryFragmentAdapter(int pagePosition, OnItemClickListener onItemClickListener) {
-        this.pagePosition = pagePosition;
+    public ProblemSearchResultAdapter(ArrayList<Problem_Index> searchResults, OnItemClickListener onItemClickListener) {
+        this.searchResults = searchResults;
         this.onItemClickListener = onItemClickListener;
     }
 
@@ -46,15 +44,15 @@ public class CategoryFragmentAdapter
                 onItemClickListener.onItemClick(position);
             }
         });
-        String title = LeetCoderApplication.categories.get(pagePosition).get(position).getTitle();
+        String title = searchResults.get(position).getTitle();
         TextDrawable drawable = TextDrawable.builder()
                 .buildRound(
                         LeetCoderUtil.getTextDrawableString(title),
                         LeetCoderUtil.GetRandomColor());
         holder.drawable.setImageDrawable(drawable);
         holder.title.setText(title);
-        holder.summary.setText(LeetCoderApplication.categories.get(pagePosition).get(position).getSummary());
-        int like = LeetCoderApplication.categories.get(pagePosition).get(position).getLike();
+        holder.summary.setText(searchResults.get(position).getSummary());
+        int like = searchResults.get(position).getLike();
         if (like == 1) {
             holder.like.setText(like + " Like");
         } else {
@@ -65,7 +63,7 @@ public class CategoryFragmentAdapter
     @Override
     public int getItemCount() {
         try {
-            return LeetCoderApplication.categories.get(pagePosition).size();
+            return searchResults.size();
         } catch (NullPointerException n) {
             n.printStackTrace();
             return 0;
