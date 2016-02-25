@@ -22,4 +22,6 @@
     <string name="better_solution_write">Write the email</string>
     <string name="sort_title">Sort By</string>
     <string name="sort_content">Sort by</string>
+
+    <string name="click_to_login">Click to login</string>
 </resources>

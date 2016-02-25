@@ -84,7 +84,132 @@
             android:layout_width="280dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:background="@color/white"/>
+            android:background="@color/white">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <LinearLayout
+                        android:id="@+id/user_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="?android:selectableItemBackground"
+                        android:clickable="true"
+                        >
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/icon_user"
+                            android:padding="10dp"
+                            android:scaleType="fitCenter"
+                            />
+
+                        <TextView
+                            android:id="@+id/nickname"
+                            android:layout_height="48dp"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="left|center_vertical"
+                            android:text="@string/click_to_login"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="18sp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginRight="30dp"
+                        android:layout_marginTop="-5dp"
+                        >
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1sp"
+                            android:layout_weight="1"
+                            android:layout_gravity="center_vertical|left"
+                            android:background="?android:attr/listDivider"
+                            />
+
+                        <TextView
+                            android:id="@+id/votes"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="left|center_vertical"
+                            android:text=""
+                            android:textSize="12sp"
+                            android:maxLines="1"
+                            android:layout_marginBottom="2dp"
+                            />
+
+                    </LinearLayout>
+
+                    <com.nightonke.leetcoder.LeetCoderGridView
+                        android:id="@+id/gridview"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:numColumns="3"
+                        android:verticalSpacing="2dp"
+                        android:horizontalSpacing="2dp"
+                        android:columnWidth="50dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:stretchMode="columnWidth"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginRight="30dp"
+                        android:layout_marginTop="-10dp"
+                        >
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1sp"
+                            android:layout_weight="1"
+                            android:layout_gravity="center_vertical|left"
+                            android:background="?android:attr/listDivider"
+                            />
+
+                        <TextView
+                            android:id="@+id/tags"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="left|center_vertical"
+                            android:text="23 tags"
+                            android:textSize="12sp"
+                            android:maxLines="1"
+                            android:layout_marginBottom="2dp"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </FrameLayout>
 
     </android.support.v4.widget.DrawerLayout>
 

@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -21,8 +22,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -81,6 +84,14 @@ public class MainActivity extends AppCompatActivity
     private SuperRecyclerView searchRecyclerView;
     private ProblemSearchResultAdapter searchResultAdapter;
     private ArrayList<Problem_Index> searchResult = null;
+
+    private LinearLayout userLayout;
+    private TextView nickName;
+    private TextView votes;
+
+    private LeetCoderGridView gridView;
+    private TagGridViewAdapter tagAdapter;
+    private TextView tags;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,6 +207,29 @@ public class MainActivity extends AppCompatActivity
 
         viewPager = (ViewPager)findViewById(R.id.view_pager);
         smartTabLayout = (SmartTabLayout)findViewById(R.id.smart_tab_layout);
+
+        userLayout = (LinearLayout)findViewById(R.id.user_layout);
+        userLayout.setOnClickListener(this);
+        nickName = (TextView)findViewById(R.id.nickname);
+        votes = (TextView)findViewById(R.id.votes);
+
+        gridView = (LeetCoderGridView)findViewById(R.id.gridview);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                YoYo.with(Techniques.Bounce).delay(0).duration(700).playOn(view);
+                viewPager.setCurrentItem(position);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        drawerLayout.closeDrawers();
+                    }
+                }, 700);
+            }
+        });
+        tags = (TextView)findViewById(R.id.tags);
+        tags.setText("0 tags");
     }
 
     @Override
@@ -505,6 +539,11 @@ public class MainActivity extends AppCompatActivity
                 viewPager.setOffscreenPageLimit(1);
                 viewPager.setAdapter(adapter);
                 smartTabLayout.setViewPager(viewPager);
+
+                tagAdapter = new TagGridViewAdapter(mContext);
+                gridView.setAdapter(tagAdapter);
+                gridView.setFocusable(false);
+                tags.setText(LeetCoderApplication.categories.size() + " tags");
 
                 reload.setText(mContext.getResources().getString(R.string.reload));  // for refreshing
                 reloadLayout.setVisibility(View.GONE);
