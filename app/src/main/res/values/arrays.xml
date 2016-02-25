@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="sort_types">
+    <string-array name="sort_types_problem">
+        <item>Date</item>
+        <item>Date Reversely</item>
+        <item>Title</item>
+        <item>Title Reversely</item>
+        <item>Level</item>
+        <item>Level Reversely</item>
+        <item>Likes</item>
+        <item>Likes Reversely</item>
+    </string-array>
+
+    <!--public static final int SORT_BY_ID = 0;-->
+    <!--public static final int SORT_BY_ID_REVERSE = 1;-->
+    <!--public static final int SORT_BY_NAME = 2;-->
+    <!--public static final int SORT_BY_NAME_REVERSE = 3;-->
+    <!--public static final int SORT_BY_LEVEL = 4;-->
+    <!--public static final int SORT_BY_LEVEL_REVERSE = 5;-->
+    <!--public static final int SORT_BY_LIKE = 6;-->
+    <!--public static final int SORT_BY_LIKE_REVERSE = 7;-->
+
+    <string-array name="sort_types_discuss">
         <item>Recent</item>
         <item>Hot</item>
         <item>Most votes</item>

@@ -127,11 +127,24 @@ public class ProblemActivity extends AppCompatActivity
         commentImageView = (ImageView)findViewById(R.id.comment_icon);
         commentImageView.setVisibility(View.INVISIBLE);
 
-        problem_index = LeetCoderApplication.categories.
-                get(getIntent().getIntExtra("categoryPosition", -1)).
-                get(getIntent().getIntExtra("problemPosition", -1));
-        title.setText(problem_index.getTitle());
+        if (getIntent().getIntExtra("categoryPosition", -1) == -1 && getIntent().getIntExtra("problemPosition", -1) == -1) {
+            // from search result
+            int id = getIntent().getIntExtra("id", -1);
+            for (ArrayList<Problem_Index> category : LeetCoderApplication.categories) {
+                for (Problem_Index problemIndex : category) {
+                    if (id == problemIndex.getId()) {
+                        problem_index = problemIndex;
+                    }
+                }
+            }
+        } else {
+            // from categories
+            problem_index = LeetCoderApplication.categories.
+                    get(getIntent().getIntExtra("categoryPosition", -1)).
+                    get(getIntent().getIntExtra("problemPosition", -1));
+        }
 
+        title.setText(problem_index.getTitle());
         getData();
     }
 
@@ -344,7 +357,7 @@ public class ProblemActivity extends AppCompatActivity
                             if (discussFragment instanceof ProblemDiscussFragment) {
                                 new MaterialDialog.Builder(mContext)
                                         .title(R.string.sort_title)
-                                        .items(R.array.sort_types)
+                                        .items(R.array.sort_types_discuss)
                                         .itemsCallbackSingleChoice(((ProblemDiscussFragment) discussFragment).sortType, new MaterialDialog.ListCallbackSingleChoice() {
                                             @Override
                                             public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {

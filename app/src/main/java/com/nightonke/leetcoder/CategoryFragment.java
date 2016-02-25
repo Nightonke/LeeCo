@@ -32,7 +32,7 @@ public class CategoryFragment extends Fragment
     public static final int SORT_BY_LIKE = 6;
     public static final int SORT_BY_LIKE_REVERSE = 7;
 
-    public static final int sortType = SORT_BY_ID;
+    public static int sortType = SORT_BY_ID;
 
     private Context mContext;
 
@@ -97,5 +97,10 @@ public class CategoryFragment extends Fragment
 
     public void stopRefresh() {
         if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
+    }
+
+    public void notifySort() {
+        adapter = new CategoryFragmentAdapter(categoryPosition, this);
+        superRecyclerView.setAdapter(adapter);
     }
 }

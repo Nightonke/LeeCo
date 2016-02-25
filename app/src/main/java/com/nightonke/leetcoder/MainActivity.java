@@ -1,6 +1,7 @@
 package com.nightonke.leetcoder;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -27,10 +28,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.github.ppamorim.cult.CultView;
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
+import com.nineoldandroids.animation.Animator;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
@@ -110,6 +113,27 @@ public class MainActivity extends AppCompatActivity
                 if ("".equals(searchInput.getText().toString())) {
                     YoYo.with(Techniques.FadeOutUp)
                             .duration(300)
+                            .withListener(new Animator.AnimatorListener() {
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    searchErase.setVisibility(View.GONE);
+                                }
+
+                                @Override
+                                public void onAnimationCancel(Animator animation) {
+
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animator animation) {
+
+                                }
+                            })
                             .playOn(searchErase);
                     RelativeLayout.LayoutParams mLayoutParams = (RelativeLayout.LayoutParams)searchInput.getLayoutParams();
                     mLayoutParams.addRule(RelativeLayout.LEFT_OF, R.id.cancel);
@@ -279,7 +303,158 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void sort() {
+        if (LeetCoderApplication.categories == null || LeetCoderApplication.categoriesTag == null) {
+            Toast.makeText(mContext, "Data not found, please refresh data.", Toast.LENGTH_SHORT).show();
+        } else {
+            new MaterialDialog.Builder(mContext)
+                    .title(R.string.sort_title)
+                    .items(R.array.sort_types_problem)
+                    .itemsCallbackSingleChoice(CategoryFragment.sortType, new MaterialDialog.ListCallbackSingleChoice() {
+                        @Override
+                        public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                            CategoryFragment.sortType = which;
+                            switch (which) {
+                                case 0: sortByDate(); break;
+                                case 1: sortByDateReversely(); break;
+                                case 2: sortByTitle(); break;
+                                case 3: sortByTitleReversely(); break;
+                                case 4: sortByLevel(); break;
+                                case 5: sortByLevelReversely(); break;
+                                case 6: sortByLikes(); break;
+                                case 7:sortByLikesReversely(); break;
+                            }
+                            if (adapter != null) {
+                                for (int i = 0; i < adapter.getCount(); i++) {
+                                    if (adapter.getPage(i) != null) {
+                                        ((CategoryFragment)adapter.getPage(i)).notifySort();
+                                    }
+                                }
+                            }
+                            Toast.makeText(mContext, "Sorting...", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                            return true;
+                        }
+                    })
+                    .negativeText(R.string.cancel)
+                    .show();
+        }
+    }
 
+    private void sortByDate() {
+        for (ArrayList<Problem_Index> category : LeetCoderApplication.categories) {
+            Collections.sort(category, new Comparator<Problem_Index>() {
+                @Override
+                public int compare(Problem_Index lhs, Problem_Index rhs) {
+                    if (lhs.getId() < rhs.getId()) return -1;
+                    else if (lhs.getId() > rhs.getId()) return 1;
+                    else return 0;
+                }
+            });
+        }
+    }
+
+    private void sortByDateReversely() {
+        for (ArrayList<Problem_Index> category : LeetCoderApplication.categories) {
+            Collections.sort(category, new Comparator<Problem_Index>() {
+                @Override
+                public int compare(Problem_Index rhs, Problem_Index lhs) {
+                    if (lhs.getId() < rhs.getId()) return -1;
+                    else if (lhs.getId() > rhs.getId()) return 1;
+                    else return 0;
+                }
+            });
+        }
+    }
+
+    private void sortByTitle() {
+        for (ArrayList<Problem_Index> category : LeetCoderApplication.categories) {
+            Collections.sort(category, new Comparator<Problem_Index>() {
+                @Override
+                public int compare(Problem_Index lhs, Problem_Index rhs) {
+                    return lhs.getTitle().compareTo(rhs.getTitle());
+                }
+            });
+        }
+    }
+
+    private void sortByTitleReversely() {
+        for (ArrayList<Problem_Index> category : LeetCoderApplication.categories) {
+            Collections.sort(category, new Comparator<Problem_Index>() {
+                @Override
+                public int compare(Problem_Index rhs, Problem_Index lhs) {
+                    return lhs.getTitle().compareTo(rhs.getTitle());
+                }
+            });
+        }
+    }
+
+    private void sortByLevel() {
+        for (ArrayList<Problem_Index> category : LeetCoderApplication.categories) {
+            Collections.sort(category, new Comparator<Problem_Index>() {
+                @Override
+                public int compare(Problem_Index lhs, Problem_Index rhs) {
+                    int l = getLevelNumber(lhs.getLevel());
+                    int r = getLevelNumber(rhs.getLevel());
+                    if (l < r) return -1;
+                    else if (l > r) return 1;
+                    else return 0;
+                }
+            });
+        }
+    }
+
+    private void sortByLevelReversely() {
+        for (ArrayList<Problem_Index> category : LeetCoderApplication.categories) {
+            Collections.sort(category, new Comparator<Problem_Index>() {
+                @Override
+                public int compare(Problem_Index rhs, Problem_Index lhs) {
+                    int l = getLevelNumber(lhs.getLevel());
+                    int r = getLevelNumber(rhs.getLevel());
+                    if (l < r) return -1;
+                    else if (l > r) return 1;
+                    else return 0;
+                }
+            });
+        }
+    }
+
+    private void sortByLikes() {
+        for (ArrayList<Problem_Index> category : LeetCoderApplication.categories) {
+            Collections.sort(category, new Comparator<Problem_Index>() {
+                @Override
+                public int compare(Problem_Index rhs, Problem_Index lhs) {
+                    if (lhs.getLike() < rhs.getLike()) return -1;
+                    else if (lhs.getLike() > rhs.getLike()) return 1;
+                    else return 0;
+                }
+            });
+        }
+    }
+
+    private void sortByLikesReversely() {
+        for (ArrayList<Problem_Index> category : LeetCoderApplication.categories) {
+            Collections.sort(category, new Comparator<Problem_Index>() {
+                @Override
+                public int compare(Problem_Index lhs, Problem_Index rhs) {
+                    if (lhs.getLike() < rhs.getLike()) return -1;
+                    else if (lhs.getLike() > rhs.getLike()) return 1;
+                    else return 0;
+                }
+            });
+        }
+    }
+
+    private int getLevelNumber(String levelString) {
+        switch (levelString) {
+            case "Easy":
+                return 0;
+            case "Medium":
+                return 1;
+            case "Hard":
+                return 2;
+            default:
+                return 0;
+        }
     }
 
     private boolean gettingData = false;
@@ -319,6 +494,7 @@ public class MainActivity extends AppCompatActivity
                         return lhs.compareTo(rhs);
                     }
                 });
+                sortByDate();
                 FragmentPagerItems pages = new FragmentPagerItems(mContext);
                 for (String tag : LeetCoderApplication.categoriesTag) {
                     LeetCoderApplication.categories.add(hash.get(tag));
@@ -381,6 +557,7 @@ public class MainActivity extends AppCompatActivity
                 }
                 if (BuildConfig.DEBUG) Log.d("LeetCoder", "Search result: " + searchResult.size() + " problem(s)");
                 LeetCoderUtil.sortProblemSearchResult(searchResult);
+                Log.d("LeetCoder", "Last: " + searchResult.get(searchResult.size() - 1).getTitle());
             }
         }
         if (searchResultRefreshLayout != null) searchResultRefreshLayout.setRefreshing(false);
@@ -390,7 +567,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(int position) {
-
+        Intent intent = new Intent(mContext, ProblemActivity.class);
+        intent.putExtra("id", searchResult.get(position).getId());
+        mContext.startActivity(intent);
     }
 
     @Override

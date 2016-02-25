@@ -75,13 +75,54 @@ public class LeetCoderUtil {
     }
 
     public static String getTextDrawableString(String string) {
+        string = deleteI(string);
         int blankPosition = string.indexOf(" ");
         if (blankPosition == -1 || blankPosition == string.length() - 1) {
             if (string.length() == 1) return string.toUpperCase();
-            else return string.substring(0, 2).toUpperCase();
+            else {
+                char first = getFirstLetter(string);
+                char second = getSecondLetter(string);
+                if (second == ' ') return String.valueOf(first).toUpperCase();
+                else return String.valueOf(first).toUpperCase() + String.valueOf(second).toUpperCase();
+            }
         } else {
-            return string.substring(0, 1).toUpperCase() + string.substring(blankPosition + 1, blankPosition + 2).toUpperCase();
+            char first = getFirstLetter(string);
+            char second = getFirstLetter(string.substring(blankPosition + 1));
+            if (second == ' ') return String.valueOf(first).toUpperCase();
+            else return String.valueOf(first).toUpperCase() + String.valueOf(second).toUpperCase();
         }
+    }
+
+    public static String deleteI(String string) {
+        boolean isAllI = true;
+        int blankPosition = string.lastIndexOf(" ");
+        for (int i = blankPosition + 1; i < string.length(); i++) {
+            if (string.charAt(i) != 'I') {
+                isAllI = false;
+                break;
+            }
+        }
+        if (isAllI) return string.substring(0, blankPosition);
+        else return string;
+
+    }
+
+    public static char getFirstLetter(String string) {
+        for (char c : string.toCharArray()) {
+            if (('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z')) return c;
+        }
+        return ' ';
+    }
+
+    public static char getSecondLetter(String string) {
+        boolean isFirst = true;
+        for (char c : string.toCharArray()) {
+            if (('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z')) {
+                if (isFirst) isFirst = false;
+                else return c;
+            }
+        }
+        return ' ';
     }
 
     public static int GetRandomColor() {
