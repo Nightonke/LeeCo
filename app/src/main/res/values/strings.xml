@@ -112,4 +112,10 @@
     <string name="dis_collect_ok">throw</string>
     <string name="dis_collect_cancel">cancel</string>
 
+    <string name="refresh">Refresh</string>
+    <string name="share">Share</string>
+    <string name="copy_link">Copy Link</string>
+    <string name="copy_link_toast">Link copied</string>
+    <string name="open_with">Open With</string>
+
 </resources>

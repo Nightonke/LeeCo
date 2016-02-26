@@ -1,24 +1,17 @@
 package com.nightonke.leetcoder;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.thefinestartist.finestwebview.FinestWebView;
 
@@ -167,7 +160,22 @@ public class ProblemContentFragment extends Fragment
             @Override
             public boolean urlClicked(String url) {
                 url = "https://leetcode.com" + url;
-                new FinestWebView.Builder(activity).show(url);
+                new FinestWebView.Builder(activity)
+                        .statusBarColorRes(R.color.colorPrimary)
+                        .iconDefaultColorRes(R.color.white)
+                        .iconDisabledColorRes(R.color.white)
+                        .iconPressedColorRes(R.color.white)
+                        .swipeRefreshColorRes(R.color.colorPrimary)
+                        .titleColorRes(R.color.white)
+                        .urlColorRes(R.color.white)
+                        .progressBarColorRes(R.color.white)
+                        .menuTextColorRes(R.color.colorPrimary)
+                        .stringResRefresh(R.string.refresh)
+                        .stringResShareVia(R.string.share)
+                        .stringResCopyLink(R.string.copy_link)
+                        .stringResOpenWith(R.string.open_with)
+                        .stringResCopiedToClipboard(R.string.copy_link_toast)
+                        .show(url);
                 return true;
             }
         });
@@ -182,7 +190,22 @@ public class ProblemContentFragment extends Fragment
                 activity.reload();
                 break;
             case R.id.original_problem:
-                new FinestWebView.Builder(activity).show(activity.problem.getProblemLink());
+                new FinestWebView.Builder(activity)
+                        .statusBarColorRes(R.color.colorPrimary)
+                        .iconDefaultColorRes(R.color.white)
+                        .iconDisabledColorRes(R.color.white)
+                        .iconPressedColorRes(R.color.white)
+                        .swipeRefreshColorRes(R.color.colorPrimary)
+                        .titleColorRes(R.color.white)
+                        .urlColorRes(R.color.white)
+                        .progressBarColorRes(R.color.white)
+                        .menuTextColorRes(R.color.colorPrimary)
+                        .stringResRefresh(R.string.refresh)
+                        .stringResShareVia(R.string.share)
+                        .stringResCopyLink(R.string.copy_link)
+                        .stringResOpenWith(R.string.open_with)
+                        .stringResCopiedToClipboard(R.string.copy_link_toast)
+                        .show(activity.problem.getProblemLink());
                 break;
         }
     }
