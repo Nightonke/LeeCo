@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity
         SwipeRefreshLayout.OnRefreshListener {
 
     private final int START_PROBLEM = 1;
+    private final int START_LIKES = 2;
 
     private Context mContext;
 
@@ -116,7 +117,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         mContext = this;
-        LeetCoderUtil.setStatusBarColor(mContext);
+        LeetCoderUtil.setStatusBarColor(mContext, R.color.colorPrimary);
 
         cultView = (CultView)findViewById(R.id.cult_view);
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_left);
@@ -231,6 +232,7 @@ public class MainActivity extends AppCompatActivity
         votes = (TextView)findViewById(R.id.votes);
 
         likeLayout = (LinearLayout)findViewById(R.id.like_layout);
+        likeLayout.setOnClickListener(this);
         likes = (TextView)findViewById(R.id.likes);
 
         gridView = (LeetCoderGridView)findViewById(R.id.gridview);
@@ -325,6 +327,30 @@ public class MainActivity extends AppCompatActivity
             drawable.mutate();
             drawable.setColorFilter(ContextCompat.getColor(mContext, R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
         }
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                if (findViewById(R.id.action_sort) != null) {
+                    findViewById(R.id.action_sort).setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            sort();
+                            return true;
+                        }
+                    });
+                }
+                if (findViewById(R.id.action_search) != null) {
+                    findViewById(R.id.action_search).setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            cultView.showSlide();
+                            showKeyboard(searchInput);
+                            return true;
+                        }
+                    });
+                }
+            }
+        });
         return true;
     }
 
@@ -360,15 +386,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void hideKeyboard() {
-        runOnUiThread(new Runnable() {
-            @Override public void run() {
+        cultView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
                 if (getCurrentFocus() != null) {
                     ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
                             .hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                                     InputMethodManager.HIDE_NOT_ALWAYS);
                 }
             }
-        });
+        }, LeetCoderApplication.KEYBOARD_CULT_DELAY);
     }
 
     private void showKeyboard(final View view) {
@@ -380,7 +407,7 @@ public class MainActivity extends AppCompatActivity
                         getSystemService(Context.INPUT_METHOD_SERVICE);
                 keyboard.showSoftInput(view, 0);
             }
-        },200);
+        }, LeetCoderApplication.KEYBOARD_CULT_DELAY);
     }
 
     @Override
@@ -398,6 +425,9 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.user_layout:
                 login();
+                break;
+            case R.id.like_layout:
+                startActivityForResult(new Intent(mContext, LikesActivity.class), START_LIKES);
                 break;
             case R.id.settings:
                 break;
@@ -901,13 +931,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void search(String s) {
+        s = s.toLowerCase();
         searchResult = new ArrayList<>();
         if (!"".equals(s)) {
             if (LeetCoderApplication.categories != null && LeetCoderApplication.categoriesTag != null) {
                 HashSet<Integer> ids = new HashSet<>();
                 for (ArrayList<Problem_Index> category : LeetCoderApplication.categories) {
                     for (Problem_Index problemIndex : category) {
-                        String titleString = problemIndex.getTitle();
+                        String titleString = problemIndex.getTitle().toLowerCase();
                         if (titleString.contains(s)) {
                             if (!ids.contains(problemIndex.getId())) {
                                 ids.add(problemIndex.getId());
@@ -918,7 +949,6 @@ public class MainActivity extends AppCompatActivity
                 }
                 if (BuildConfig.DEBUG) Log.d("LeetCoder", "Search result: " + searchResult.size() + " problem(s)");
                 LeetCoderUtil.sortProblemSearchResult(searchResult);
-                Log.d("LeetCoder", "Last: " + searchResult.get(searchResult.size() - 1).getTitle());
             }
         }
         if (searchResultRefreshLayout != null) searchResultRefreshLayout.setRefreshing(false);
@@ -941,6 +971,9 @@ public class MainActivity extends AppCompatActivity
                 if (BuildConfig.DEBUG) Log.d("LeetCoder", "Update search result");
                 searchResultAdapter = new ProblemSearchResultAdapter(searchResult, this);
                 searchRecyclerView.setAdapter(searchResultAdapter);
+                break;
+            case START_LIKES:
+
                 break;
         }
     }

@@ -93,4 +93,11 @@
     <string name="like_dislike_successfully">Throw this problem successfully</string>
     <string name="like_dislike_failed">Throw this problem failed,\ninternet disconnected</string>
 
+    <string name="favorite_title">Favorite</string>
+
+    <string name="sorting">Sorting...</string>
+    <string name="researching">Researching...</string>
+    <string name="searching">Searching...</string>
+    <string name="data_not_found">Data not found,\nplease refresh data</string>
+
 </resources>

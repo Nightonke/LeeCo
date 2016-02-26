@@ -71,7 +71,7 @@ public class ProblemActivity extends AppCompatActivity
         setContentView(R.layout.activity_problem);
 
         mContext = this;
-        LeetCoderUtil.setStatusBarColor(mContext);
+        LeetCoderUtil.setStatusBarColor(mContext, R.color.colorPrimary);
 
         adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)

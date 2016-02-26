@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="sort_types_likes">
+        <item>Collect Date</item>
+        <item>Collect Date Reversely</item>
+        <item>Problem Add Date</item>
+        <item>Problem Add Date Reversely</item>
+        <item>Title</item>
+        <item>Title Reversely</item>
+        <item>Level</item>
+        <item>Level Reversely</item>
+        <item>Likes</item>
+        <item>Likes Reversely</item>
+    </string-array>
+
     <string-array name="sort_types_problem">
-        <item>Date</item>
-        <item>Date Reversely</item>
+        <item>Problem Add Date</item>
+        <item>Problem Add Date Reversely</item>
         <item>Title</item>
         <item>Title Reversely</item>
         <item>Level</item>

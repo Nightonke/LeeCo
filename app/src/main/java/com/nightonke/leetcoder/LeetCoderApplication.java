@@ -14,6 +14,8 @@ import cn.bmob.v3.Bmob;
  */
 public class LeetCoderApplication extends Application {
 
+    public static final int KEYBOARD_CULT_DELAY = 400;
+
     private static Context mContext;
 
     public static ArrayList<ArrayList<Problem_Index>> categories = null;

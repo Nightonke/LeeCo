@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent">
+
+    <EditText
+        android:id="@+id/search_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/cancel"
+        android:layout_toStartOf="@+id/cancel"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:textCursorDrawable="@null"
+        android:textColor="@color/white"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="-5dp"/>
+
+    <ImageView
+        android:id="@+id/erase"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_toLeftOf="@+id/cancel"
+        android:layout_toStartOf="@+id/cancel"
+        android:src="@drawable/icon_erase"
+        android:layout_centerVertical="true"
+        android:background="?android:actionBarItemBackground"
+        android:padding="10dp"
+        android:layout_marginRight="-5dp"/>
+
+    <ImageView
+        android:id="@+id/cancel"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:src="@drawable/icon_search_cancel"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:background="?android:actionBarItemBackground"
+        android:padding="10dp"
+        android:layout_marginLeft="-5dp"/>
+
+</RelativeLayout>
