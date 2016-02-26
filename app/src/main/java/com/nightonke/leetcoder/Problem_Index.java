@@ -1,5 +1,6 @@
 package com.nightonke.leetcoder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobObject;
@@ -14,7 +15,22 @@ public class Problem_Index extends BmobObject {
     private String level;
     private String summary;
     private int like;
-    private List<String> tags;
+    private List<String> tags = null;
+
+    public Problem_Index clone() {
+        Problem_Index problemIndex = new Problem_Index();
+        problemIndex.setId(getId());
+        problemIndex.setTitle(getTitle());
+        problemIndex.setLevel(getLevel());
+        problemIndex.setSummary(getSummary());
+        problemIndex.setLike(getLike());
+        List<String> newtags = new ArrayList<>();
+        for (String s : tags) {
+            newtags.add(s);
+        }
+        problemIndex.setTags(newtags);
+        return problemIndex;
+    }
 
     public int getId() {
         return id;

@@ -1,13 +1,18 @@
 package com.nightonke.leetcoder;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -44,6 +49,11 @@ public class ProblemContentFragment extends Fragment
     private TextView originalProblem;
     private TagGroup similarProblems;
 
+    private CoordinatorLayout snackbarLayout;
+
+    private OnTagClickListener onTagClickListener;
+    private OnSimilarProblemClickListener onSimilarProblemClickListener;
+
     @Override
     public void onAttach(Context context) {
         mContext = context;
@@ -51,6 +61,14 @@ public class ProblemContentFragment extends Fragment
 
         if (context instanceof ProblemActivity){
             activity = (ProblemActivity)context;
+        }
+
+        if (context instanceof OnTagClickListener){
+            onTagClickListener = (OnTagClickListener)context;
+        }
+
+        if (context instanceof OnSimilarProblemClickListener){
+            onSimilarProblemClickListener = (OnSimilarProblemClickListener)context;
         }
     }
 
@@ -89,6 +107,8 @@ public class ProblemContentFragment extends Fragment
             }
         });
 
+        snackbarLayout = (CoordinatorLayout)contentFragment.findViewById(R.id.container);
+
         setListener();
 
         return contentFragment;
@@ -99,7 +119,7 @@ public class ProblemContentFragment extends Fragment
         reloadLayout.setVisibility(View.GONE);
         swipeRefreshLayout.setVisibility(View.VISIBLE);
 
-        content.setRichText(activity.problem.getContent());
+        content.setRichText(LeetCoderUtil.getReadyContent(activity.problem.getContent()));
         tags.setTags(activity.problem_index.getTags());
         if (activity.problem.getSimilarProblems() == null || activity.problem.getSimilarProblems().size() == 0) {
             similarProblems.setVisibility(View.GONE);
@@ -139,7 +159,7 @@ public class ProblemContentFragment extends Fragment
         content.setOnImageClickListener(new RichText.OnImageClickListener() {
             @Override
             public void imageClicked(List<String> imageUrls, int position) {
-                Toast.makeText(mContext, imageUrls.get(position), Toast.LENGTH_SHORT).show();
+                if (BuildConfig.DEBUG) Log.d("LeetCoder", imageUrls.get(position));
             }
         });
 
@@ -147,7 +167,6 @@ public class ProblemContentFragment extends Fragment
             @Override
             public boolean urlClicked(String url) {
                 url = "https://leetcode.com" + url;
-                Toast.makeText(mContext, url, Toast.LENGTH_SHORT).show();
                 new FinestWebView.Builder(activity).show(url);
                 return true;
             }
@@ -178,8 +197,16 @@ public class ProblemContentFragment extends Fragment
         Toast.makeText(mContext, "On click " + tag, Toast.LENGTH_SHORT).show();
     }
 
-    private void onSimilarProblemClick(String similarProblem) {
-        Toast.makeText(mContext, "On click " + similarProblem, Toast.LENGTH_SHORT).show();
+    private void onSimilarProblemClick(final String similarProblem) {
+        onSimilarProblemClickListener.onSimilarProblemClick(similarProblem);
+    }
+
+    public interface OnTagClickListener {
+        void onTagClick(String tag);
+    }
+
+    public interface OnSimilarProblemClickListener {
+        void onSimilarProblemClick(String similarProblem);
     }
 
     public interface ReloadListener {

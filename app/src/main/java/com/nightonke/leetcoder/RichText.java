@@ -72,8 +72,8 @@ public class RichText extends TextView {
     private void init(Context context, AttributeSet attrs) {
         targets = new HashSet<>();
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.zhou_RichText);
-        placeHolder = typedArray.getDrawable(R.styleable.zhou_RichText_zhou_placeHolder);
-        errorImage = typedArray.getDrawable(R.styleable.zhou_RichText_zhou_errorImage);
+        placeHolder = LeetCoderUtil.getDrawable(R.drawable.icon_picture_loading, LeetCoderUtil.dpToPx(80), LeetCoderUtil.dpToPx(80));
+        errorImage = LeetCoderUtil.getDrawable(R.drawable.icon_picture_error, LeetCoderUtil.dpToPx(80), LeetCoderUtil.dpToPx(80));
 
         d_w = typedArray.getDimensionPixelSize(R.styleable.zhou_RichText_zhou_default_width, d_w);
         d_h = typedArray.getDimensionPixelSize(R.styleable.zhou_RichText_zhou_default_height, d_h);

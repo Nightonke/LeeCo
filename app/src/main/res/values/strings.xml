@@ -99,6 +99,8 @@
     <string name="researching">Researching...</string>
     <string name="searching">Searching...</string>
     <string name="data_not_found">Data not found,\nplease refresh data</string>
+    <string name="loading_failed">Load failed, internet disconnected</string>
+    <string name="view">VIEW</string>
 
     <string name="collect_title">Collect</string>
     <string name="collect_content">Collect this problem?</string>

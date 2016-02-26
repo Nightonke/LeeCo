@@ -173,7 +173,7 @@ public class LeetCoderUtil {
     public static void showToast(Context context, String text, int color) {
         SuperToast.cancelAllSuperToasts();
         SuperToast superToast = new SuperToast(context);
-        superToast.setAnimations(SuperToast.Animations.FLYIN);
+        superToast.setAnimations(SuperToast.Animations.POPUP);
         superToast.setDuration(SuperToast.Duration.SHORT);
         superToast.setTextColor(Color.parseColor("#ffffff"));
         superToast.setTextSize(SuperToast.TextSize.SMALL);
@@ -191,7 +191,7 @@ public class LeetCoderUtil {
             lastToast = text;
         }
         SuperToast superToast = new SuperToast(context);
-        superToast.setAnimations(SuperToast.Animations.FLYIN);
+        superToast.setAnimations(SuperToast.Animations.POPUP);
         superToast.setDuration(SuperToast.Duration.VERY_SHORT);
         superToast.setTextColor(Color.parseColor("#ffffff"));
         superToast.setTextSize(SuperToast.TextSize.SMALL);
@@ -209,7 +209,7 @@ public class LeetCoderUtil {
             lastToast = text;
         }
         SuperToast superToast = new SuperToast(context);
-        superToast.setAnimations(SuperToast.Animations.FLYIN);
+        superToast.setAnimations(SuperToast.Animations.POPUP);
         superToast.setDuration(SuperToast.Duration.VERY_SHORT);
         superToast.setTextColor(Color.parseColor("#ffffff"));
         superToast.setTextSize(SuperToast.TextSize.SMALL);
@@ -222,6 +222,23 @@ public class LeetCoderUtil {
         Drawable dr = ContextCompat.getDrawable(LeetCoderApplication.getAppContext(), id);
         Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
         return new BitmapDrawable(LeetCoderApplication.getAppContext().getResources(), Bitmap.createScaledBitmap(bitmap, width, height, true));
+    }
+
+    private static final String IMAGE_START_STRING = "<img src=\"";
+    public static String getReadyContent(String string) {
+        int position = 0;
+        while(position != -1) {
+            position = string.indexOf(IMAGE_START_STRING, position + 1);
+            if (position != -1) {
+                if (!"http".equals(string.substring(position + IMAGE_START_STRING.length(), position + IMAGE_START_STRING.length() + 4))) {
+                    // this is an image in leetcode
+                    string = string.substring(0, position + IMAGE_START_STRING.length())
+                           + "http://leetcode.com"
+                           + string.substring(position + IMAGE_START_STRING.length());
+                }
+            }
+        }
+        return string;
     }
 
 

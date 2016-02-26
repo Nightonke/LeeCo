@@ -1,12 +1,17 @@
 package com.nightonke.leetcoder;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
@@ -27,6 +32,9 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.github.johnpersano.supertoasts.SuperActivityToast;
+import com.github.johnpersano.supertoasts.SuperToast;
+import com.github.johnpersano.supertoasts.util.OnClickWrapper;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
@@ -39,12 +47,15 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
+import me.grantland.widget.AutofitTextView;
 
 
 public class ProblemActivity extends AppCompatActivity
         implements
         ProblemContentFragment.ReloadListener,
-        View.OnClickListener {
+        View.OnClickListener,
+        ProblemContentFragment.OnTagClickListener,
+        ProblemContentFragment.OnSimilarProblemClickListener {
 
     public Problem_Index problem_index;
     public Problem problem;
@@ -64,6 +75,8 @@ public class ProblemActivity extends AppCompatActivity
     private ImageView solutionImageView;
     private ImageView discussImageView;
     private ImageView commentImageView;
+
+    private CoordinatorLayout snackbarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +154,8 @@ public class ProblemActivity extends AppCompatActivity
         commentImageView = (ImageView)findViewById(R.id.comment_icon);
         commentImageView.setVisibility(View.INVISIBLE);
 
+        snackbarLayout = (CoordinatorLayout)findViewById(R.id.container);
+
         if (getIntent().getIntExtra("categoryPosition", -1) == -1 && getIntent().getIntExtra("problemPosition", -1) == -1) {
             // from search result
             int id = getIntent().getIntExtra("id", -1);
@@ -193,8 +208,6 @@ public class ProblemActivity extends AppCompatActivity
         problem = new Problem();
         problem.setId(problem_index.getId());
 
-        Toast.makeText(mContext, "Loading...", Toast.LENGTH_SHORT).show();
-
         // set loading
         Fragment contentFragment = adapter.getPage(0);
         if (contentFragment != null) {
@@ -223,7 +236,6 @@ public class ProblemActivity extends AppCompatActivity
         query.findObjects(mContext, new FindListener<Problem>() {
             @Override
             public void onSuccess(List<Problem> list) {
-                Toast.makeText(mContext, "Query successfully", Toast.LENGTH_SHORT).show();
                 problem.setContent(list.get(0).getContent());
                 problem.setSolution(list.get(0).getSolution());
                 problem.setDiscussLink(list.get(0).getDiscussLink());
@@ -255,7 +267,7 @@ public class ProblemActivity extends AppCompatActivity
 
             @Override
             public void onError(int i, String s) {
-                Toast.makeText(mContext, "Query failed " + s, Toast.LENGTH_SHORT).show();
+                LeetCoderUtil.showToast(mContext, R.string.loading_failed);
 
                 Fragment contentFragment = adapter.getPage(0);
                 if (contentFragment != null) {
@@ -433,7 +445,7 @@ public class ProblemActivity extends AppCompatActivity
                                                                 ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
                                                                 ClipData clip = ClipData.newPlainText("Email address copied.", "Nightonke@outlook.com");
                                                                 clipboard.setPrimaryClip(clip);
-                                                                Toast.makeText(mContext, R.string.better_solution_copied, Toast.LENGTH_SHORT).show();
+                                                                LeetCoderUtil.showToast(mContext, R.string.better_solution_copied);
                                                             }
                                                         }
                                                     })
@@ -445,11 +457,11 @@ public class ProblemActivity extends AppCompatActivity
                                             problemBug.save(LeetCoderApplication.getAppContext(), new SaveListener() {
                                                 @Override
                                                 public void onSuccess() {
-                                                    Toast.makeText(mContext, R.string.feedback_send_successfully, Toast.LENGTH_SHORT).show();
+                                                    LeetCoderUtil.showToast(mContext, R.string.feedback_send_successfully);
                                                 }
                                                 @Override
                                                 public void onFailure(int code, String arg0) {
-                                                    Toast.makeText(mContext, R.string.feedback_send_failed, Toast.LENGTH_SHORT).show();
+                                                    LeetCoderUtil.showToast(mContext, R.string.feedback_send_failed);
                                                 }
                                             });
                                         }
@@ -472,7 +484,7 @@ public class ProblemActivity extends AppCompatActivity
                                             @Override
                                             public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                                                 ((ProblemDiscussFragment) discussFragment).sort(which);
-                                                Toast.makeText(mContext, "Sorting...", Toast.LENGTH_SHORT).show();
+                                                LeetCoderUtil.showToast(mContext, R.string.sorting);
                                                 dialog.dismiss();
                                                 return true;
                                             }
@@ -526,11 +538,11 @@ public class ProblemActivity extends AppCompatActivity
                             problemBug.save(LeetCoderApplication.getAppContext(), new SaveListener() {
                                 @Override
                                 public void onSuccess() {
-                                    Toast.makeText(mContext, R.string.feedback_send_successfully, Toast.LENGTH_SHORT).show();
+                                    LeetCoderUtil.showToast(mContext, R.string.feedback_send_successfully);
                                 }
                                 @Override
                                 public void onFailure(int code, String arg0) {
-                                    Toast.makeText(mContext, R.string.feedback_send_failed, Toast.LENGTH_SHORT).show();
+                                    LeetCoderUtil.showToast(mContext, R.string.feedback_send_failed);
                                 }
                             });
                         }
@@ -553,5 +565,62 @@ public class ProblemActivity extends AppCompatActivity
                 })
                 .alwaysCallInputCallback()
                 .show();
+    }
+
+    private Problem_Index target = null;
+    @Override
+    public void onSimilarProblemClick(final String similarProblem) {
+        final String titleString = similarProblem.substring(5);
+        target = null;
+        if (LeetCoderApplication.categories == null || LeetCoderApplication.categoriesTag == null) {
+
+        } else {
+            for (ArrayList<Problem_Index> category : LeetCoderApplication.categories) {
+                for (Problem_Index problemIndex : category) {
+                    if (problemIndex.getTitle().equals(titleString)) {
+                        target = problemIndex.clone();
+                        break;
+                    }
+                }
+                if (target != null) break;
+            }
+        }
+        final Snackbar snackbar = Snackbar.make(snackbarLayout, "", Snackbar.LENGTH_LONG);
+        // Get the Snackbar's layout view
+        Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
+        layout.setBackgroundColor(ContextCompat.getColor(mContext, android.R.color.transparent));
+        // Hide the text
+        layout.findViewById(android.support.design.R.id.snackbar_text).setVisibility(View.INVISIBLE);
+        layout.findViewById(android.support.design.R.id.snackbar_action).setVisibility(View.GONE);
+
+        // Inflate our custom view
+        View snackView = getLayoutInflater().inflate(R.layout.snackbar_similar_problem, null);
+        // Configure the view
+        AutofitTextView problemTitle = (AutofitTextView) snackView.findViewById(R.id.title);
+        problemTitle.setText(titleString);
+        problemTitle.setSelected(true);
+        ImageView view = (ImageView) snackView.findViewById(R.id.view);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                snackbar.dismiss();
+                problem_index = target;
+                likes.setText(problem_index.getLike() + "");
+                title.setText(problem_index.getTitle());
+                getData();
+            }
+        });
+        if (target == null) view.setVisibility(View.GONE);
+
+        layout.addView(snackView, 0);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        layoutParams.height = LeetCoderUtil.dpToPx(76);
+        snackView.setLayoutParams(layoutParams);
+        snackbar.show();
+    }
+
+    @Override
+    public void onTagClick(String tag) {
+
     }
 }

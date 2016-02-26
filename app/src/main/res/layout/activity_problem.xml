@@ -103,12 +103,25 @@
 
     </LinearLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        />
+        >
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"/>
+
+    </FrameLayout>
 
     <com.ogaclejapan.smarttablayout.SmartTabLayout
         android:id="@+id/viewpagertab"

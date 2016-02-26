@@ -25,4 +25,6 @@
     <color name="error_red">#E91E63</color>
     <color name="like_red">#FF4081</color>
     <color name="level">#009688</color>
+
+    <color name="snackbar_similar_problem">#E633B5E5</color>
 </resources>
