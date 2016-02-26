@@ -194,7 +194,7 @@ public class ProblemContentFragment extends Fragment
     }
 
     private void onTagClick(String tag) {
-        Toast.makeText(mContext, "On click " + tag, Toast.LENGTH_SHORT).show();
+        onTagClickListener.onTagClick(tag);
     }
 
     private void onSimilarProblemClick(final String similarProblem) {

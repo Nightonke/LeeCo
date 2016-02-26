@@ -173,7 +173,7 @@ public class LeetCoderUtil {
     public static void showToast(Context context, String text, int color) {
         SuperToast.cancelAllSuperToasts();
         SuperToast superToast = new SuperToast(context);
-        superToast.setAnimations(SuperToast.Animations.POPUP);
+        superToast.setAnimations(SuperToast.Animations.FLYIN);
         superToast.setDuration(SuperToast.Duration.SHORT);
         superToast.setTextColor(Color.parseColor("#ffffff"));
         superToast.setTextSize(SuperToast.TextSize.SMALL);
@@ -191,7 +191,7 @@ public class LeetCoderUtil {
             lastToast = text;
         }
         SuperToast superToast = new SuperToast(context);
-        superToast.setAnimations(SuperToast.Animations.POPUP);
+        superToast.setAnimations(SuperToast.Animations.FLYIN);
         superToast.setDuration(SuperToast.Duration.VERY_SHORT);
         superToast.setTextColor(Color.parseColor("#ffffff"));
         superToast.setTextSize(SuperToast.TextSize.SMALL);
@@ -209,7 +209,7 @@ public class LeetCoderUtil {
             lastToast = text;
         }
         SuperToast superToast = new SuperToast(context);
-        superToast.setAnimations(SuperToast.Animations.POPUP);
+        superToast.setAnimations(SuperToast.Animations.FLYIN);
         superToast.setDuration(SuperToast.Duration.VERY_SHORT);
         superToast.setTextColor(Color.parseColor("#ffffff"));
         superToast.setTextSize(SuperToast.TextSize.SMALL);

@@ -2,6 +2,7 @@ package com.nightonke.leetcoder;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.JetPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -50,6 +51,8 @@ public class CategoryFragment extends Fragment
 
     private CategoryFragmentAdapter.OnItemLongClickListener onItemLongClickListener;
 
+    private OnJumpListener onJumpListener;
+
     @Override
     public void onAttach(Context context) {
         mContext = context;
@@ -61,6 +64,10 @@ public class CategoryFragment extends Fragment
 
         if (context instanceof CategoryFragmentAdapter.OnItemLongClickListener){
             onItemLongClickListener = (CategoryFragmentAdapter.OnItemLongClickListener)context;
+        }
+
+        if (context instanceof OnJumpListener) {
+            onJumpListener = (OnJumpListener)mContext;
         }
     }
 
@@ -104,6 +111,11 @@ public class CategoryFragment extends Fragment
                 if (BuildConfig.DEBUG) Log.d("LeetCoder", "Update category");
                 adapter = new CategoryFragmentAdapter(categoryPosition, this, onItemLongClickListener);
                 superRecyclerView.setAdapter(adapter);
+                int position = -1;
+                if (resultCode == MainActivity.BACK_CATEGORY) {
+                    position = data.getIntExtra("category", -1);
+                }
+                if (position != -1) onJumpListener.onJump(position);
                 break;
         }
     }
@@ -124,5 +136,9 @@ public class CategoryFragment extends Fragment
     public void notifySort() {
         adapter = new CategoryFragmentAdapter(categoryPosition, this, onItemLongClickListener);
         superRecyclerView.setAdapter(adapter);
+    }
+
+    public interface OnJumpListener {
+        void onJump(int position);
     }
 }

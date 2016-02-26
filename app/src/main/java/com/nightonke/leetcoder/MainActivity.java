@@ -66,10 +66,12 @@ public class MainActivity extends AppCompatActivity
         CategoryFragment.OnRefreshListener,
         ProblemSearchResultAdapter.OnItemClickListener,
         SwipeRefreshLayout.OnRefreshListener,
-        CategoryFragmentAdapter.OnItemLongClickListener {
+        CategoryFragmentAdapter.OnItemLongClickListener,
+        CategoryFragment.OnJumpListener {
 
-    private final int START_PROBLEM = 1;
-    private final int START_LIKES = 2;
+    public static final int START_PROBLEM = 1;
+    public static final int START_LIKES = 2;
+    public static final int BACK_CATEGORY = 3;
 
     private Context mContext;
 
@@ -976,6 +978,11 @@ public class MainActivity extends AppCompatActivity
                 if (BuildConfig.DEBUG) Log.d("LeetCoder", "Update search result");
                 searchResultAdapter = new ProblemSearchResultAdapter(searchResult, this);
                 searchRecyclerView.setAdapter(searchResultAdapter);
+                int position = -1;
+                if (resultCode == RESULT_OK) {
+                    position = data.getIntExtra("category", -1);
+                }
+                if (position != -1) viewPager.setCurrentItem(position);
                 break;
             case START_LIKES:
 
@@ -1078,5 +1085,10 @@ public class MainActivity extends AppCompatActivity
                         .show();
             }
         }
+    }
+
+    @Override
+    public void onJump(int position) {
+        if (viewPager != null) viewPager.setCurrentItem(position);
     }
 }

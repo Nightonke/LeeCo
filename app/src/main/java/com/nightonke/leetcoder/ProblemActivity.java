@@ -620,7 +620,52 @@ public class ProblemActivity extends AppCompatActivity
     }
 
     @Override
-    public void onTagClick(String tag) {
+    public void onTagClick(final String tag) {
+        int position = 0;
+        int targetPosition = -1;
+        if (LeetCoderApplication.categories == null || LeetCoderApplication.categoriesTag == null) {
 
+        } else {
+            for (String t : LeetCoderApplication.categoriesTag) {
+                if (t.equals(tag)) {
+                    targetPosition = position;
+                    break;
+                }
+                position++;
+            }
+        }
+        final Snackbar snackbar = Snackbar.make(snackbarLayout, "", Snackbar.LENGTH_LONG);
+        // Get the Snackbar's layout view
+        Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
+        layout.setBackgroundColor(ContextCompat.getColor(mContext, android.R.color.transparent));
+        // Hide the text
+        layout.findViewById(android.support.design.R.id.snackbar_text).setVisibility(View.INVISIBLE);
+        layout.findViewById(android.support.design.R.id.snackbar_action).setVisibility(View.GONE);
+
+        // Inflate our custom view
+        View snackView = getLayoutInflater().inflate(R.layout.snackbar_similar_problem, null);
+        // Configure the view
+        AutofitTextView problemTitle = (AutofitTextView) snackView.findViewById(R.id.title);
+        problemTitle.setText(tag);
+        problemTitle.setSelected(true);
+        ImageView view = (ImageView) snackView.findViewById(R.id.view);
+        final int finalTargetPosition = targetPosition;
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                snackbar.dismiss();
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("category", finalTargetPosition);
+                setResult(MainActivity.BACK_CATEGORY, resultIntent);
+                finish();
+            }
+        });
+        if (targetPosition == -1) view.setVisibility(View.GONE);
+
+        layout.addView(snackView, 0);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        layoutParams.height = LeetCoderUtil.dpToPx(76);
+        snackView.setLayoutParams(layoutParams);
+        snackbar.show();
     }
 }
