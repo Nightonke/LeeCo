@@ -13,6 +13,8 @@ import com.amulyakhare.textdrawable.TextDrawable;
 
 import java.util.ArrayList;
 
+import me.grantland.widget.AutofitTextView;
+
 /**
  * Created by Weiping on 2016/2/23.
  */
@@ -78,6 +80,11 @@ public class ProblemSearchResultAdapter
                 } else {
                     holder.like.setText(like + " Likes");
                 }
+                String level = searchResults.get(position).getLevel();
+                holder.level.setText(level);
+                if ("Easy".equals(level)) holder.levelIcon.setImageResource(R.drawable.icon_easy);
+                else if ("Medium".equals(level)) holder.levelIcon.setImageResource(R.drawable.icon_medium);
+                else if ("Hard".equals(level)) holder.levelIcon.setImageResource(R.drawable.icon_hard);
                 break;
             case TYPE_LAST:
                 break;
@@ -110,7 +117,9 @@ public class ProblemSearchResultAdapter
         public ImageView drawable;
         public TextView title;
         public TextView summary;
-        public TextView like;
+        public AutofitTextView like;
+        public AutofitTextView level;
+        public ImageView levelIcon;
 
         public ViewHolder(View v) {
             super(v);
@@ -118,7 +127,9 @@ public class ProblemSearchResultAdapter
             drawable = (ImageView) v.findViewById(R.id.imageview);
             title = (TextView)v.findViewById(R.id.title);
             summary = (TextView)v.findViewById(R.id.summary);
-            like = (TextView)v.findViewById(R.id.like);
+            like = (AutofitTextView)v.findViewById(R.id.like);
+            level = (AutofitTextView)v.findViewById(R.id.level);
+            levelIcon = (ImageView)v.findViewById(R.id.level_icon);
         }
     }
 

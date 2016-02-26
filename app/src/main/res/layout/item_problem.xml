@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/base_layout"
     android:layout_width="match_parent"
     android:layout_height="80dp"
@@ -43,24 +43,94 @@
             android:layout_above="@+id/summary"
             >
 
-            <ImageView
-                android:layout_height="20dp"
-                android:layout_width="20dp"
-                android:background="@drawable/icon_like_red_small"
-                />
-
-            <TextView
-                android:id="@+id/like"
-                android:layout_width="wrap_content"
+            <LinearLayout
                 android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:layout_gravity="center_vertical"
-                android:textStyle="bold"
-                android:text="132 Likes"
-                android:textSize="13sp"
-                android:textColor="@color/like_red"
-                />
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                >
+
+                <ImageView
+                    android:layout_height="20dp"
+                    android:layout_width="20dp"
+                    android:background="@drawable/icon_like_red_small"
+                    />
+
+                <me.grantland.widget.AutofitTextView
+                    android:id="@+id/like"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold"
+                    android:text="132 Likes"
+                    app:minTextSize="13sp"
+                    android:textSize="13sp"
+                    android:textColor="@color/like_red"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                >
+
+                <ImageView
+                    android:id="@+id/level_icon"
+                    android:layout_height="20dp"
+                    android:layout_width="20dp"
+                    android:background="@drawable/icon_easy"
+                    />
+
+                <me.grantland.widget.AutofitTextView
+                    android:id="@+id/level"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold"
+                    android:text="Hard"
+                    app:minTextSize="13sp"
+                    android:textSize="13sp"
+                    android:textColor="@color/level"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="invisible"
+                >
+
+                <ImageView
+                    android:layout_height="20dp"
+                    android:layout_width="20dp"
+                    android:background="@drawable/icon_like_red_small"
+                    />
+
+                <me.grantland.widget.AutofitTextView
+                    android:id="@+id/rate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold"
+                    android:text="132 Likes"
+                    app:minTextSize="13sp"
+                    android:textSize="13sp"
+                    android:textColor="@color/like_red"
+                    />
+
+            </LinearLayout>
 
         </LinearLayout>
 

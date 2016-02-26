@@ -24,4 +24,5 @@
 
     <color name="error_red">#E91E63</color>
     <color name="like_red">#FF4081</color>
+    <color name="level">#009688</color>
 </resources>

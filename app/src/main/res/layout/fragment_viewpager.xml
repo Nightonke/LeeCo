@@ -162,6 +162,69 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/like_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="?android:selectableItemBackground"
+                        android:clickable="true"
+                        >
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/icon_like_red"
+                            android:padding="10dp"
+                            android:scaleType="fitCenter"
+                            android:layout_marginLeft="10dp"
+                            />
+
+                        <TextView
+                            android:layout_height="48dp"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="left|center_vertical"
+                            android:text="@string/favorite"
+                            android:textColor="@color/like_red"
+                            android:textSize="14sp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginRight="30dp"
+                        >
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1sp"
+                            android:layout_weight="1"
+                            android:layout_gravity="center_vertical|left"
+                            android:background="?android:attr/listDivider"
+                            />
+
+                        <TextView
+                            android:id="@+id/likes"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="left|center_vertical"
+                            android:text="12 Likes"
+                            android:textSize="12sp"
+                            android:maxLines="1"
+                            android:layout_marginBottom="2dp"
+                            />
+
+                    </LinearLayout>
+
                     <com.nightonke.leetcoder.LeetCoderGridView
                         android:id="@+id/gridview"
                         android:layout_width="250dp"
