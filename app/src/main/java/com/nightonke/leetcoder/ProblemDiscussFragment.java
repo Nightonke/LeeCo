@@ -52,6 +52,7 @@ public class ProblemDiscussFragment extends Fragment
     private SuperRecyclerView superRecyclerView;
     private ProblemDiscussFragmentAdapter adapter;
     private ArrayList<Discuss> discusses = new ArrayList<>();
+
     private Boolean isRefreshing = false;
     private RelativeLayout reloadLayout;
     private ProgressBar progressBar;
@@ -206,7 +207,22 @@ public class ProblemDiscussFragment extends Fragment
 
     @Override
     public void onItemClick(int position) {
-        new FinestWebView.Builder(activity).show(discusses.get(position).getUrl());
+        new FinestWebView.Builder(activity)
+                .statusBarColorRes(R.color.colorPrimary)
+                .iconDefaultColorRes(R.color.white)
+                .iconDisabledColorRes(R.color.white)
+                .iconPressedColorRes(R.color.white)
+                .swipeRefreshColorRes(R.color.colorPrimary)
+                .titleColorRes(R.color.white)
+                .urlColorRes(R.color.white)
+                .progressBarColorRes(R.color.white)
+                .menuTextColorRes(R.color.colorPrimary)
+                .stringResRefresh(R.string.refresh)
+                .stringResShareVia(R.string.share)
+                .stringResCopyLink(R.string.copy_link)
+                .stringResOpenWith(R.string.open_with)
+                .stringResCopiedToClipboard(R.string.copy_link_toast)
+                .show(discusses.get(position).getUrl());
     }
 
     class JavaScriptInterface {

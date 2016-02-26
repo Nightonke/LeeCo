@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/base_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2.5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="2.5dp"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="2dp"
+        app:cardPreventCornerOverlap="false"
+        app:contentPadding="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                >
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:text="A Better Solution? We can use DP to finish this problem with O(n) time and space."
+                    android:textColor="@color/discuss_title"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    />
+
+                <RelativeLayout
+                    android:id="@+id/button"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_vertical|right"
+                    android:gravity="center">
+
+                    <View
+                        android:layout_marginTop="15dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/button_expand_comment"
+                        />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+                android:id="@+id/expandableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ael_expanded="false"
+                app:ael_duration="500"
+                app:ael_interpolator="bounce"
+                app:ael_orientation="vertical">
+
+                <TextView
+                    android:id="@+id/content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:text="You are given an array x of n positive number..."
+                    android:textSize="13sp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="8dp"
+                    />
+
+            </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="5dp"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:text="By "
+                            android:textSize="13sp"
+                            android:gravity="center_vertical|left"
+                            />
+
+                        <TextView
+                            android:id="@+id/username"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:text="Nightonke"
+                            android:textSize="13sp"
+                            android:gravity="center_vertical"
+                            android:textColor="@color/discuss_asker"
+                            android:textStyle="bold"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="-3dp"
+                        >
+
+                        <TextView
+                            android:id="@+id/date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:text="Apr 3, 2015"
+                            android:textSize="13sp"
+                            android:gravity="center_vertical"
+                            android:textStyle="bold"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/reply_layout"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?android:actionBarItemBackground"
+                    >
+
+                    <ImageView
+                        android:id="@+id/reply_icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/icon_reply"
+                        android:padding="2dp"
+                        android:layout_marginTop="-8dp"
+                        android:scaleType="fitCenter"
+                        />
+
+                    <TextView
+                        android:id="@+id/reply_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:textColor="@color/reply_blue"
+                        android:text="3"
+                        android:layout_gravity="bottom"
+                        android:gravity="center"
+                        android:layout_marginBottom="5dp"
+                        />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/like_layout"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?android:actionBarItemBackground"
+                    >
+
+                    <ImageView
+                        android:id="@+id/like_icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/icon_like_red"
+                        android:padding="2dp"
+                        android:layout_marginTop="-8dp"
+                        android:scaleType="fitCenter"
+                        />
+
+                    <TextView
+                        android:id="@+id/like_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:textColor="@color/like_red"
+                        android:text="12"
+                        android:layout_gravity="bottom"
+                        android:gravity="center"
+                        android:layout_marginBottom="5dp"
+                        />
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/index"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:textSize="10sp"
+                android:layout_marginTop="-15dp"
+                android:gravity="center_horizontal|bottom"
+                />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
