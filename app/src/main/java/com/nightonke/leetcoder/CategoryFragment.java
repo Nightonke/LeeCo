@@ -2,12 +2,14 @@ package com.nightonke.leetcoder;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,8 @@ public class CategoryFragment extends Fragment
         implements
         CategoryFragmentAdapter.OnItemClickListener,
         SwipeRefreshLayout.OnRefreshListener {
+
+    private final int START_PROBLEM = 1;
 
     public static final int SORT_BY_ID = 0;
     public static final int SORT_BY_ID_REVERSE = 1;
@@ -83,7 +87,19 @@ public class CategoryFragment extends Fragment
         intent.putExtra("categoryPosition", categoryPosition);
         intent.putExtra("problemPosition", position);
         intent.putExtra("id", LeetCoderApplication.categories.get(categoryPosition).get(position).getId());
-        mContext.startActivity(intent);
+        startActivityForResult(intent, START_PROBLEM);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case START_PROBLEM:
+                if (BuildConfig.DEBUG) Log.d("LeetCoder", "Update category");
+                adapter = new CategoryFragmentAdapter(categoryPosition, this);
+                superRecyclerView.setAdapter(adapter);
+                break;
+        }
     }
 
     @Override

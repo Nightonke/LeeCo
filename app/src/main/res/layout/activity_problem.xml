@@ -42,21 +42,42 @@
             android:clickable="true"
             >
 
-            <ImageView
-                android:id="@+id/content_icon"
+            <FrameLayout
+                android:id="@+id/content_layout"
                 android:layout_width="56dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/icon_like_red"
-                android:padding="10dp"
-                android:scaleType="fitCenter"
-                />
+                android:layout_marginTop="-5dp"
+                >
+
+                <ImageView
+                    android:id="@+id/content_icon"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:src="@drawable/icon_like_white"
+                    android:padding="5dp"
+                    android:scaleType="fitCenter"
+                    />
+
+                <TextView
+                    android:id="@+id/like_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="10sp"
+                    android:textColor="@color/white"
+                    android:text="123"
+                    android:layout_gravity="bottom"
+                    android:gravity="center"
+                    android:layout_marginBottom="5dp"
+                    />
+
+            </FrameLayout>
 
             <ImageView
                 android:id="@+id/solution_icon"
                 android:layout_width="56dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/icon_bug"
-                android:padding="10dp"
+                android:padding="5dp"
                 android:scaleType="fitCenter"
                 />
 
@@ -65,7 +86,7 @@
                 android:layout_width="56dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/icon_sort_white"
-                android:padding="10dp"
+                android:padding="5dp"
                 android:scaleType="fitCenter"
                 />
 
@@ -74,7 +95,7 @@
                 android:layout_width="56dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/icon_new_message"
-                android:padding="10dp"
+                android:padding="5dp"
                 android:scaleType="fitCenter"
                 />
 

@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity
         ProblemSearchResultAdapter.OnItemClickListener,
         SwipeRefreshLayout.OnRefreshListener {
 
+    private final int START_PROBLEM = 1;
+
     private Context mContext;
 
     private CultView cultView;
@@ -410,11 +412,11 @@ public class MainActivity extends AppCompatActivity
                 // need to login or register
                 new MaterialDialog.Builder(mContext)
                         .title(R.string.login_or_register_title)
-                        .content(R.string.login_or_register_content)
                         .positiveText(R.string.login_or_register_login)
                         .negativeText(R.string.login_or_register_register)
                         .neutralText(R.string.login_or_register_cancel)
                         .cancelable(false)
+                        .customView(R.layout.dialog_login_or_register, false)
                         .onAny(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -910,7 +912,19 @@ public class MainActivity extends AppCompatActivity
     public void onItemClick(int position) {
         Intent intent = new Intent(mContext, ProblemActivity.class);
         intent.putExtra("id", searchResult.get(position).getId());
-        mContext.startActivity(intent);
+        startActivityForResult(intent, START_PROBLEM);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case START_PROBLEM:
+                if (BuildConfig.DEBUG) Log.d("LeetCoder", "Update search result");
+                searchResultAdapter = new ProblemSearchResultAdapter(searchResult, this);
+                searchRecyclerView.setAdapter(searchResultAdapter);
+                break;
+        }
     }
 
     @Override

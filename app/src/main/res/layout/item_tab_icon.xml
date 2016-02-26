@@ -6,6 +6,6 @@
     android:layout_height="match_parent"
     android:background="?attr/selectableItemBackground"
     android:scaleType="fitCenter"
-    android:padding="10dp"
+    android:padding="7dp"
     app:tint="@color/custom_tab_icon"
     />

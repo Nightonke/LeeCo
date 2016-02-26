@@ -13,6 +13,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +35,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 
 public class ProblemActivity extends AppCompatActivity
@@ -55,7 +58,9 @@ public class ProblemActivity extends AppCompatActivity
 
     private TextView title;
     private FrameLayout icon;
+    private FrameLayout contentLayout;
     private ImageView contentImageView;
+    private TextView likes;
     private ImageView solutionImageView;
     private ImageView discussImageView;
     private ImageView commentImageView;
@@ -126,7 +131,9 @@ public class ProblemActivity extends AppCompatActivity
 
         icon = (FrameLayout)findViewById(R.id.icon);
         icon.setOnClickListener(this);
+        contentLayout = (FrameLayout)findViewById(R.id.content_layout);
         contentImageView = (ImageView)findViewById(R.id.content_icon);
+        likes = (TextView)findViewById(R.id.like_number);
         solutionImageView = (ImageView)findViewById(R.id.solution_icon);
         solutionImageView.setVisibility(View.INVISIBLE);
         discussImageView = (ImageView)findViewById(R.id.discuss_icon);
@@ -151,8 +158,35 @@ public class ProblemActivity extends AppCompatActivity
                     get(getIntent().getIntExtra("problemPosition", -1));
         }
 
+        likes.setText(problem_index.getLike() + "");
         title.setText(problem_index.getTitle());
         getData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (LeetCoderApplication.user == null || LeetCoderApplication.likes == null || LeetCoderApplication.comments == null) {
+            LeetCoderApplication.user = BmobUser.getCurrentUser(LeetCoderApplication.getAppContext(), User.class);
+            if (LeetCoderApplication.user == null) {
+                LeetCoderApplication.likes = null;
+                LeetCoderApplication.comments = null;
+            } else {
+                LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
+                LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
+                if (LeetCoderApplication.user.getLikeProblems().contains(problem_index.getId())) {
+                    contentImageView.setImageResource(R.drawable.icon_like_red);
+                } else {
+                    contentImageView.setImageResource(R.drawable.icon_like_white);
+                }
+            }
+        } else {
+            if (LeetCoderApplication.user.getLikeProblems().contains(problem_index.getId())) {
+                contentImageView.setImageResource(R.drawable.icon_like_red);
+            } else {
+                contentImageView.setImageResource(R.drawable.icon_like_white);
+            }
+        }
     }
 
     private void getData() {
@@ -279,7 +313,7 @@ public class ProblemActivity extends AppCompatActivity
 
     private View getIcon(int i) {
         switch (i) {
-            case 0: return contentImageView;
+            case 0: return contentLayout;
             case 1: return solutionImageView;
             case 2: return discussImageView;
             case 3: return commentImageView;
@@ -299,6 +333,71 @@ public class ProblemActivity extends AppCompatActivity
                 switch (viewPager.getCurrentItem()) {
                     case 0:
                         // like
+                        // like number of the problem index++
+                        // put this number to user's like table
+                        if (LeetCoderApplication.user == null) {
+                            LeetCoderUtil.showToast(mContext, R.string.like_not_login);
+                        } else {
+                            if (LeetCoderApplication.user.getLikeProblems().contains(problem_index.getId())) {
+                                // dislike
+                                problem_index.setLike(problem_index.getLike() - 1);
+                                problem_index.update(LeetCoderApplication.getAppContext(), problem_index.getObjectId(), new UpdateListener() {
+                                    @Override
+                                    public void onSuccess() {
+                                        int index = LeetCoderApplication.user.getLikeProblems().indexOf(problem_index.getId());
+                                        LeetCoderApplication.user.getLikeProblems().remove(index);
+                                        LeetCoderApplication.user.update(LeetCoderApplication.getAppContext(), new UpdateListener() {
+                                            @Override
+                                            public void onSuccess() {
+                                                LeetCoderUtil.showToast(mContext, R.string.like_dislike_successfully);
+                                                contentImageView.setImageResource(R.drawable.icon_like_white);
+                                                likes.setText(problem_index.getLike() + "");
+                                            }
+                                            @Override
+                                            public void onFailure(int i, String s) {
+                                                if (BuildConfig.DEBUG) Log.d("LeetCoder", "Dislike failed: " + s);
+                                                LeetCoderApplication.user.getLikeProblems().add(problem_index.getId());
+                                                LeetCoderUtil.showToast(mContext, R.string.like_dislike_failed);
+                                            }
+                                        });
+                                    }
+                                    @Override
+                                    public void onFailure(int i, String s) {
+                                        if (BuildConfig.DEBUG) Log.d("LeetCoder", "Dislike failed: " + s);
+                                        LeetCoderUtil.showToast(mContext, R.string.like_dislike_failed);
+                                    }
+                                });
+                            } else {
+                                // like
+                                problem_index.setLike(problem_index.getLike() + 1);
+                                problem_index.update(LeetCoderApplication.getAppContext(), problem_index.getObjectId(), new UpdateListener() {
+                                    @Override
+                                    public void onSuccess() {
+                                        LeetCoderApplication.user.getLikeProblems().add(problem_index.getId());
+                                        LeetCoderApplication.user.update(LeetCoderApplication.getAppContext(), new UpdateListener() {
+                                            @Override
+                                            public void onSuccess() {
+                                                LeetCoderUtil.showToast(mContext, R.string.like_like_successfully);
+                                                contentImageView.setImageResource(R.drawable.icon_like_red);
+                                                likes.setText(problem_index.getLike() + "");
+                                            }
+                                            @Override
+                                            public void onFailure(int i, String s) {
+                                                if (BuildConfig.DEBUG) Log.d("LeetCoder", "Like failed: " + s);
+                                                int index = LeetCoderApplication.user.getLikeProblems().indexOf(problem_index.getId());
+                                                LeetCoderApplication.user.getLikeProblems().remove(index);
+                                                LeetCoderUtil.showToast(mContext, R.string.like_like_failed);
+                                            }
+                                        });
+                                    }
+                                    @Override
+                                    public void onFailure(int i, String s) {
+                                        if (BuildConfig.DEBUG) Log.d("LeetCoder", "Like failed: " + s);
+                                        LeetCoderUtil.showToast(mContext, R.string.like_like_failed);
+                                    }
+                                });
+                            }
+                        }
                         break;
                     case 1:
                         // bug of solution

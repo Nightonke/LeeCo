@@ -35,7 +35,12 @@
     <string name="logout_cancel">cancel</string>
 
     <string name="login_or_register_title">LeetCoder</string>
-    <string name="login_or_register_content">Welcome to LeetCoder!\nAfter signing in, you can\nCollect your favorite problems\nWrite comments\nVote for comments\nGet votes from comments\nLet\'s join LeetCoder!</string>
+    <string name="login_or_register_content_1">Welcome to LeetCoder! After signing in, you can</string>
+    <string name="login_or_register_content_2">COLLECT your favorite problems</string>
+    <string name="login_or_register_content_3">WRITE comments</string>
+    <string name="login_or_register_content_4">VOTE for comments</string>
+    <string name="login_or_register_content_5">GET VOTES from comments</string>
+    <string name="login_or_register_content_6">Let\'s join LeetCoder right now!</string>
     <string name="login_or_register_login">sign in</string>
     <string name="login_or_register_register">sign up</string>
     <string name="login_or_register_cancel">cancel</string>
@@ -79,5 +84,11 @@
     <string name="register_password_error">Passwords are different</string>
     <string name="register_ing">Signing up...</string>
     <string name="register_successfully">Sign up successfully</string>
+
+    <string name="like_not_login">Please sign in first</string>
+    <string name="like_like_successfully">Collect this problem successfully</string>
+    <string name="like_like_failed">Collect this problem failed,\ninternet disconnected</string>
+    <string name="like_dislike_successfully">Throw this problem successfully</string>
+    <string name="like_dislike_failed">Throw this problem failed,\ninternet disconnected</string>
 
 </resources>
