@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -26,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -39,13 +41,15 @@ import java.util.Comparator;
 import java.util.HashSet;
 
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.listener.UpdateListener;
 
 public class LikesActivity extends AppCompatActivity
         implements
         View.OnClickListener,
         ProblemLikeAdapter.OnLikeItemClickListener,
         ProblemSearchResultAdapter.OnItemClickListener,
-        SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener,
+        ProblemLikeAdapter.OnLikeItemLongClickListener {
 
     private final int START_PROBLEM = 1;
     private int sortType = 0;
@@ -218,7 +222,7 @@ public class LikesActivity extends AppCompatActivity
                         }
                     }
                 }
-                adapter = new ProblemLikeAdapter(likes, this);
+                adapter = new ProblemLikeAdapter(likes, this, this);
                 superRecyclerView.setAdapter(adapter);
             }
         } else {
@@ -237,7 +241,7 @@ public class LikesActivity extends AppCompatActivity
                     }
                 }
             }
-            adapter = new ProblemLikeAdapter(likes, this);
+            adapter = new ProblemLikeAdapter(likes, this, this);
             superRecyclerView.setAdapter(adapter);
         }
     }
@@ -377,7 +381,7 @@ public class LikesActivity extends AppCompatActivity
                                 case 8: sortByLikes(); break;
                                 case 9:sortByLikesReversely(); break;
                             }
-                            adapter = new ProblemLikeAdapter(likes, LikesActivity.this);
+                            adapter = new ProblemLikeAdapter(likes, LikesActivity.this, LikesActivity.this);
                             superRecyclerView.setAdapter(adapter);
                             LeetCoderUtil.showToast(mContext, R.string.sorting);
                             dialog.dismiss();
@@ -571,5 +575,56 @@ public class LikesActivity extends AppCompatActivity
     public void onRefresh() {
         LeetCoderUtil.showToast(mContext, R.string.researching);
         search(searchInput.getText().toString());
+    }
+
+    @Override
+    public void onLikeItemLongClick(final Problem_Index problemIndex) {
+        new MaterialDialog.Builder(this)
+                .title(R.string.dis_collect_title)
+                .content(R.string.dis_collect_content)
+                .positiveText(R.string.dis_collect_ok)
+                .negativeText(R.string.dis_collect_cancel)
+                .onAny(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        if (which == DialogAction.POSITIVE) {
+                            problemIndex.setLike(problemIndex.getLike() - 1);
+                            problemIndex.update(LeetCoderApplication.getAppContext(), problemIndex.getObjectId(), new UpdateListener() {
+                                @Override
+                                public void onSuccess() {
+                                    int index = LeetCoderApplication.user.getLikeProblems().indexOf(problemIndex.getId());
+                                    LeetCoderApplication.user.getLikeProblems().remove(index);
+                                    LeetCoderApplication.user.update(LeetCoderApplication.getAppContext(), new UpdateListener() {
+                                        @Override
+                                        public void onSuccess() {
+                                            LeetCoderUtil.showToast(mContext, R.string.like_dislike_successfully);
+                                            for (Problem_Index p : likes) {
+                                                if (p.getId() == problemIndex.getId()) {
+                                                    likes.remove(p);
+                                                    break;
+                                                }
+                                            }
+                                            adapter = new ProblemLikeAdapter(likes, LikesActivity.this, LikesActivity.this);
+                                            superRecyclerView.setAdapter(adapter);
+                                        }
+                                        @Override
+                                        public void onFailure(int i, String s) {
+                                            if (BuildConfig.DEBUG) Log.d("LeetCoder", "Dislike failed: " + s);
+                                            LeetCoderApplication.user.getLikeProblems().add(problemIndex.getId());
+                                            LeetCoderUtil.showToast(mContext, R.string.like_dislike_failed);
+                                        }
+                                    });
+                                }
+                                @Override
+                                public void onFailure(int i, String s) {
+                                    if (BuildConfig.DEBUG) Log.d("LeetCoder", "Dislike failed: " + s);
+                                    LeetCoderUtil.showToast(mContext, R.string.like_dislike_failed);
+                                    problemIndex.setLike(problemIndex.getLike() + 1);
+                                }
+                            });
+                        }
+                    }
+                })
+                .show();
     }
 }

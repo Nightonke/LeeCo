@@ -100,4 +100,14 @@
     <string name="searching">Searching...</string>
     <string name="data_not_found">Data not found,\nplease refresh data</string>
 
+    <string name="collect_title">Collect</string>
+    <string name="collect_content">Collect this problem?</string>
+    <string name="collect_ok">collect</string>
+    <string name="collect_cancel">cancel</string>
+
+    <string name="dis_collect_title">Throw</string>
+    <string name="dis_collect_content">Throw this problem from your favorite?</string>
+    <string name="dis_collect_ok">throw</string>
+    <string name="dis_collect_cancel">cancel</string>
+
 </resources>

@@ -58,13 +58,15 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 public class MainActivity extends AppCompatActivity
         implements
         View.OnClickListener,
         CategoryFragment.OnRefreshListener,
         ProblemSearchResultAdapter.OnItemClickListener,
-        SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener,
+        CategoryFragmentAdapter.OnItemLongClickListener {
 
     private final int START_PROBLEM = 1;
     private final int START_LIKES = 2;
@@ -238,11 +240,14 @@ public class MainActivity extends AppCompatActivity
         gridView = (LeetCoderGridView)findViewById(R.id.gridview);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                YoYo.with(Techniques.Bounce).delay(0).duration(700).playOn(view);
-                viewPager.setCurrentItem(position);
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
+            public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        viewPager.setCurrentItem(position, false);
+                    }
+                }, 0);
+                new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         drawerLayout.closeDrawers();
@@ -982,5 +987,96 @@ public class MainActivity extends AppCompatActivity
     public void onRefresh() {
         Toast.makeText(mContext, "Researching...", Toast.LENGTH_SHORT).show();
         search(searchInput.getText().toString());
+    }
+
+    @Override
+    public void onItemLongClick(final Problem_Index problemIndex) {
+        if (LeetCoderApplication.user == null || LeetCoderApplication.likes == null) {
+
+        } else {
+            if (LeetCoderApplication.likes.contains(problemIndex.getId())) {
+                new MaterialDialog.Builder(this)
+                        .title(R.string.dis_collect_title)
+                        .content(R.string.dis_collect_content)
+                        .positiveText(R.string.dis_collect_ok)
+                        .negativeText(R.string.dis_collect_cancel)
+                        .onAny(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                if (which == DialogAction.POSITIVE) {
+                                    problemIndex.setLike(problemIndex.getLike() - 1);
+                                    problemIndex.update(LeetCoderApplication.getAppContext(), problemIndex.getObjectId(), new UpdateListener() {
+                                        @Override
+                                        public void onSuccess() {
+                                            int index = LeetCoderApplication.user.getLikeProblems().indexOf(problemIndex.getId());
+                                            LeetCoderApplication.user.getLikeProblems().remove(index);
+                                            LeetCoderApplication.user.update(LeetCoderApplication.getAppContext(), new UpdateListener() {
+                                                @Override
+                                                public void onSuccess() {
+                                                    LeetCoderUtil.showToast(mContext, R.string.like_dislike_successfully);
+                                                    likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.like_postfix));
+                                                }
+                                                @Override
+                                                public void onFailure(int i, String s) {
+                                                    if (BuildConfig.DEBUG) Log.d("LeetCoder", "Dislike failed: " + s);
+                                                    LeetCoderApplication.user.getLikeProblems().add(problemIndex.getId());
+                                                    LeetCoderUtil.showToast(mContext, R.string.like_dislike_failed);
+                                                }
+                                            });
+                                        }
+                                        @Override
+                                        public void onFailure(int i, String s) {
+                                            if (BuildConfig.DEBUG) Log.d("LeetCoder", "Dislike failed: " + s);
+                                            LeetCoderUtil.showToast(mContext, R.string.like_dislike_failed);
+                                            problemIndex.setLike(problemIndex.getLike() + 1);
+                                        }
+                                    });
+                                }
+                            }
+                        })
+                        .show();
+            } else {
+                new MaterialDialog.Builder(this)
+                        .title(R.string.collect_title)
+                        .content(R.string.collect_content)
+                        .positiveText(R.string.collect_ok)
+                        .negativeText(R.string.collect_cancel)
+                        .onAny(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                if (which == DialogAction.POSITIVE) {
+                                    problemIndex.setLike(problemIndex.getLike() + 1);
+                                    problemIndex.update(LeetCoderApplication.getAppContext(), problemIndex.getObjectId(), new UpdateListener() {
+                                        @Override
+                                        public void onSuccess() {
+                                            LeetCoderApplication.user.getLikeProblems().add(problemIndex.getId());
+                                            LeetCoderApplication.user.update(LeetCoderApplication.getAppContext(), new UpdateListener() {
+                                                @Override
+                                                public void onSuccess() {
+                                                    LeetCoderUtil.showToast(mContext, R.string.like_like_successfully);
+                                                    likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.like_postfix));
+                                                }
+                                                @Override
+                                                public void onFailure(int i, String s) {
+                                                    if (BuildConfig.DEBUG) Log.d("LeetCoder", "Like failed: " + s);
+                                                    int index = LeetCoderApplication.user.getLikeProblems().indexOf(problemIndex.getId());
+                                                    LeetCoderApplication.user.getLikeProblems().remove(index);
+                                                    LeetCoderUtil.showToast(mContext, R.string.like_like_failed);
+                                                }
+                                            });
+                                        }
+                                        @Override
+                                        public void onFailure(int i, String s) {
+                                            if (BuildConfig.DEBUG) Log.d("LeetCoder", "Like failed: " + s);
+                                            LeetCoderUtil.showToast(mContext, R.string.like_like_failed);
+                                            problemIndex.setLike(problemIndex.getLike() - 1);
+                                        }
+                                    });
+                                }
+                            }
+                        })
+                        .show();
+            }
+        }
     }
 }

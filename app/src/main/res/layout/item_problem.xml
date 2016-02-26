@@ -19,7 +19,6 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
         android:layout_marginRight="5dp"
         >
 
@@ -143,10 +142,11 @@
             android:text="You are given an array x of n positive number..."
             android:textSize="13sp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="3dp"
+            android:layout_marginBottom="8dp"
             />
 
         <View
+            android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="0.5sp"
             android:background="?android:attr/listDivider"

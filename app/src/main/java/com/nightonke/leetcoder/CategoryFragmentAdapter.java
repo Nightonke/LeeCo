@@ -25,10 +25,12 @@ public class CategoryFragmentAdapter
     private Context mContext;
     private int pagePosition;
     private OnItemClickListener onItemClickListener;
+    private OnItemLongClickListener onItemLongClickListener;
 
-    public CategoryFragmentAdapter(int pagePosition, OnItemClickListener onItemClickListener) {
+    public CategoryFragmentAdapter(int pagePosition, OnItemClickListener onItemClickListener, OnItemLongClickListener onItemLongClickListener) {
         this.pagePosition = pagePosition;
         this.onItemClickListener = onItemClickListener;
+        this.onItemLongClickListener = onItemLongClickListener;
     }
 
     @Override
@@ -44,6 +46,13 @@ public class CategoryFragmentAdapter
             @Override
             public void onClick(View v) {
                 onItemClickListener.onItemClick(position);
+            }
+        });
+        holder.base.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                onItemLongClickListener.onItemLongClick(LeetCoderApplication.categories.get(pagePosition).get(position));
+                return true;
             }
         });
         String title = LeetCoderApplication.categories.get(pagePosition).get(position).getTitle();
@@ -92,6 +101,7 @@ public class CategoryFragmentAdapter
         public AutofitTextView like;
         public AutofitTextView level;
         public ImageView levelIcon;
+        public View divider;
 
         public ViewHolder(View v) {
             super(v);
@@ -102,11 +112,16 @@ public class CategoryFragmentAdapter
             like = (AutofitTextView)v.findViewById(R.id.like);
             level = (AutofitTextView)v.findViewById(R.id.level);
             levelIcon = (ImageView)v.findViewById(R.id.level_icon);
+            divider = v.findViewById(R.id.divider);
         }
     }
 
     public interface OnItemClickListener {
         void onItemClick(int position);
+    }
+
+    public interface OnItemLongClickListener {
+        void onItemLongClick(Problem_Index problemIndex);
     }
 
 }

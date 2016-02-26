@@ -365,6 +365,7 @@ public class ProblemActivity extends AppCompatActivity
                                     public void onFailure(int i, String s) {
                                         if (BuildConfig.DEBUG) Log.d("LeetCoder", "Dislike failed: " + s);
                                         LeetCoderUtil.showToast(mContext, R.string.like_dislike_failed);
+                                        problem_index.setLike(problem_index.getLike() + 1);
                                     }
                                 });
                             } else {
@@ -394,6 +395,7 @@ public class ProblemActivity extends AppCompatActivity
                                     public void onFailure(int i, String s) {
                                         if (BuildConfig.DEBUG) Log.d("LeetCoder", "Like failed: " + s);
                                         LeetCoderUtil.showToast(mContext, R.string.like_like_failed);
+                                        problem_index.setLike(problem_index.getLike() - 1);
                                     }
                                 });
                             }

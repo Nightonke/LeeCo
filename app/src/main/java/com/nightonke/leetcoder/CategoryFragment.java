@@ -48,6 +48,8 @@ public class CategoryFragment extends Fragment
     private SuperRecyclerView superRecyclerView;
     private CategoryFragmentAdapter adapter;
 
+    private CategoryFragmentAdapter.OnItemLongClickListener onItemLongClickListener;
+
     @Override
     public void onAttach(Context context) {
         mContext = context;
@@ -55,6 +57,10 @@ public class CategoryFragment extends Fragment
 
         if (context instanceof OnRefreshListener){
             onRefreshListener = (OnRefreshListener)context;
+        }
+
+        if (context instanceof CategoryFragmentAdapter.OnItemLongClickListener){
+            onItemLongClickListener = (CategoryFragmentAdapter.OnItemLongClickListener)context;
         }
     }
 
@@ -74,7 +80,7 @@ public class CategoryFragment extends Fragment
         categoryPosition = FragmentPagerItem.getPosition(getArguments());
 
         superRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        adapter = new CategoryFragmentAdapter(categoryPosition, this);
+        adapter = new CategoryFragmentAdapter(categoryPosition, this, onItemLongClickListener);
         superRecyclerView.setAdapter(adapter);
 
         swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(mContext, R.color.colorPrimary));
@@ -96,7 +102,7 @@ public class CategoryFragment extends Fragment
         switch (requestCode) {
             case START_PROBLEM:
                 if (BuildConfig.DEBUG) Log.d("LeetCoder", "Update category");
-                adapter = new CategoryFragmentAdapter(categoryPosition, this);
+                adapter = new CategoryFragmentAdapter(categoryPosition, this, onItemLongClickListener);
                 superRecyclerView.setAdapter(adapter);
                 break;
         }
@@ -116,7 +122,7 @@ public class CategoryFragment extends Fragment
     }
 
     public void notifySort() {
-        adapter = new CategoryFragmentAdapter(categoryPosition, this);
+        adapter = new CategoryFragmentAdapter(categoryPosition, this, onItemLongClickListener);
         superRecyclerView.setAdapter(adapter);
     }
 }

@@ -25,10 +25,12 @@ public class ProblemLikeAdapter
     private Context mContext;
     private ArrayList<Problem_Index> likeProblems;
     private OnLikeItemClickListener onLikeItemClickListener;
+    private OnLikeItemLongClickListener onLikeItemLongClickListener;
 
-    public ProblemLikeAdapter(ArrayList<Problem_Index> likeProblems, OnLikeItemClickListener onLikeItemClickListener) {
+    public ProblemLikeAdapter(ArrayList<Problem_Index> likeProblems, OnLikeItemClickListener onLikeItemClickListener, OnLikeItemLongClickListener onLikeItemLongClickListener) {
         this.likeProblems = likeProblems;
         this.onLikeItemClickListener = onLikeItemClickListener;
+        this.onLikeItemLongClickListener = onLikeItemLongClickListener;
     }
 
     @Override
@@ -44,6 +46,13 @@ public class ProblemLikeAdapter
             @Override
             public void onClick(View v) {
                 onLikeItemClickListener.onLikeItemClick(position);
+            }
+        });
+        holder.base.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                onLikeItemLongClickListener.onLikeItemLongClick(likeProblems.get(position));
+                return true;
             }
         });
         String title = likeProblems.get(position).getTitle();
@@ -86,6 +95,7 @@ public class ProblemLikeAdapter
         public AutofitTextView like;
         public AutofitTextView level;
         public ImageView levelIcon;
+        public View divider;
 
         public ViewHolder(View v) {
             super(v);
@@ -96,11 +106,16 @@ public class ProblemLikeAdapter
             like = (AutofitTextView)v.findViewById(R.id.like);
             level = (AutofitTextView)v.findViewById(R.id.level);
             levelIcon = (ImageView)v.findViewById(R.id.level_icon);
+            divider = v.findViewById(R.id.divider);
         }
     }
 
     public interface OnLikeItemClickListener {
         void onLikeItemClick(int position);
+    }
+
+    public interface OnLikeItemLongClickListener {
+        void onLikeItemLongClick(Problem_Index problemIndex);
     }
 
 }
