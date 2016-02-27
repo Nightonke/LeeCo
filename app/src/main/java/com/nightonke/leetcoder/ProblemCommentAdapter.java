@@ -1,6 +1,7 @@
 package com.nightonke.leetcoder;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.daimajia.easing.linear.Linear;
 import com.github.aakira.expandablelayout.ExpandableLayout;
 import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter;
@@ -26,6 +28,10 @@ import me.grantland.widget.AutofitTextView;
  */
 public class ProblemCommentAdapter
         extends RecyclerView.Adapter<ProblemCommentAdapter.ViewHolder> {
+
+    private final int FIRST = 0;
+    private final int NORMAL = 1;
+    private final int LAST = 2;
 
     private Context mContext;
     private List<Comment> comments;
@@ -63,88 +69,119 @@ public class ProblemCommentAdapter
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         this.mContext = parent.getContext();
-        return new ViewHolder(LayoutInflater.from(mContext)
-                .inflate(R.layout.item_comment, parent, false));
+        switch (viewType) {
+            case FIRST: {
+                return new ViewHolder(LayoutInflater.from(mContext)
+                        .inflate(R.layout.item_comment_first, parent, false));
+            }
+            case NORMAL: {
+                return new ViewHolder(LayoutInflater.from(mContext)
+                        .inflate(R.layout.item_comment, parent, false));
+            }
+            case LAST: {
+                return new ViewHolder(LayoutInflater.from(mContext)
+                        .inflate(R.layout.item_comment_last, parent, false));
+            }
+        }
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final Comment comment = comments.get(position);
-        holder.base.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onCardViewClickListener.onCardViewClick(position);
-            }
-        });
-        holder.base.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                onContentLongClickListener.onContentLongClick(position);
-                return true;
-            }
-        });
-        holder.button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickButton(holder.expandLayout);
-            }
-        });
-        holder.expandLayout.setListener(new ExpandableLayoutListenerAdapter() {
-            @Override
-            public void onPreOpen() {
-                LeetCoderUtil.createRotateAnimator(holder.button, 0f, 180f).start();
-                expandState.put(position, true);
-            }
+    public int getItemViewType(int position) {
+        if (position == 0) return FIRST;
+        else if (position == getItemCount() - 1) return LAST;
+        else return NORMAL;
+    }
 
-            @Override
-            public void onPreClose() {
-                LeetCoderUtil.createRotateAnimator(holder.button, 180f, 0f).start();
-                expandState.put(position, false);
-            }
-        });
-        holder.reply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onReplyClickListener.onReplyClick(position);
-            }
-        });
-        holder.like.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onLikeClickListener.onLikeClick(position);
-            }
-        });
+    @Override
+    public void onBindViewHolder(final ViewHolder holder, final int p) {
+        switch (getItemViewType(p)) {
+            case FIRST:
+                break;
+            case NORMAL:
+                final int position = p - 1;
+                final Comment comment = comments.get(position);
+                holder.base.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onCardViewClickListener.onCardViewClick(position);
+                    }
+                });
+                holder.base.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        onContentLongClickListener.onContentLongClick(position);
+                        return true;
+                    }
+                });
+                holder.button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onClickButton(holder.expandLayout);
+                    }
+                });
+                holder.expandLayout.setListener(new ExpandableLayoutListenerAdapter() {
+                    @Override
+                    public void onPreOpen() {
+                        LeetCoderUtil.createRotateAnimator(holder.button, 0f, 180f).start();
+                        expandState.put(position, true);
+                    }
 
-        holder.title.setText(comment.getTitle());
-        holder.button.setRotation(expandState.get(position) ? 180f : 0f);
-        holder.expandLayout.setExpanded(expandState.get(position));
-        final String targetId = comment.getTargetComment();
-        if (targetId == null && !"".equals(targetId)) {
-            holder.targetLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onTargetClickListener.onTargetClick(targetId);
+                    @Override
+                    public void onPreClose() {
+                        LeetCoderUtil.createRotateAnimator(holder.button, 180f, 0f).start();
+                        expandState.put(position, false);
+                    }
+                });
+                holder.reply.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onReplyClickListener.onReplyClick(position);
+                    }
+                });
+                holder.like.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onLikeClickListener.onLikeClick(position);
+                    }
+                });
+
+                holder.title.setText(comment.getTitle());
+                holder.button.setRotation(expandState.get(position) ? 180f : 0f);
+                holder.expandLayout.setExpanded(expandState.get(position));
+                final String targetId = comment.getTargetComment();
+                if (targetId != null && !"".equals(targetId)) {
+                    holder.targetLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onTargetClickListener.onTargetClick(targetId);
+                        }
+                    });
+
+                    for (Comment c : comments) {
+                        if (c.getObjectId().equals(targetId)) {
+                            holder.targetTitle.setText(c.getTitle());
+                        }
+                    }
+                } else {
+                    holder.targetLayout.setVisibility(View.GONE);
                 }
-            });
-
-            for (Comment c : comments) {
-                if (c.getObjectId().equals(targetId)) {
-                    holder.targetTitle.setText(c.getTitle());
-                }
-            }
-        } else {
-            holder.targetLayout.setVisibility(View.GONE);
+                holder.content.setText(comment.getContent());
+                holder.date.setText(comment.getUpdatedAt());
+                holder.writer.setText(comment.getUserName());
+                holder.replyNumber.setText(comment.getReplies().size() + "");
+                holder.likeNumber.setText(comment.getLikers().size() + "");
+                holder.index.setText((position + 1) + "");
+                break;
+            case LAST:
+                break;
         }
-        holder.content.setText(comment.getContent());
-        holder.date.setText(comment.getUpdatedAt());
-        holder.writer.setText(comment.getUserName());
-        holder.replyNumber.setText(comment.getReplies().size() + "");
-        holder.likeNumber.setText(comment.getLikers().size() + "");
     }
 
     @Override
     public int getItemCount() {
-        return comments.size();
+        if (comments.size() == 0) return 0;
+        else return comments.size() + 2;
     }
 
     @Override
@@ -167,6 +204,7 @@ public class ProblemCommentAdapter
         public TextView replyNumber;
         public FrameLayout like;
         public TextView likeNumber;
+        public TextView index;
 
         public ViewHolder(View v) {
             super(v);
@@ -183,6 +221,7 @@ public class ProblemCommentAdapter
             replyNumber = (TextView)v.findViewById(R.id.reply_number);
             like = (FrameLayout)v.findViewById(R.id.like_layout);
             likeNumber = (TextView)v.findViewById(R.id.like_number);
+            index = (TextView)v.findViewById(R.id.index);
         }
     }
 

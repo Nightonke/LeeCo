@@ -120,6 +120,8 @@
     <string name="copy_link_toast">Link copied</string>
     <string name="open_with">Open With</string>
 
+    <string name="comment_re">Re:&#160;</string>
+    <string name="comment_by">By&#160;</string>
     <string name="comment_title_hint">Title</string>
     <string name="comment_content_hint">Write comment here</string>
     <string name="comment_unchanged">Please don\'t send the same comment</string>

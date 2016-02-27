@@ -154,26 +154,26 @@ public class ProblemCommentFragment extends Fragment
 
     @Override
     public void onCardViewClick(int position) {
-
+        if (BuildConfig.DEBUG) Log.d("LeetCoder", "onCardViewClick " + position);
     }
 
     @Override
     public void onContentLongClick(int position) {
-
+        if (BuildConfig.DEBUG) Log.d("LeetCoder", "onContentLongClick " + position);
     }
 
     @Override
     public void onLikeClick(int position) {
-
+        if (BuildConfig.DEBUG) Log.d("LeetCoder", "onLikeClick " + position);
     }
 
     @Override
     public void onReplyClick(int position) {
-
+        if (BuildConfig.DEBUG) Log.d("LeetCoder", "onReplyClick " + position);
     }
 
     @Override
     public void onTargetClick(String objectId) {
-
+        if (BuildConfig.DEBUG) Log.d("LeetCoder", "onTargetClick " + objectId);
     }
 }
