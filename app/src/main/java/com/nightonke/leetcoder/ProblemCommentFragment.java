@@ -25,6 +25,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -45,6 +48,14 @@ public class ProblemCommentFragment extends Fragment
         ProblemCommentAdapter.OnTargetClickListener,
         ProblemCommentAdapter.OnReplyClickListener,
         ProblemCommentAdapter.OnLikeClickListener {
+
+    public static final int SORT_BY_DATE = 0;
+    public static final int SORT_BY_DATE_REVERSELY = 1;
+    public static final int SORT_BY_LIKES = 2;
+    public static final int SORT_BY_LIKES_REVERSELY = 3;
+
+    public static int sortType = 1;
+    private boolean loading = false;
 
     private LinearLayoutManager linearLayoutManager;
     private SuperRecyclerView superRecyclerView;
@@ -96,7 +107,7 @@ public class ProblemCommentFragment extends Fragment
     }
 
     public void setComment() {
-
+        loading = true;
         setLoading();
 
         BmobQuery<Comment> query = new BmobQuery<Comment>();
@@ -106,17 +117,18 @@ public class ProblemCommentFragment extends Fragment
             @Override
             public void onSuccess(List<Comment> object) {
                 if (BuildConfig.DEBUG) Log.d("LeetCoder", "Get comments: " + object.size());
+                loading = false;
                 reload.setText(mContext.getResources().getString(R.string.reload));  // for refreshing
                 reloadLayout.setVisibility(View.GONE);
 
                 comments = object;
-                adapter = new ProblemCommentAdapter(comments, ProblemCommentFragment.this, ProblemCommentFragment.this, ProblemCommentFragment.this, ProblemCommentFragment.this, ProblemCommentFragment.this);
-                superRecyclerView.setAdapter(adapter);
+                sort(sortType);
                 superRecyclerView.setVisibility(View.VISIBLE);
             }
             @Override
             public void onError(int code, String msg) {
                 if (BuildConfig.DEBUG) Log.d("LeetCoder", "Get comments failed: " + msg);
+                loading = false;
                 setReload();
             }
         });
@@ -162,6 +174,82 @@ public class ProblemCommentFragment extends Fragment
     public void onRefresh() {
         isRefreshing = true;
         onClick(reload);
+    }
+
+    public boolean isLoading() {
+        return loading;
+    }
+
+    public boolean sort(int newSortType) {
+        if (loading) return false;
+        else {
+            sortType = newSortType;
+            switch (sortType) {
+                case SORT_BY_DATE: sortByDate(); break;
+                case SORT_BY_DATE_REVERSELY: sortByDateReversely(); break;
+                case SORT_BY_LIKES: sortByLikes(); break;
+                case SORT_BY_LIKES_REVERSELY: sortByLikesReversely(); break;
+            }
+            adapter = new ProblemCommentAdapter(comments, ProblemCommentFragment.this, ProblemCommentFragment.this, ProblemCommentFragment.this, ProblemCommentFragment.this, ProblemCommentFragment.this);
+            superRecyclerView.setAdapter(adapter);
+            return true;
+        }
+    }
+
+    private void sortByDate() {
+        if (comments == null) return;
+        Collections.sort(comments, new Comparator<Comment>() {
+            @Override
+            public int compare(Comment lhs, Comment rhs) {
+                Calendar l = LeetCoderUtil.bmobDateToCalendar(lhs.getUpdatedAt());
+                Calendar r = LeetCoderUtil.bmobDateToCalendar(rhs.getUpdatedAt());
+                if (l.before(r)) return -1;
+                else if (r.before(l)) return 1;
+                else return 0;
+            }
+        });
+    }
+
+    private void sortByDateReversely() {
+        if (comments == null) return;
+        Collections.sort(comments, new Comparator<Comment>() {
+            @Override
+            public int compare(Comment rhs, Comment lhs) {
+                Calendar l = LeetCoderUtil.bmobDateToCalendar(lhs.getUpdatedAt());
+                Calendar r = LeetCoderUtil.bmobDateToCalendar(rhs.getUpdatedAt());
+                if (l.before(r)) return -1;
+                else if (r.before(l)) return 1;
+                else return 0;
+            }
+        });
+    }
+
+    private void sortByLikes() {
+        if (comments == null) return;
+        Collections.sort(comments, new Comparator<Comment>() {
+            @Override
+            public int compare(Comment rhs, Comment lhs) {
+                int l = lhs.getLikers().size();
+                int r = rhs.getLikers().size();
+                if (l < r) return -1;
+                else if (r < l) return 1;
+                else return 0;
+            }
+        });
+    }
+
+    private void sortByLikesReversely() {
+        if (comments == null) return;
+        Collections.sort(comments, new Comparator<Comment>() {
+            @Override
+            public int compare(Comment lhs, Comment rhs) {
+                int l = lhs.getLikers().size();
+                int r = rhs.getLikers().size();
+                if (l < r) return -1;
+                else if (r < l) return 1;
+                else return 0;
+            }
+        });
     }
 
     @Override

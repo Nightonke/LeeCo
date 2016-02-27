@@ -9,10 +9,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.daimajia.easing.linear.Linear;
 import com.thefinestartist.finestwebview.FinestWebView;
 
 import java.util.List;
@@ -37,8 +40,15 @@ public class ProblemContentFragment extends Fragment
     private ProgressBar progressBar;
     private TextView reload;
 
+    private TextView like;
+    private ImageView levelIcon;
+    private TextView level;
+
     private RichText content;
+    private TextView tagHint;
     private TagGroup tags;
+    private LinearLayout similarProblemHintLayout;
+    private TextView similarProblemHint;
     private TagGroup similarProblems;
 
     private CoordinatorLayout snackbarLayout;
@@ -81,7 +91,11 @@ public class ProblemContentFragment extends Fragment
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setVisibility(View.GONE);
+        like = (TextView)contentFragment.findViewById(R.id.like);
+        levelIcon = (ImageView)contentFragment.findViewById(R.id.level_icon);
+        level = (TextView)contentFragment.findViewById(R.id.level);
         content = (RichText)contentFragment.findViewById(R.id.content);
+        tagHint = (TextView)contentFragment.findViewById(R.id.tags_hint_text);
         tags = (TagGroup)contentFragment.findViewById(R.id.tags);
         tags.setOnTagClickListener(new TagGroup.OnTagClickListener() {
             @Override
@@ -89,6 +103,8 @@ public class ProblemContentFragment extends Fragment
                 ProblemContentFragment.this.onTagClick(tag);
             }
         });
+        similarProblemHintLayout = (LinearLayout)contentFragment.findViewById(R.id.similar_problem_hint);
+        similarProblemHint = (TextView)contentFragment.findViewById(R.id.similar_problem_hint_text);
         similarProblems = (TagGroup)contentFragment.findViewById(R.id.similar_problem);
         similarProblems.setOnTagClickListener(new TagGroup.OnTagClickListener() {
             @Override
@@ -110,11 +126,32 @@ public class ProblemContentFragment extends Fragment
         swipeRefreshLayout.setVisibility(View.VISIBLE);
 
         content.setRichText(LeetCoderUtil.getReadyContent(activity.problem.getContent()));
+        if (activity.problem_index.getLike() == 1) {
+            like.setText(activity.problem_index.getLike() + " Like");
+        } else {
+            like.setText(activity.problem_index.getLike() + " Likes");
+        }
+        String levelString = activity.problem_index.getLevel();
+        level.setText(levelString);
+        if ("Easy".equals(levelString)) levelIcon.setImageResource(R.drawable.icon_easy);
+        else if ("Medium".equals(levelString)) levelIcon.setImageResource(R.drawable.icon_medium);
+        else if ("Hard".equals(levelString)) levelIcon.setImageResource(R.drawable.icon_hard);
         tags.setTags(activity.problem_index.getTags());
+        if (activity.problem_index.getTags().size() == 1) {
+            tagHint.setText(R.string.tag_hint);
+        } else {
+            tagHint.setText(R.string.tags_hint);
+        }
         if (activity.problem.getSimilarProblems() == null || activity.problem.getSimilarProblems().size() == 0) {
             similarProblems.setVisibility(View.GONE);
+            similarProblemHintLayout.setVisibility(View.GONE);
         } else {
             similarProblems.setTags(activity.problem.getSimilarProblems());
+            if (activity.problem.getSimilarProblems().size() == 1) {
+                similarProblemHint.setText(R.string.similar_problem_hint);
+            } else {
+                similarProblemHint.setText(R.string.similar_problems_hint);
+            }
         }
 
         if (isRefreshing) {

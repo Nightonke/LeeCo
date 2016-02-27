@@ -19,6 +19,10 @@ public class Problem_Index extends BmobObject {
 
     public Problem_Index clone() {
         Problem_Index problemIndex = new Problem_Index();
+        problemIndex.setObjectId(getObjectId());
+        problemIndex.setCreatedAt(getCreatedAt());
+        problemIndex.setUpdatedAt(getCreatedAt());
+        problemIndex.setACL(getACL());
         problemIndex.setId(getId());
         problemIndex.setTitle(getTitle());
         problemIndex.setLevel(getLevel());

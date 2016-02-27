@@ -48,6 +48,13 @@
         <item>Most views</item>
     </string-array>
 
+    <string-array name="sort_types_comment">
+        <item>Comment Update Date</item>
+        <item>Comment Update Date Reversely</item>
+        <item>Votes</item>
+        <item>Votes Reversely</item>
+    </string-array>
+
     <string-array name="feedback_types">
         <item>Problem content is incorrect.</item>
         <item>Solution is incorrect.</item>

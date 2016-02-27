@@ -254,6 +254,10 @@ public class ProblemActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        setLikes();
+    }
+
+    private void setLikes() {
         if (LeetCoderApplication.user == null || LeetCoderApplication.likes == null || LeetCoderApplication.comments == null) {
             LeetCoderApplication.user = BmobUser.getCurrentUser(LeetCoderApplication.getAppContext(), User.class);
             if (LeetCoderApplication.user == null) {
@@ -282,6 +286,7 @@ public class ProblemActivity extends AppCompatActivity
     }
 
     private void getData() {
+
         loading = true;
         problem = new Problem();
         problem.setId(problem_index.getId());
@@ -630,6 +635,30 @@ public class ProblemActivity extends AppCompatActivity
                 break;
             case R.id.comment_sort_icon:
                 // sort comment
+                final Fragment commentFragment = adapter.getPage(3);
+                if (commentFragment != null) {
+                    if (commentFragment instanceof ProblemCommentFragment) {
+                        if (((ProblemCommentFragment) commentFragment).isLoading()) {
+                            LeetCoderUtil.showToast(mContext, R.string.problem_is_loading);
+                        } else {
+                            new MaterialDialog.Builder(mContext)
+                                    .title(R.string.sort_title)
+                                    .items(R.array.sort_types_comment)
+                                    .itemsCallbackSingleChoice(((ProblemCommentFragment) commentFragment).sortType, new MaterialDialog.ListCallbackSingleChoice() {
+                                        @Override
+                                        public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                            ((ProblemCommentFragment) commentFragment).sort(which);
+                                            LeetCoderUtil.showToast(mContext, R.string.sorting);
+                                            dialog.dismiss();
+                                            return true;
+                                        }
+                                    })
+                                    .negativeText(R.string.cancel)
+                                    .show();
+                        }
+
+                    }
+                }
                 break;
             case R.id.comment_message_icon:
                 // new comment
@@ -771,7 +800,20 @@ public class ProblemActivity extends AppCompatActivity
                 problem_index = target;
                 likes.setText(problem_index.getLike() + "");
                 title.setText(problem_index.getTitle());
+                setLikes();
                 getData();
+            }
+        });
+        view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                snackbar.dismiss();
+                problem_index = target;
+                likes.setText(problem_index.getLike() + "");
+                title.setText(problem_index.getTitle());
+                setLikes();
+                getData();
+                return true;
             }
         });
         if (target == null) view.setVisibility(View.GONE);
@@ -807,7 +849,7 @@ public class ProblemActivity extends AppCompatActivity
         layout.findViewById(android.support.design.R.id.snackbar_action).setVisibility(View.GONE);
 
         // Inflate our custom view
-        View snackView = getLayoutInflater().inflate(R.layout.snackbar_similar_problem, null);
+        View snackView = getLayoutInflater().inflate(R.layout.snackbar_tag, null);
         // Configure the view
         AutofitTextView problemTitle = (AutofitTextView) snackView.findViewById(R.id.title);
         problemTitle.setText(tag);
@@ -822,6 +864,17 @@ public class ProblemActivity extends AppCompatActivity
                 resultIntent.putExtra("category", finalTargetPosition);
                 setResult(MainActivity.BACK_CATEGORY, resultIntent);
                 finish();
+            }
+        });
+        view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                snackbar.dismiss();
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("category", finalTargetPosition);
+                setResult(MainActivity.BACK_CATEGORY, resultIntent);
+                finish();
+                return true;
             }
         });
         if (targetPosition == -1) view.setVisibility(View.GONE);

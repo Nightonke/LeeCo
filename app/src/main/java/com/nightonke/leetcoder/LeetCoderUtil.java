@@ -28,10 +28,14 @@ import com.github.aakira.expandablelayout.Utils;
 import com.github.johnpersano.supertoasts.SuperToast;
 
 import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -285,6 +289,31 @@ public class LeetCoderUtil {
             lines++;
         }
         return string;
+    }
+
+    public static String bmobDateToMyDate(String string) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", LeetCoderApplication.getAppContext().getResources().getConfiguration().locale);
+        String[] months = LeetCoderApplication.getAppContext().getResources().getStringArray(R.array.month_short_name);
+        try {
+            cal.setTime(sdf.parse(string));
+            return months[cal.get(Calendar.MONTH)] + " " + cal.get(Calendar.DAY_OF_MONTH) + ", " + cal.get(Calendar.YEAR);
+        } catch (ParseException p) {
+            p.printStackTrace();
+            return string;
+        }
+    }
+
+    public static Calendar bmobDateToCalendar(String string) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", LeetCoderApplication.getAppContext().getResources().getConfiguration().locale);
+        try {
+            cal.setTime(sdf.parse(string));
+            return cal;
+        } catch (ParseException p) {
+            p.printStackTrace();
+            return cal;
+        }
     }
 
 

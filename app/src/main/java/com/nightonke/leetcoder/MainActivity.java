@@ -10,6 +10,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -26,6 +27,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -114,6 +118,8 @@ public class MainActivity extends AppCompatActivity
     private LinearLayout help;
     private LinearLayout feedback;
     private LinearLayout about;
+
+    private WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -428,6 +434,9 @@ public class MainActivity extends AppCompatActivity
                 searchInput.setText("");
                 break;
             case R.id.reload:
+                reloadLayout.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+                reload.setText(mContext.getResources().getString(R.string.loading));
                 getData();
                 break;
             case R.id.user_layout:

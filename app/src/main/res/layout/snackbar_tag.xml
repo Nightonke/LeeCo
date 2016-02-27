@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="76dp">
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@drawable/background_snackbar_tag"
+        android:orientation="horizontal"
+        >
+
+        <me.grantland.widget.AutofitTextView
+            android:id="@+id/title"
+            android:layout_height="56dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="28dp"
+            android:gravity="left|center_vertical"
+            android:layout_gravity="left|center_vertical"
+            android:text="3Sum Smaller"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:ellipsize="marquee"
+            android:maxLines="2"
+            />
+
+        <ImageView
+            android:id="@+id/view"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@drawable/icon_view"
+            android:background="?android:actionBarItemBackground"
+            android:padding="10dp"
+            android:layout_marginRight="28dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

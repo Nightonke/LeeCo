@@ -162,7 +162,7 @@ public class ProblemCommentAdapter
                     holder.targetLayout.setVisibility(View.GONE);
                 }
                 holder.content.setText(comment.getContent());
-                holder.date.setText(comment.getUpdatedAt());
+                holder.date.setText(LeetCoderUtil.bmobDateToMyDate(comment.getUpdatedAt()));
                 holder.writer.setText(comment.getUserName());
                 holder.replyNumber.setText(comment.getReplies().size() + "");
                 holder.likeNumber.setText(comment.getLikers().size() + "");
