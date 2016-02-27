@@ -5,6 +5,8 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -13,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
@@ -28,6 +31,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.github.ppamorim.cult.CultView;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
@@ -59,6 +63,8 @@ public class ProblemActivity extends AppCompatActivity
 
     private Context mContext;
 
+    private CultView cultView;
+
     private int lastPagerPosition = 0;
     private ViewPager viewPager;
     private SmartTabLayout viewPagerTab;
@@ -82,6 +88,17 @@ public class ProblemActivity extends AppCompatActivity
 
         mContext = this;
         LeetCoderUtil.setStatusBarColor(mContext, R.color.colorPrimary);
+
+        cultView = (CultView)findViewById(R.id.cult_view);
+        ((AppCompatActivity)mContext).setSupportActionBar(cultView.getInnerToolbar());
+        cultView.getInnerToolbar().setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
+        cultView.getOutToolbar().setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+        (LeetCoderUtil.getActionBarTextView(cultView.getInnerToolbar())).setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+        ActionBar actionBar = ((AppCompatActivity)mContext).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(false);
+        }
 
         adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
@@ -188,15 +205,19 @@ public class ProblemActivity extends AppCompatActivity
                 LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
                 if (LeetCoderApplication.user.getLikeProblems().contains(problem_index.getId())) {
                     contentImageView.setImageResource(R.drawable.icon_like_red);
+                    likes.setTextColor(ContextCompat.getColor(mContext, R.color.like_red));
                 } else {
-                    contentImageView.setImageResource(R.drawable.icon_like_white);
+                    contentImageView.setImageResource(R.drawable.icon_like_blue);
+                    likes.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
                 }
             }
         } else {
             if (LeetCoderApplication.user.getLikeProblems().contains(problem_index.getId())) {
                 contentImageView.setImageResource(R.drawable.icon_like_red);
+                likes.setTextColor(ContextCompat.getColor(mContext, R.color.like_red));
             } else {
-                contentImageView.setImageResource(R.drawable.icon_like_white);
+                contentImageView.setImageResource(R.drawable.icon_like_blue);
+                likes.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
             }
         }
     }
@@ -380,7 +401,8 @@ public class ProblemActivity extends AppCompatActivity
                                             @Override
                                             public void onSuccess() {
                                                 LeetCoderUtil.showToast(mContext, R.string.like_dislike_successfully);
-                                                contentImageView.setImageResource(R.drawable.icon_like_white);
+                                                contentImageView.setImageResource(R.drawable.icon_like_blue);
+                                                likes.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
                                                 likes.setText(problem_index.getLike() + "");
                                             }
                                             @Override
@@ -410,6 +432,7 @@ public class ProblemActivity extends AppCompatActivity
                                             public void onSuccess() {
                                                 LeetCoderUtil.showToast(mContext, R.string.like_like_successfully);
                                                 contentImageView.setImageResource(R.drawable.icon_like_red);
+                                                likes.setTextColor(ContextCompat.getColor(mContext, R.color.like_red));
                                                 likes.setText(problem_index.getLike() + "");
                                             }
                                             @Override

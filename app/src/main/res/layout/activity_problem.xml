@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.nightonke.leetcoder.ProblemActivity">
+    android:background="@color/colorPrimary">
+
+    <com.github.ppamorim.cult.CultView
+        android:id="@+id/cult_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:toolbar_height="64dp"
+        app:inner_padding="4dp"
+        app:content_view="@layout/fragment_problem"/>
 
     <LinearLayout
-        android:layout_height="@dimen/tab_height"
+        android:layout_height="72dp"
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:background="@color/colorPrimary"
         >
 
         <TextView
@@ -19,10 +24,10 @@
             android:layout_height="match_parent"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="26dp"
             android:gravity="left|center_vertical"
             android:text="Title Example"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorPrimary"
             android:textSize="20sp"
             android:ellipsize="marquee"
             android:maxLines="1"
@@ -36,7 +41,7 @@
 
         <FrameLayout
             android:id="@+id/icon"
-            android:layout_width="56dp"
+            android:layout_width="64dp"
             android:layout_height="match_parent"
             android:background="?android:actionBarItemBackground"
             android:clickable="true"
@@ -45,7 +50,8 @@
             <FrameLayout
                 android:id="@+id/content_layout"
                 android:layout_width="56dp"
-                android:layout_height="match_parent"
+                android:layout_height="56dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="-5dp"
                 >
 
@@ -53,7 +59,7 @@
                     android:id="@+id/content_icon"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
-                    android:src="@drawable/icon_like_white"
+                    android:src="@drawable/icon_like_blue"
                     android:padding="5dp"
                     android:scaleType="fitCenter"
                     />
@@ -63,11 +69,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="10sp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorPrimary"
                     android:text="123"
                     android:layout_gravity="bottom"
                     android:gravity="center"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="2dp"
                     />
 
             </FrameLayout>
@@ -75,8 +81,9 @@
             <ImageView
                 android:id="@+id/solution_icon"
                 android:layout_width="56dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/icon_bug"
+                android:layout_height="56dp"
+                android:src="@drawable/icon_bug_blue"
+                android:layout_gravity="center"
                 android:padding="5dp"
                 android:scaleType="fitCenter"
                 />
@@ -84,8 +91,9 @@
             <ImageView
                 android:id="@+id/discuss_icon"
                 android:layout_width="56dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/icon_sort_white"
+                android:layout_height="56dp"
+                android:src="@drawable/icon_sort_primary"
+                android:layout_gravity="center"
                 android:padding="5dp"
                 android:scaleType="fitCenter"
                 />
@@ -93,8 +101,9 @@
             <ImageView
                 android:id="@+id/comment_icon"
                 android:layout_width="56dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/icon_new_message"
+                android:layout_height="56dp"
+                android:src="@drawable/icon_message_blue"
+                android:layout_gravity="center"
                 android:padding="5dp"
                 android:scaleType="fitCenter"
                 />
@@ -103,39 +112,5 @@
 
     </LinearLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        >
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-
-        <android.support.design.widget.CoordinatorLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"/>
-
-    </FrameLayout>
-
-    <com.ogaclejapan.smarttablayout.SmartTabLayout
-        android:id="@+id/viewpagertab"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/tab_height"
-        android:layout_gravity="bottom"
-        android:background="@color/colorPrimary"
-        app:stl_distributeEvenly="true"
-        app:stl_dividerColor="@android:color/transparent"
-        app:stl_dividerThickness="0dp"
-        app:stl_indicatorColor="@android:color/transparent"
-        app:stl_indicatorThickness="0dp"
-        app:stl_underlineColor="@android:color/transparent"
-        app:stl_underlineThickness="0dp"
-        />
-
-</LinearLayout>
+</FrameLayout>
