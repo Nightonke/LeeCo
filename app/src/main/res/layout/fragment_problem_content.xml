@@ -72,18 +72,6 @@
                     android:paddingBottom="10dp"
                     style="@style/LeetCoderSimilarProblemGroup" />
 
-                <TextView
-                    android:id="@+id/original_problem"
-                    android:layout_height="48dp"
-                    android:layout_width="match_parent"
-                    android:background="@drawable/button_original_problem_2"
-                    android:textColor="@color/finestWhite"
-                    android:textSize="17sp"
-                    android:text="@string/original_problem"
-                    android:gravity="center"
-                    android:layout_marginBottom="10dp"
-                    />
-
             </LinearLayout>
 
         </ScrollView>

@@ -39,7 +39,6 @@ public class ProblemContentFragment extends Fragment
 
     private RichText content;
     private TagGroup tags;
-    private TextView originalProblem;
     private TagGroup similarProblems;
 
     private CoordinatorLayout snackbarLayout;
@@ -90,8 +89,6 @@ public class ProblemContentFragment extends Fragment
                 ProblemContentFragment.this.onTagClick(tag);
             }
         });
-        originalProblem = (TextView)contentFragment.findViewById(R.id.original_problem);
-        originalProblem.setOnClickListener(this);
         similarProblems = (TagGroup)contentFragment.findViewById(R.id.similar_problem);
         similarProblems.setOnTagClickListener(new TagGroup.OnTagClickListener() {
             @Override
@@ -188,24 +185,6 @@ public class ProblemContentFragment extends Fragment
                 if (reload.getText().toString().equals(mContext.getResources().getString(R.string.loading))) return;
                 reload.setText(mContext.getResources().getString(R.string.loading));
                 activity.reload();
-                break;
-            case R.id.original_problem:
-                new FinestWebView.Builder(activity)
-                        .statusBarColorRes(R.color.colorPrimary)
-                        .iconDefaultColorRes(R.color.white)
-                        .iconDisabledColorRes(R.color.white)
-                        .iconPressedColorRes(R.color.white)
-                        .swipeRefreshColorRes(R.color.colorPrimary)
-                        .titleColorRes(R.color.white)
-                        .urlColorRes(R.color.white)
-                        .progressBarColorRes(R.color.white)
-                        .menuTextColorRes(R.color.colorPrimary)
-                        .stringResRefresh(R.string.refresh)
-                        .stringResShareVia(R.string.share)
-                        .stringResCopyLink(R.string.copy_link)
-                        .stringResOpenWith(R.string.open_with)
-                        .stringResCopiedToClipboard(R.string.copy_link_toast)
-                        .show(activity.problem.getProblemLink());
                 break;
         }
     }

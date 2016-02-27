@@ -161,4 +161,7 @@
     <string name="operate_like">Vote this Comment</string>
     <string name="operate_dislike">Veto this Comment</string>
 
+    <string name="problem_is_loading">Problem is still loading, please wait</string>
+    <string name="solution_copied">Solution copied</string>
+
 </resources>

@@ -66,6 +66,13 @@ public class ProblemSolutionFragment extends Fragment
         code = (CodeView)solutionFragment.findViewById(R.id.code);
         code.getSettings().setLoadWithOverviewMode(true);
         code.getSettings().setUseWideViewPort(true);
+        code.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                return true;
+            }
+        });
+        code.setLongClickable(false);
 
         return solutionFragment;
     }

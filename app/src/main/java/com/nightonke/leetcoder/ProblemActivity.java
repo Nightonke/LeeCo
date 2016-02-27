@@ -1,12 +1,11 @@
 package com.nightonke.leetcoder;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -32,9 +31,11 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.github.ppamorim.cult.CultView;
+import com.nineoldandroids.animation.Animator;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
+import com.thefinestartist.finestwebview.FinestWebView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,7 @@ public class ProblemActivity extends AppCompatActivity
     public static final int BACK_COMMENT_CHANGED = 5;
     public static final int BACK_COMMENT_UNCHANGED = 6;
 
+    private boolean loading = false;
     public Problem_Index problem_index;
     public Problem problem;
 
@@ -72,12 +74,15 @@ public class ProblemActivity extends AppCompatActivity
 
     private TextView title;
     private FrameLayout icon;
-    private FrameLayout contentLayout;
-    private ImageView contentImageView;
+    private ImageView originalProblemIcon;
+    private FrameLayout likesLayout;
+    private ImageView likesIcon;
     private TextView likes;
-    private ImageView solutionImageView;
-    private ImageView discussImageView;
-    private ImageView commentImageView;
+    private ImageView solutionCopyIcon;
+    private ImageView solutionBugIcon;
+    private ImageView discussSortIcon;
+    private ImageView commentSortIcon;
+    private ImageView commentMessageIcon;
 
     private CoordinatorLayout snackbarLayout;
 
@@ -96,6 +101,7 @@ public class ProblemActivity extends AppCompatActivity
         (LeetCoderUtil.getActionBarTextView(cultView.getInnerToolbar())).setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
         ActionBar actionBar = ((AppCompatActivity)mContext).getSupportActionBar();
         if (actionBar != null) {
+            actionBar.setTitle("");
             actionBar.setHomeButtonEnabled(false);
             actionBar.setDisplayHomeAsUpEnabled(false);
         }
@@ -128,16 +134,60 @@ public class ProblemActivity extends AppCompatActivity
                     YoYo.with(Techniques.BounceInUp)
                             .duration(500)
                             .playOn(getIcon(position));
+                    final View goneView = getIcon(lastPagerPosition);
                     YoYo.with(Techniques.FadeOutUp)
                             .duration(300)
-                            .playOn(getIcon(lastPagerPosition));
+                            .withListener(new Animator.AnimatorListener() {
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    goneView.setVisibility(View.GONE);
+                                }
+
+                                @Override
+                                public void onAnimationCancel(Animator animation) {
+
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animator animation) {
+
+                                }
+                            })
+                            .playOn(goneView);
                 } else if (position < lastPagerPosition) {
                     YoYo.with(Techniques.BounceInDown)
                             .duration(500)
                             .playOn(getIcon(position));
+                    final View goneView = getIcon(lastPagerPosition);
                     YoYo.with(Techniques.FadeOutDown)
                             .duration(300)
-                            .playOn(getIcon(lastPagerPosition));
+                            .withListener(new Animator.AnimatorListener() {
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    goneView.setVisibility(View.GONE);
+                                }
+
+                                @Override
+                                public void onAnimationCancel(Animator animation) {
+
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animator animation) {
+
+                                }
+                            })
+                            .playOn(goneView);
                 }
                 lastPagerPosition = position;
             }
@@ -156,17 +206,26 @@ public class ProblemActivity extends AppCompatActivity
         title = (TextView)findViewById(R.id.title);
         title.setSelected(true);
 
-        icon = (FrameLayout)findViewById(R.id.icon);
-        icon.setOnClickListener(this);
-        contentLayout = (FrameLayout)findViewById(R.id.content_layout);
-        contentImageView = (ImageView)findViewById(R.id.content_icon);
+        originalProblemIcon = (ImageView)findViewById(R.id.original_problem_icon);
+        originalProblemIcon.setOnClickListener(this);
+        likesLayout = (FrameLayout)findViewById(R.id.like_number_layout);
+        likesLayout.setOnClickListener(this);
+        likesIcon = (ImageView)findViewById(R.id.like_number_icon);
         likes = (TextView)findViewById(R.id.like_number);
-        solutionImageView = (ImageView)findViewById(R.id.solution_icon);
-        solutionImageView.setVisibility(View.INVISIBLE);
-        discussImageView = (ImageView)findViewById(R.id.discuss_icon);
-        discussImageView.setVisibility(View.INVISIBLE);
-        commentImageView = (ImageView)findViewById(R.id.comment_icon);
-        commentImageView.setVisibility(View.INVISIBLE);
+        solutionCopyIcon = (ImageView)findViewById(R.id.solution_copy_icon);
+        solutionCopyIcon.setOnClickListener(this);
+        solutionBugIcon = (ImageView)findViewById(R.id.solution_bug_icon);
+        solutionBugIcon.setOnClickListener(this);
+        discussSortIcon = (ImageView)findViewById(R.id.discuss_sort_icon);
+        discussSortIcon.setOnClickListener(this);
+        commentSortIcon = (ImageView)findViewById(R.id.comment_sort_icon);
+        commentSortIcon.setOnClickListener(this);
+        commentMessageIcon = (ImageView)findViewById(R.id.comment_message_icon);
+        commentMessageIcon.setOnClickListener(this);
+
+        findViewById(R.id.solution_layout).setVisibility(View.INVISIBLE);
+        findViewById(R.id.discuss_layout).setVisibility(View.INVISIBLE);
+        findViewById(R.id.comment_layout).setVisibility(View.INVISIBLE);
 
         snackbarLayout = (CoordinatorLayout)findViewById(R.id.container);
 
@@ -204,25 +263,26 @@ public class ProblemActivity extends AppCompatActivity
                 LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
                 LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
                 if (LeetCoderApplication.user.getLikeProblems().contains(problem_index.getId())) {
-                    contentImageView.setImageResource(R.drawable.icon_like_red);
+                    likesIcon.setImageResource(R.drawable.icon_like_red);
                     likes.setTextColor(ContextCompat.getColor(mContext, R.color.like_red));
                 } else {
-                    contentImageView.setImageResource(R.drawable.icon_like_blue);
+                    likesIcon.setImageResource(R.drawable.icon_like_blue);
                     likes.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
                 }
             }
         } else {
             if (LeetCoderApplication.user.getLikeProblems().contains(problem_index.getId())) {
-                contentImageView.setImageResource(R.drawable.icon_like_red);
+                likesIcon.setImageResource(R.drawable.icon_like_red);
                 likes.setTextColor(ContextCompat.getColor(mContext, R.color.like_red));
             } else {
-                contentImageView.setImageResource(R.drawable.icon_like_blue);
+                likesIcon.setImageResource(R.drawable.icon_like_blue);
                 likes.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
             }
         }
     }
 
     private void getData() {
+        loading = true;
         problem = new Problem();
         problem.setId(problem_index.getId());
 
@@ -261,6 +321,7 @@ public class ProblemActivity extends AppCompatActivity
         query.findObjects(mContext, new FindListener<Problem>() {
             @Override
             public void onSuccess(List<Problem> list) {
+                loading = false;
                 problem.setContent(list.get(0).getContent());
                 problem.setSolution(list.get(0).getSolution());
                 problem.setDiscussLink(list.get(0).getDiscussLink());
@@ -299,6 +360,7 @@ public class ProblemActivity extends AppCompatActivity
 
             @Override
             public void onError(int i, String s) {
+                loading = false;
                 LeetCoderUtil.showToast(mContext, R.string.loading_failed);
 
                 Fragment contentFragment = adapter.getPage(0);
@@ -364,10 +426,10 @@ public class ProblemActivity extends AppCompatActivity
 
     private View getIcon(int i) {
         switch (i) {
-            case 0: return contentLayout;
-            case 1: return solutionImageView;
-            case 2: return discussImageView;
-            case 3: return commentImageView;
+            case 0: return findViewById(R.id.content_layout);
+            case 1: return findViewById(R.id.solution_layout);
+            case 2: return findViewById(R.id.discuss_layout);
+            case 3: return findViewById(R.id.comment_layout);
         }
         return null;
     }
@@ -379,175 +441,206 @@ public class ProblemActivity extends AppCompatActivity
 
     @Override
     public void onClick(View v) {
-        switch (R.id.icon) {
-            case R.id.icon:
-                switch (viewPager.getCurrentItem()) {
-                    case 0:
-                        // like
-                        // like number of the problem index++
-                        // put this number to user's like table
-                        if (LeetCoderApplication.user == null) {
-                            LeetCoderUtil.showToast(mContext, R.string.like_not_login);
-                        } else {
-                            if (LeetCoderApplication.user.getLikeProblems().contains(problem_index.getId())) {
-                                // dislike
-                                problem_index.setLike(problem_index.getLike() - 1);
-                                problem_index.update(LeetCoderApplication.getAppContext(), problem_index.getObjectId(), new UpdateListener() {
+        switch (v.getId()) {
+            case R.id.original_problem_icon:
+                // view this problem in web
+                if (loading) {
+                    LeetCoderUtil.showToast(mContext, R.string.problem_is_loading);
+                } else {
+                    new FinestWebView.Builder(ProblemActivity.this)
+                            .statusBarColorRes(R.color.colorPrimary)
+                            .iconDefaultColorRes(R.color.white)
+                            .iconDisabledColorRes(R.color.white)
+                            .iconPressedColorRes(R.color.white)
+                            .swipeRefreshColorRes(R.color.colorPrimary)
+                            .titleColorRes(R.color.white)
+                            .urlColorRes(R.color.white)
+                            .progressBarColorRes(R.color.white)
+                            .menuTextColorRes(R.color.colorPrimary)
+                            .stringResRefresh(R.string.refresh)
+                            .stringResShareVia(R.string.share)
+                            .stringResCopyLink(R.string.copy_link)
+                            .stringResOpenWith(R.string.open_with)
+                            .stringResCopiedToClipboard(R.string.copy_link_toast)
+                            .show(problem.getProblemLink());
+                }
+                break;
+            case R.id.like_number_layout:
+                // like
+                if (LeetCoderApplication.user == null) {
+                    LeetCoderUtil.showToast(mContext, R.string.like_not_login);
+                } else {
+                    if (LeetCoderApplication.user.getLikeProblems().contains(problem_index.getId())) {
+                        // dislike
+                        problem_index.setLike(problem_index.getLike() - 1);
+                        problem_index.update(LeetCoderApplication.getAppContext(), problem_index.getObjectId(), new UpdateListener() {
+                            @Override
+                            public void onSuccess() {
+                                int index = LeetCoderApplication.user.getLikeProblems().indexOf(problem_index.getId());
+                                LeetCoderApplication.user.getLikeProblems().remove(index);
+                                LeetCoderApplication.user.update(LeetCoderApplication.getAppContext(), new UpdateListener() {
                                     @Override
                                     public void onSuccess() {
-                                        int index = LeetCoderApplication.user.getLikeProblems().indexOf(problem_index.getId());
-                                        LeetCoderApplication.user.getLikeProblems().remove(index);
-                                        LeetCoderApplication.user.update(LeetCoderApplication.getAppContext(), new UpdateListener() {
-                                            @Override
-                                            public void onSuccess() {
-                                                LeetCoderUtil.showToast(mContext, R.string.like_dislike_successfully);
-                                                contentImageView.setImageResource(R.drawable.icon_like_blue);
-                                                likes.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
-                                                likes.setText(problem_index.getLike() + "");
-                                            }
-                                            @Override
-                                            public void onFailure(int i, String s) {
-                                                if (BuildConfig.DEBUG) Log.d("LeetCoder", "Dislike failed: " + s);
-                                                LeetCoderApplication.user.getLikeProblems().add(problem_index.getId());
-                                                LeetCoderUtil.showToast(mContext, R.string.like_dislike_failed);
-                                            }
-                                        });
+                                        LeetCoderUtil.showToast(mContext, R.string.like_dislike_successfully);
+                                        likesIcon.setImageResource(R.drawable.icon_like_blue);
+                                        likes.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+                                        likes.setText(problem_index.getLike() + "");
                                     }
                                     @Override
                                     public void onFailure(int i, String s) {
                                         if (BuildConfig.DEBUG) Log.d("LeetCoder", "Dislike failed: " + s);
+                                        LeetCoderApplication.user.getLikeProblems().add(problem_index.getId());
                                         LeetCoderUtil.showToast(mContext, R.string.like_dislike_failed);
-                                        problem_index.setLike(problem_index.getLike() + 1);
                                     }
                                 });
-                            } else {
-                                // like
+                            }
+                            @Override
+                            public void onFailure(int i, String s) {
+                                if (BuildConfig.DEBUG) Log.d("LeetCoder", "Dislike failed: " + s);
+                                LeetCoderUtil.showToast(mContext, R.string.like_dislike_failed);
                                 problem_index.setLike(problem_index.getLike() + 1);
-                                problem_index.update(LeetCoderApplication.getAppContext(), problem_index.getObjectId(), new UpdateListener() {
+                            }
+                        });
+                    } else {
+                        // like
+                        problem_index.setLike(problem_index.getLike() + 1);
+                        problem_index.update(LeetCoderApplication.getAppContext(), problem_index.getObjectId(), new UpdateListener() {
+                            @Override
+                            public void onSuccess() {
+                                LeetCoderApplication.user.getLikeProblems().add(problem_index.getId());
+                                LeetCoderApplication.user.update(LeetCoderApplication.getAppContext(), new UpdateListener() {
                                     @Override
                                     public void onSuccess() {
-                                        LeetCoderApplication.user.getLikeProblems().add(problem_index.getId());
-                                        LeetCoderApplication.user.update(LeetCoderApplication.getAppContext(), new UpdateListener() {
-                                            @Override
-                                            public void onSuccess() {
-                                                LeetCoderUtil.showToast(mContext, R.string.like_like_successfully);
-                                                contentImageView.setImageResource(R.drawable.icon_like_red);
-                                                likes.setTextColor(ContextCompat.getColor(mContext, R.color.like_red));
-                                                likes.setText(problem_index.getLike() + "");
-                                            }
-                                            @Override
-                                            public void onFailure(int i, String s) {
-                                                if (BuildConfig.DEBUG) Log.d("LeetCoder", "Like failed: " + s);
-                                                int index = LeetCoderApplication.user.getLikeProblems().indexOf(problem_index.getId());
-                                                LeetCoderApplication.user.getLikeProblems().remove(index);
-                                                LeetCoderUtil.showToast(mContext, R.string.like_like_failed);
-                                            }
-                                        });
+                                        LeetCoderUtil.showToast(mContext, R.string.like_like_successfully);
+                                        likesIcon.setImageResource(R.drawable.icon_like_red);
+                                        likes.setTextColor(ContextCompat.getColor(mContext, R.color.like_red));
+                                        likes.setText(problem_index.getLike() + "");
                                     }
                                     @Override
                                     public void onFailure(int i, String s) {
                                         if (BuildConfig.DEBUG) Log.d("LeetCoder", "Like failed: " + s);
+                                        int index = LeetCoderApplication.user.getLikeProblems().indexOf(problem_index.getId());
+                                        LeetCoderApplication.user.getLikeProblems().remove(index);
                                         LeetCoderUtil.showToast(mContext, R.string.like_like_failed);
-                                        problem_index.setLike(problem_index.getLike() - 1);
                                     }
                                 });
                             }
-                        }
-                        break;
-                    case 1:
-                        // bug of solution
+                            @Override
+                            public void onFailure(int i, String s) {
+                                if (BuildConfig.DEBUG) Log.d("LeetCoder", "Like failed: " + s);
+                                LeetCoderUtil.showToast(mContext, R.string.like_like_failed);
+                                problem_index.setLike(problem_index.getLike() - 1);
+                            }
+                        });
+                    }
+                }
+                break;
+            case R.id.solution_copy_icon:
+                // copy solution
+                if (loading) {
+                    LeetCoderUtil.showToast(mContext, R.string.problem_is_loading);
+                } else {
+                    ClipboardManager clipboard = (ClipboardManager)getSystemService(Activity.CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText(mContext.getResources().getString(R.string.solution_copied), problem.getSolution());
+                    clipboard.setPrimaryClip(clip);
+                    LeetCoderUtil.showToast(mContext, R.string.solution_copied);
+                }
+                break;
+            case R.id.solution_bug_icon:
+                // bug of solution
+                new MaterialDialog.Builder(mContext)
+                        .title(R.string.feedback_title)
+                        .items(R.array.feedback_types)
+                        .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                            @Override
+                            public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                if (which == 4) {
+                                    inputFeedback();
+                                } else if (which == 3) {
+                                    new MaterialDialog.Builder(mContext)
+                                            .title(R.string.better_solution_title)
+                                            .content(R.string.better_solution_content)
+                                            .positiveText(R.string.better_solution_write)
+                                            .negativeText(R.string.better_solution_copy)
+                                            .neutralText(R.string.cancel)
+                                            .forceStacking(true)
+                                            .onAny(new MaterialDialog.SingleButtonCallback() {
+                                                @Override
+                                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                    if (which == DialogAction.POSITIVE) {
+                                                        final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+                                                        emailIntent.setType("plain/text");
+                                                        // Todo
+                                                        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"Nightonke@outlook.com"});
+                                                        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Better Solution For " + problem_index.getTitle());
+                                                        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "");
+                                                        mContext.startActivity(Intent.createChooser(emailIntent, mContext.getResources().getString(R.string.better_solution_email_title)));
+                                                    } else if (which == DialogAction.NEGATIVE) {
+                                                        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                                                        ClipData clip = ClipData.newPlainText("Email address copied.", "Nightonke@outlook.com");
+                                                        clipboard.setPrimaryClip(clip);
+                                                        LeetCoderUtil.showToast(mContext, R.string.better_solution_copied);
+                                                    }
+                                                }
+                                            })
+                                            .show();
+                                } else {
+                                    ProblemBug problemBug = new ProblemBug();
+                                    problemBug.setId(problem.getId());
+                                    problemBug.setContent(mContext.getResources().getStringArray(R.array.feedback_types)[which]);
+                                    problemBug.save(LeetCoderApplication.getAppContext(), new SaveListener() {
+                                        @Override
+                                        public void onSuccess() {
+                                            LeetCoderUtil.showToast(mContext, R.string.feedback_send_successfully);
+                                        }
+                                        @Override
+                                        public void onFailure(int code, String arg0) {
+                                            LeetCoderUtil.showToast(mContext, R.string.feedback_send_failed);
+                                        }
+                                    });
+                                }
+                                dialog.dismiss();
+                                return true;
+                            }
+                        })
+                        .negativeText(R.string.cancel)
+                        .show();
+                break;
+            case R.id.discuss_sort_icon:
+                // sort discuss
+                final Fragment discussFragment = adapter.getPage(2);
+                if (discussFragment != null) {
+                    if (discussFragment instanceof ProblemDiscussFragment) {
                         new MaterialDialog.Builder(mContext)
-                                .title(R.string.feedback_title)
-                                .items(R.array.feedback_types)
-                                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                                .title(R.string.sort_title)
+                                .items(R.array.sort_types_discuss)
+                                .itemsCallbackSingleChoice(((ProblemDiscussFragment) discussFragment).sortType, new MaterialDialog.ListCallbackSingleChoice() {
                                     @Override
                                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                        if (which == 4) {
-                                            inputFeedback();
-                                        } else if (which == 3) {
-                                            new MaterialDialog.Builder(mContext)
-                                                    .title(R.string.better_solution_title)
-                                                    .content(R.string.better_solution_content)
-                                                    .positiveText(R.string.better_solution_write)
-                                                    .negativeText(R.string.better_solution_copy)
-                                                    .neutralText(R.string.cancel)
-                                                    .forceStacking(true)
-                                                    .onAny(new MaterialDialog.SingleButtonCallback() {
-                                                        @Override
-                                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                            if (which == DialogAction.POSITIVE) {
-                                                                final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-                                                                emailIntent.setType("plain/text");
-                                                                // Todo
-                                                                emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"Nightonke@outlook.com"});
-                                                                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Better Solution For " + problem_index.getTitle());
-                                                                emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "");
-                                                                mContext.startActivity(Intent.createChooser(emailIntent, mContext.getResources().getString(R.string.better_solution_email_title)));
-                                                            } else if (which == DialogAction.NEGATIVE) {
-                                                                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                                                                ClipData clip = ClipData.newPlainText("Email address copied.", "Nightonke@outlook.com");
-                                                                clipboard.setPrimaryClip(clip);
-                                                                LeetCoderUtil.showToast(mContext, R.string.better_solution_copied);
-                                                            }
-                                                        }
-                                                    })
-                                                    .show();
-                                        } else {
-                                            ProblemBug problemBug = new ProblemBug();
-                                            problemBug.setId(problem.getId());
-                                            problemBug.setContent(mContext.getResources().getStringArray(R.array.feedback_types)[which]);
-                                            problemBug.save(LeetCoderApplication.getAppContext(), new SaveListener() {
-                                                @Override
-                                                public void onSuccess() {
-                                                    LeetCoderUtil.showToast(mContext, R.string.feedback_send_successfully);
-                                                }
-                                                @Override
-                                                public void onFailure(int code, String arg0) {
-                                                    LeetCoderUtil.showToast(mContext, R.string.feedback_send_failed);
-                                                }
-                                            });
-                                        }
+                                        ((ProblemDiscussFragment) discussFragment).sort(which);
+                                        LeetCoderUtil.showToast(mContext, R.string.sorting);
                                         dialog.dismiss();
                                         return true;
                                     }
                                 })
                                 .negativeText(R.string.cancel)
                                 .show();
-                        break;
-                    case 2:
-                        // sort
-                        final Fragment discussFragment = adapter.getPage(2);
-                        if (discussFragment != null) {
-                            if (discussFragment instanceof ProblemDiscussFragment) {
-                                new MaterialDialog.Builder(mContext)
-                                        .title(R.string.sort_title)
-                                        .items(R.array.sort_types_discuss)
-                                        .itemsCallbackSingleChoice(((ProblemDiscussFragment) discussFragment).sortType, new MaterialDialog.ListCallbackSingleChoice() {
-                                            @Override
-                                            public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                                ((ProblemDiscussFragment) discussFragment).sort(which);
-                                                LeetCoderUtil.showToast(mContext, R.string.sorting);
-                                                dialog.dismiss();
-                                                return true;
-                                            }
-                                        })
-                                        .negativeText(R.string.cancel)
-                                        .show();
-                            }
-                        }
-                        break;
-                    case 3:
-                        // add comment
-                        if (LeetCoderApplication.user == null) {
-                            LeetCoderUtil.showToast(mContext, R.string.comment_not_login);
-                        } else {
-                            Intent intent = new Intent(mContext, EditCommentActivity.class);
-                            intent.putExtra("id", problem_index.getId());
-                            intent.putExtra("title", "");
-                            intent.putExtra("content", "");
-                            startActivityForResult(intent, START_COMMENT);
-                        }
-                        break;
+                    }
+                }
+                break;
+            case R.id.comment_sort_icon:
+                // sort comment
+                break;
+            case R.id.comment_message_icon:
+                // new comment
+                if (LeetCoderApplication.user == null) {
+                    LeetCoderUtil.showToast(mContext, R.string.comment_not_login);
+                } else {
+                    Intent intent = new Intent(mContext, EditCommentActivity.class);
+                    intent.putExtra("id", problem_index.getId());
+                    intent.putExtra("title", "");
+                    intent.putExtra("content", "");
+                    startActivityForResult(intent, START_COMMENT);
                 }
                 break;
         }
