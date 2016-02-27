@@ -7,7 +7,7 @@
     <string name="sort">Sort</string>
     <string name="send">Send</string>
 
-    <string name="original_problem">View in Web</string>
+    <string name="original_problem">View This Problem In Web</string>
     <string name="reload">Reload</string>
     <string name="loading">Loading...</string>
 
@@ -124,7 +124,8 @@
     <string name="comment_by">By&#160;</string>
     <string name="comment_title_hint">Title</string>
     <string name="comment_content_hint">Write comment here</string>
-    <string name="comment_unchanged">Please don\'t send the same comment</string>
+    <string name="comment_helper">Let\'s find better solutions!</string>
+    <string name="comment_unchanged">Title and content are both unchanged</string>
     <string name="comment_not_login">Please sign in first</string>
     <string name="comment_not_title">Empty title</string>
     <string name="comment_invalid_title">Invalid title</string>
@@ -137,5 +138,27 @@
     <string name="comment_not_send_quit">Quit</string>
     <string name="comment_not_send_send">Send</string>
     <string name="comment_not_send_cancel">Cancel</string>
+    <string name="comment_update_successfully">Update comment successfully</string>
+    <string name="comment_update_failed">Update failed, internet disconnected</string>
+    <string name="comment_not_update_title">Update Comment</string>
+    <string name="comment_not_update_content">Your comment has not been updated, sure to quit? The comment you edited will not be saved.</string>
+    <string name="comment_not_update_quit">Quit</string>
+    <string name="comment_not_update_update">Update</string>
+    <string name="comment_not_update_cancel">Cancel</string>
+    <string name="comment_delete_successfully">Delete comment successfully</string>
+    <string name="comment_delete_failed">Delete failed, internet disconnected</string>
+    <string name="comment_like_successfully">Vote comment successfully</string>
+    <string name="comment_like_failed">Vote failed, internet disconnected</string>
+    <string name="comment_dislike_successfully">Veto comment successfully</string>
+    <string name="comment_dislike_failed">Veto failed, internet disconnected</string>
+    <string name="comment_copy">Content copied</string>
+
+    <string name="operate_title">Operate</string>
+    <string name="operate_edit">Edit this Comment</string>
+    <string name="operate_delete">Delete this Comment</string>
+    <string name="operate_copy">Copy the Content</string>
+    <string name="operate_reply">Reply this Comment</string>
+    <string name="operate_like">Vote this Comment</string>
+    <string name="operate_dislike">Veto this Comment</string>
 
 </resources>

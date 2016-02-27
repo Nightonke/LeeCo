@@ -20,14 +20,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.daimajia.easing.linear.Linear;
 import com.github.ppamorim.cult.CultView;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.GetListener;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 public class EditCommentActivity extends AppCompatActivity {
 
@@ -46,6 +51,14 @@ public class EditCommentActivity extends AppCompatActivity {
     private String oldContent = "";
     private boolean titleExceed = false;
     private boolean contentExceed = false;
+    private String commentObjectId = null;
+
+    // if reply
+    private boolean isReply = false;
+    private String targetId = null;
+    private String targetTitle = null;
+    private LinearLayout targetLayout;
+    private TextView target;
 
     private boolean sent = false;
 
@@ -77,12 +90,26 @@ public class EditCommentActivity extends AppCompatActivity {
         content = (EditText)findViewById(R.id.edittext);
         help = (TextView)findViewById(R.id.helper);
         number = (TextView)findViewById(R.id.number);
+        targetLayout = (LinearLayout)findViewById(R.id.target_layout);
+        target = (TextView)findViewById(R.id.target_title);
 
         problemId = getIntent().getIntExtra("id", -1);
         title.setText(getIntent().getStringExtra("title"));
         oldTitle = getIntent().getStringExtra("title");
         content.setText(getIntent().getStringExtra("content"));
         oldContent = getIntent().getStringExtra("content");
+        commentObjectId = getIntent().getStringExtra("commentObjectId");
+
+        targetId = getIntent().getStringExtra("targetId");
+        targetTitle = getIntent().getStringExtra("targetTitle");
+        if (targetId == null && targetTitle == null) {
+            isReply = false;
+            targetLayout.setVisibility(View.GONE);
+        } else {
+            isReply = true;
+            targetLayout.setVisibility(View.VISIBLE);
+            target.setText(targetTitle);
+        }
 
         content.setSelection(content.getText().toString().length());
 
@@ -230,25 +257,92 @@ public class EditCommentActivity extends AppCompatActivity {
             } else if (oldTitle.equals(title.getText().toString()) && oldContent.equals(content.getText().toString())) {
                 LeetCoderUtil.showToast(mContext, R.string.comment_unchanged);
             } else {
-                final Comment comment = new Comment();
-                comment.setId(problemId);
-                comment.setTitle(title.getText().toString());
-                comment.setContent(content.getText().toString());
-                comment.setUserName(LeetCoderApplication.user.getUsername());
-                comment.save(LeetCoderApplication.getAppContext(), new SaveListener() {
-                    @Override
-                    public void onSuccess() {
-                        if (BuildConfig.DEBUG) Log.d("LeetCoder", "Send comment: " + comment.getTitle() + " " + comment.getContent());
-                        LeetCoderUtil.showToast(mContext, "Send successfully");
-                        sent = true;
-                        quit();
+                if (commentObjectId != null && !"".equals(oldTitle) && !"".equals(oldContent)) {
+                    // update
+                    BmobQuery<Comment> query = new BmobQuery<Comment>();
+                    query.getObject(LeetCoderApplication.getAppContext(), commentObjectId, new GetListener<Comment>() {
+                        @Override
+                        public void onSuccess(final Comment object) {
+                            object.setTitle(title.getText().toString());
+                            object.setContent(content.getText().toString());
+                            object.update(LeetCoderApplication.getAppContext(), commentObjectId, new UpdateListener() {
+                                @Override
+                                public void onSuccess() {
+                                    if (BuildConfig.DEBUG) Log.d("LeetCoder", "Update comment: " + object.getTitle() + " " + object.getContent());
+                                    LeetCoderUtil.showToast(mContext, R.string.comment_update_successfully);
+                                    sent = true;
+                                    quit();
+                                }
+                                @Override
+                                public void onFailure(int i, String s) {
+                                    if (BuildConfig.DEBUG) Log.d("LeetCoder", "Update comment failed: " + s);
+                                    LeetCoderUtil.showToast(mContext, R.string.comment_update_failed);
+                                }
+                            });
+                        }
+                        @Override
+                        public void onFailure(int code, String arg0) {
+                            if (BuildConfig.DEBUG) Log.d("LeetCoder", "Update comment failed: " + arg0);
+                            LeetCoderUtil.showToast(mContext, R.string.comment_update_failed);
+                        }
+
+                    });
+                } else {
+                    // send
+                    final Comment comment = new Comment();
+                    comment.setId(problemId);
+                    comment.setTitle(title.getText().toString());
+                    comment.setContent(content.getText().toString());
+                    comment.setUserName(LeetCoderApplication.user.getUsername());
+                    if (isReply) {
+                        comment.setTargetComment(targetId);
                     }
-                    @Override
-                    public void onFailure(int code, String arg0) {
-                        if (BuildConfig.DEBUG) Log.d("LeetCoder", "Send comment failed: " + arg0);
-                        LeetCoderUtil.showToast(mContext, "Send failed");
-                    }
-                });
+                    comment.save(LeetCoderApplication.getAppContext(), new SaveListener() {
+                        @Override
+                        public void onSuccess() {
+                            if (isReply) {
+                                // get the target from cloud
+                                BmobQuery<Comment> query = new BmobQuery<Comment>();
+                                query.getObject(LeetCoderApplication.getAppContext(), targetId, new GetListener<Comment>() {
+                                    @Override
+                                    public void onSuccess(Comment object) {
+                                        object.getReplies().add(comment.getObjectId());
+                                        object.update(LeetCoderApplication.getAppContext(), targetId, new UpdateListener() {
+                                            @Override
+                                            public void onSuccess() {
+                                                if (BuildConfig.DEBUG) Log.d("LeetCoder", "Send comment: " + comment.getTitle() + " " + comment.getContent());
+                                                LeetCoderUtil.showToast(mContext, R.string.comment_send_successfully);
+                                                sent = true;
+                                                quit();
+                                            }
+                                            @Override
+                                            public void onFailure(int i, String s) {
+                                                if (BuildConfig.DEBUG) Log.d("LeetCoder", "Send comment failed: " + s);
+                                                LeetCoderUtil.showToast(mContext, R.string.comment_send_failed);
+                                            }
+                                        });
+                                    }
+                                    @Override
+                                    public void onFailure(int code, String arg0) {
+                                        if (BuildConfig.DEBUG) Log.d("LeetCoder", "Send comment failed: " + arg0);
+                                        LeetCoderUtil.showToast(mContext, R.string.comment_send_failed);
+                                    }
+
+                                });
+                            } else {
+                                if (BuildConfig.DEBUG) Log.d("LeetCoder", "Send comment: " + comment.getTitle() + " " + comment.getContent());
+                                LeetCoderUtil.showToast(mContext, R.string.comment_send_successfully);
+                                sent = true;
+                                quit();
+                            }
+                        }
+                        @Override
+                        public void onFailure(int code, String arg0) {
+                            if (BuildConfig.DEBUG) Log.d("LeetCoder", "Send comment failed: " + arg0);
+                            LeetCoderUtil.showToast(mContext, R.string.comment_send_failed);
+                        }
+                    });
+                }
             }
         }
     }
@@ -269,25 +363,49 @@ public class EditCommentActivity extends AppCompatActivity {
                 setResult(ProblemActivity.BACK_COMMENT_CHANGED, intent);
                 finish();
             } else {
-                new MaterialDialog.Builder(mContext)
-                        .title(R.string.comment_not_send_title)
-                        .content(R.string.comment_not_send_content)
-                        .positiveText(R.string.comment_not_send_quit)
-                        .negativeText(R.string.comment_not_send_send)
-                        .neutralText(R.string.comment_not_send_cancel)
-                        .onAny(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                                if (dialogAction == DialogAction.POSITIVE) {
-                                    Intent intent = new Intent();
-                                    setResult(ProblemActivity.BACK_COMMENT_UNCHANGED, intent);
-                                    finish();
-                                } else if (dialogAction == DialogAction.NEGATIVE) {
-                                    send();
+                if (commentObjectId != null && !"".equals(oldTitle) && !"".equals(oldContent)) {
+                    // update or not
+                    new MaterialDialog.Builder(mContext)
+                            .title(R.string.comment_not_update_title)
+                            .content(R.string.comment_not_update_content)
+                            .positiveText(R.string.comment_not_update_quit)
+                            .negativeText(R.string.comment_not_update_update)
+                            .neutralText(R.string.comment_not_update_cancel)
+                            .onAny(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                                    if (dialogAction == DialogAction.POSITIVE) {
+                                        Intent intent = new Intent();
+                                        setResult(ProblemActivity.BACK_COMMENT_UNCHANGED, intent);
+                                        finish();
+                                    } else if (dialogAction == DialogAction.NEGATIVE) {
+                                        send();
+                                    }
                                 }
-                            }
-                        })
-                        .show();
+                            })
+                            .show();
+                } else {
+                    // send or not
+                    new MaterialDialog.Builder(mContext)
+                            .title(R.string.comment_not_send_title)
+                            .content(R.string.comment_not_send_content)
+                            .positiveText(R.string.comment_not_send_quit)
+                            .negativeText(R.string.comment_not_send_send)
+                            .neutralText(R.string.comment_not_send_cancel)
+                            .onAny(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                                    if (dialogAction == DialogAction.POSITIVE) {
+                                        Intent intent = new Intent();
+                                        setResult(ProblemActivity.BACK_COMMENT_UNCHANGED, intent);
+                                        finish();
+                                    } else if (dialogAction == DialogAction.NEGATIVE) {
+                                        send();
+                                    }
+                                }
+                            })
+                            .show();
+                }
             }
         }
     }

@@ -66,21 +66,23 @@
                     android:layout_width="match_parent"
                     />
 
-                <TextView
-                    android:id="@+id/original_problem"
-                    android:layout_height="25dp"
-                    android:layout_width="match_parent"
-                    android:background="@drawable/button_original_problem"
-                    android:textColor="@color/finestWhite"
-                    android:text="@string/original_problem"
-                    android:gravity="center"
-                    />
-
                 <me.gujun.android.taggroup.TagGroup
                     android:id="@+id/similar_problem"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     style="@style/LeetCoderSimilarProblemGroup" />
+
+                <TextView
+                    android:id="@+id/original_problem"
+                    android:layout_height="48dp"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/button_original_problem_2"
+                    android:textColor="@color/finestWhite"
+                    android:textSize="17sp"
+                    android:text="@string/original_problem"
+                    android:gravity="center"
+                    android:layout_marginBottom="10dp"
+                    />
 
             </LinearLayout>
 

@@ -428,7 +428,7 @@ public class MainActivity extends AppCompatActivity
                 searchInput.setText("");
                 break;
             case R.id.reload:
-
+                getData();
                 break;
             case R.id.user_layout:
                 login();
@@ -905,6 +905,7 @@ public class MainActivity extends AppCompatActivity
                 tags.setText(LeetCoderApplication.categories.size() + " tags");
 
                 reload.setText(mContext.getResources().getString(R.string.reload));  // for refreshing
+                reload.setVisibility(View.GONE);
                 reloadLayout.setVisibility(View.GONE);
             }
             @Override
@@ -923,6 +924,7 @@ public class MainActivity extends AppCompatActivity
                 reloadLayout.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.INVISIBLE);
                 reload.setText(mContext.getResources().getString(R.string.reload));
+                reload.setVisibility(View.VISIBLE);
             }
         });
     }

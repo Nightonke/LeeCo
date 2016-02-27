@@ -83,7 +83,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/discuss_title"
-                    android:text="Re: "
+                    android:text="@string/comment_re"
                     android:textStyle="bold"
                     android:layout_gravity="center_vertical|left"
                     android:gravity="center_vertical|left"
@@ -175,7 +175,7 @@
                             android:layout_height="wrap_content"
                             android:maxLines="1"
                             android:ellipsize="end"
-                            android:text="By "
+                            android:text="@string/comment_by"
                             android:textSize="13sp"
                             android:gravity="center_vertical|left"
                             />
@@ -263,7 +263,7 @@
                         android:layout_width="56dp"
                         android:layout_height="56dp"
                         android:src="@drawable/icon_like_red"
-                        android:padding="2dp"
+                        android:padding="6dp"
                         android:layout_marginTop="-4dp"
                         android:scaleType="fitCenter"
                         />

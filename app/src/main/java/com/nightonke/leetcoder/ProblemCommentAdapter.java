@@ -1,7 +1,6 @@
 package com.nightonke.leetcoder;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -12,16 +11,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.amulyakhare.textdrawable.TextDrawable;
-import com.daimajia.easing.linear.Linear;
 import com.github.aakira.expandablelayout.ExpandableLayout;
 import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import me.grantland.widget.AutofitTextView;
 
 /**
  * Created by Weiping on 2016/2/23.
@@ -58,7 +52,7 @@ public class ProblemCommentAdapter
         this.onLikeClickListener = onLikeClickListener;
 
         for (int i = 0; i < comments.size(); i++) {
-            expandState.append(i, false);
+            expandState.append(i, true);
         }
     }
 
@@ -76,7 +70,7 @@ public class ProblemCommentAdapter
             }
             case NORMAL: {
                 return new ViewHolder(LayoutInflater.from(mContext)
-                        .inflate(R.layout.item_comment, parent, false));
+                        .inflate(R.layout.item_comment_normal, parent, false));
             }
             case LAST: {
                 return new ViewHolder(LayoutInflater.from(mContext)
@@ -104,13 +98,14 @@ public class ProblemCommentAdapter
                 holder.base.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        onClickButton(holder.expandLayout);
                         onCardViewClickListener.onCardViewClick(position);
                     }
                 });
                 holder.base.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        onContentLongClickListener.onContentLongClick(position);
+                        onContentLongClickListener.onContentLongClick(holder.likeNumber, position);
                         return true;
                     }
                 });
@@ -142,7 +137,7 @@ public class ProblemCommentAdapter
                 holder.like.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onLikeClickListener.onLikeClick(position);
+                        onLikeClickListener.onLikeClick(holder.likeNumber, position);
                     }
                 });
 
@@ -235,7 +230,7 @@ public class ProblemCommentAdapter
 
     // copy or edit
     public interface OnContentLongClickListener {
-        void onContentLongClick(int position);
+        void onContentLongClick(TextView likeNumber, int position);
     }
 
     public interface OnReplyClickListener {
@@ -243,7 +238,7 @@ public class ProblemCommentAdapter
     }
 
     public interface OnLikeClickListener {
-        void onLikeClick(int position);
+        void onLikeClick(TextView likeNumber, int position);
     }
 
 }
