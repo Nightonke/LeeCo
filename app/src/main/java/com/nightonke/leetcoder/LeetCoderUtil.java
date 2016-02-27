@@ -1,5 +1,6 @@
 package com.nightonke.leetcoder;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -18,16 +19,19 @@ import android.text.style.AlignmentSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.github.aakira.expandablelayout.Utils;
 import com.github.johnpersano.supertoasts.SuperToast;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -241,6 +245,47 @@ public class LeetCoderUtil {
         return string;
     }
 
+    public static ObjectAnimator createRotateAnimator(final View target, final float from, final float to) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(target, "rotation", from, to);
+        animator.setDuration(300);
+        animator.setInterpolator(Utils.createInterpolator(Utils.LINEAR_INTERPOLATOR));
+        return animator;
+    }
+
+    public static String CODE_TYPE = "prism";
+
+    public static String httpToHttps(String string) {
+        return string.replaceAll("http", "https");
+    }
+
+    public static String listToString(List<String> list) {
+        if (list == null) return "null";
+        else {
+            String answer = "";
+            for (int i = 0; i < list.size(); i++) {
+                if (i > 0) answer += ", ";
+                answer += list.get(i);
+            }
+            return answer;
+        }
+    }
+
+    private static final int shouldHasLines = 100;
+    public static String toLine(String string) {
+        if (string == null || "".equals(string)) string = "class Solution {$$$public:$$$    bool LeetCoder() {$$$        if (noSolution) {$$$            clickTheFeedbackIconAtTheTopRightCorner();$$$            chooseIHaveBetterSolutions();$$$            submitASolution();$$$            waitYourWonderfulSolutionToBeUpdatedToLeetCoder();$$$        }$$$    }$$$    $$$private:$$$    bool noSolution = true;$$$    void clickTheFeedbackIconAtTheTopRightCorner();$$$    void chooseIHaveBetterSolutions();$$$    void submitASolution();$$$    void waitYourWonderfulSolutionToBeUpdatedToLeetCoder();$$$};$$$";
+        string = string.replaceAll("\\$\\$\\$", "\n");
+        int lines = 0;
+        int linePosition = 0;
+        while (linePosition != -1) {
+            linePosition = string.indexOf("\n", linePosition + 1);
+            if (linePosition != -1) lines++;
+        }
+        while (lines < shouldHasLines) {
+            string += "\n";
+            lines++;
+        }
+        return string;
+    }
 
 
 

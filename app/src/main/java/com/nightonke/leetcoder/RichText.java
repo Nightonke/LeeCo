@@ -253,7 +253,7 @@ public class RichText extends TextView {
     private Html.ImageGetter asyncImageGetter = new Html.ImageGetter() {
         @Override
         public Drawable getDrawable(String source) {
-            source = Utils.httpToHttps(source);
+            source = LeetCoderUtil.httpToHttps(source);
             final URLDrawable urlDrawable = new URLDrawable();
             ImageTarget target = new ImageTarget(urlDrawable);
             addTarget(target);

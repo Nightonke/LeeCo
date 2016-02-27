@@ -23,7 +23,7 @@ public class Problem extends BmobObject {
             Log.d("LeetCoder", "Problem show:\nid: " + id +
                     "\ncontent: " + content +
                     "\nsolution: " + solution +
-                    "\nsimilarProblems: " + Utils.listToString(similarProblems) +
+                    "\nsimilarProblems: " + LeetCoderUtil.listToString(similarProblems) +
                     "\ndiscussLink: " + discussLink +
                     "\nproblemLink: " + problemLink);
         }
@@ -74,6 +74,6 @@ public class Problem extends BmobObject {
     }
 
     public void setSolution(String solution) {
-        this.solution = Utils.toLine(solution);
+        this.solution = LeetCoderUtil.toLine(solution);
     }
 }

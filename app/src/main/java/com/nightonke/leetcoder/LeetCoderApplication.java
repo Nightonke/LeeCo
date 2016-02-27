@@ -16,6 +16,11 @@ public class LeetCoderApplication extends Application {
 
     public static final int KEYBOARD_CULT_DELAY = 400;
 
+    public static final int MIN_COMMENT_TITLE_LENGTH = 5;
+    public static final int MAX_COMMENT_TITLE_LENGTH = 100;
+    public static final int MIN_COMMENT_LENGTH = 10;
+    public static final int MAX_COMMENT_LENGTH = 1000;
+
     private static Context mContext;
 
     public static ArrayList<ArrayList<Problem_Index>> categories = null;

@@ -1,14 +1,11 @@
 package com.nightonke.leetcoder;
 
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -26,15 +23,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.github.johnpersano.supertoasts.SuperActivityToast;
-import com.github.johnpersano.supertoasts.SuperToast;
-import com.github.johnpersano.supertoasts.util.OnClickWrapper;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
@@ -56,6 +49,10 @@ public class ProblemActivity extends AppCompatActivity
         View.OnClickListener,
         ProblemContentFragment.OnTagClickListener,
         ProblemContentFragment.OnSimilarProblemClickListener {
+
+    public static final int START_COMMENT = 4;
+    public static final int BACK_COMMENT_CHANGED = 5;
+    public static final int BACK_COMMENT_UNCHANGED = 6;
 
     public Problem_Index problem_index;
     public Problem problem;
@@ -230,6 +227,13 @@ public class ProblemActivity extends AppCompatActivity
             }
         }
 
+        Fragment commentFragment = adapter.getPage(3);
+        if (commentFragment != null) {
+            if (commentFragment instanceof ProblemCommentFragment) {
+                ((ProblemCommentFragment) commentFragment).setLoading();
+            }
+        }
+
         BmobQuery<Problem> query = new BmobQuery<>();
         query.addWhereEqualTo("id", problem.getId());
         query.setLimit(1);
@@ -263,6 +267,13 @@ public class ProblemActivity extends AppCompatActivity
                         ((ProblemDiscussFragment) discussFragment).setDiscuss();
                     }
                 }
+
+                Fragment commentFragment = adapter.getPage(3);
+                if (commentFragment != null) {
+                    if (commentFragment instanceof ProblemCommentFragment) {
+                        ((ProblemCommentFragment) commentFragment).setComment();
+                    }
+                }
             }
 
             @Override
@@ -287,6 +298,13 @@ public class ProblemActivity extends AppCompatActivity
                 if (discussFragment != null) {
                     if (discussFragment instanceof ProblemDiscussFragment) {
                         ((ProblemDiscussFragment) discussFragment).setReload();
+                    }
+                }
+
+                Fragment commentFragment = adapter.getPage(3);
+                if (commentFragment != null) {
+                    if (commentFragment instanceof ProblemCommentFragment) {
+                        ((ProblemCommentFragment) commentFragment).setReload();
                     }
                 }
             }
@@ -496,7 +514,36 @@ public class ProblemActivity extends AppCompatActivity
                         break;
                     case 3:
                         // add comment
+                        if (LeetCoderApplication.user == null) {
+                            LeetCoderUtil.showToast(mContext, R.string.comment_not_login);
+                        } else {
+                            Intent intent = new Intent(mContext, EditCommentActivity.class);
+                            intent.putExtra("id", problem_index.getId());
+                            intent.putExtra("title", "");
+                            intent.putExtra("content", "");
+                            startActivityForResult(intent, START_COMMENT);
+                        }
                         break;
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case START_COMMENT:
+                if (resultCode == BACK_COMMENT_UNCHANGED) {
+                    if (BuildConfig.DEBUG) Log.d("LeetCoder", "Comment unchanged");
+                } else if (resultCode == BACK_COMMENT_CHANGED) {
+                    if (BuildConfig.DEBUG) Log.d("LeetCoder", "Comment changed");
+                    Fragment commentFragment = adapter.getPage(3);
+                    if (commentFragment != null) {
+                        if (commentFragment instanceof ProblemCommentFragment) {
+                            ((ProblemCommentFragment) commentFragment).setComment();
+                        }
+                    }
                 }
                 break;
         }

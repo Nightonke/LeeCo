@@ -242,11 +242,11 @@ public class CodeView extends WebView {
         }
 
         private static void set() {
-            if ("okaidia".equals(Utils.CODE_TYPE)) {
+            if ("okaidia".equals(LeetCoderUtil.CODE_TYPE)) {
                 JS = "okaidia.js";
                 CSS = "okaidia.css";
             }
-            if ("prism".equals(Utils.CODE_TYPE)) {
+            if ("prism".equals(LeetCoderUtil.CODE_TYPE)) {
                 JS = "prism.js";
                 CSS = "prism.css";
             }

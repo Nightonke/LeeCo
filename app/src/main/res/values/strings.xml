@@ -5,6 +5,7 @@
     <string name="ok">OK</string>
     <string name="search">Search</string>
     <string name="sort">Sort</string>
+    <string name="send">Send</string>
 
     <string name="original_problem">View in Web</string>
     <string name="reload">Reload</string>
@@ -94,6 +95,7 @@
     <string name="like_dislike_failed">Throw this problem failed,\ninternet disconnected</string>
 
     <string name="favorite_title">Favorite</string>
+    <string name="comment_title">Comment</string>
 
     <string name="sorting">Sorting...</string>
     <string name="researching">Researching...</string>
@@ -117,5 +119,21 @@
     <string name="copy_link">Copy Link</string>
     <string name="copy_link_toast">Link copied</string>
     <string name="open_with">Open With</string>
+
+    <string name="comment_title_hint">Title</string>
+    <string name="comment_content_hint">Write comment here</string>
+    <string name="comment_unchanged">Please don\'t send the same comment</string>
+    <string name="comment_not_login">Please sign in first</string>
+    <string name="comment_not_title">Empty title</string>
+    <string name="comment_invalid_title">Invalid title</string>
+    <string name="comment_not_content">Empty content</string>
+    <string name="comment_invalid_content">Invalid content</string>
+    <string name="comment_send_successfully">Add comment successfully</string>
+    <string name="comment_send_failed">Add failed, internet disconnected</string>
+    <string name="comment_not_send_title">Add Comment</string>
+    <string name="comment_not_send_content">Your comment has not been sent, sure to quit? The comment you edited will not be saved.</string>
+    <string name="comment_not_send_quit">Quit</string>
+    <string name="comment_not_send_send">Send</string>
+    <string name="comment_not_send_cancel">Cancel</string>
 
 </resources>
