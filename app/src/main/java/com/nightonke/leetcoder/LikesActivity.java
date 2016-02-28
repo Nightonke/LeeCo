@@ -25,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -173,7 +172,7 @@ public class LikesActivity extends AppCompatActivity
         (LeetCoderUtil.getActionBarTextView(cultView.getInnerToolbar())).setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
         ActionBar actionBar = ((AppCompatActivity)mContext).getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(mContext.getResources().getString(R.string.favorite_title));
+            actionBar.setTitle(mContext.getResources().getString(R.string.favorite_activity_title));
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(LeetCoderUtil.getDrawable(R.drawable.icon_like_red, LeetCoderUtil.dpToPx(36), LeetCoderUtil.dpToPx(36)));

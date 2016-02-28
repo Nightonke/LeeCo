@@ -3,7 +3,6 @@ package com.nightonke.leetcoder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -26,7 +25,6 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.daimajia.easing.linear.Linear;
 import com.github.ppamorim.cult.CultView;
 
 import cn.bmob.v3.BmobQuery;
@@ -77,7 +75,7 @@ public class EditCommentActivity extends AppCompatActivity {
         (LeetCoderUtil.getActionBarTextView(cultView.getInnerToolbar())).setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
         ActionBar actionBar = ((AppCompatActivity)mContext).getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(mContext.getResources().getString(R.string.comment_title));
+            actionBar.setTitle(mContext.getResources().getString(R.string.comment_activity_title));
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
             final Drawable upArrow = ContextCompat.getDrawable(mContext, R.drawable.abc_ic_ab_back_mtrl_am_alpha);

@@ -42,7 +42,8 @@
         <activity
             android:name=".EditCommentActivity"
             android:theme="@style/EditCommentActivityTheme" />
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".FeedbackActivity"></activity>
     </application>
 
 </manifest>

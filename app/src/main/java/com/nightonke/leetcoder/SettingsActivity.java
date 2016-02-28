@@ -19,7 +19,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.ppamorim.cult.CultView;
 
 import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 public class SettingsActivity extends AppCompatActivity
@@ -45,7 +44,7 @@ public class SettingsActivity extends AppCompatActivity
         (LeetCoderUtil.getActionBarTextView(cultView.getInnerToolbar())).setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
         ActionBar actionBar = ((AppCompatActivity)mContext).getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(mContext.getResources().getString(R.string.settings_title));
+            actionBar.setTitle(mContext.getResources().getString(R.string.settings_activity_title));
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
             final Drawable upArrow = ContextCompat.getDrawable(mContext, R.drawable.abc_ic_ab_back_mtrl_am_alpha);

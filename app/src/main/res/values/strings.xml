@@ -95,9 +95,10 @@
     <string name="like_dislike_successfully">Throw this problem successfully</string>
     <string name="like_dislike_failed">Throw this problem failed,\ninternet disconnected</string>
 
-    <string name="favorite_title">Favorites</string>
-    <string name="comment_title">Comment</string>
-    <string name="settings_title">Settings</string>
+    <string name="favorite_activity_title">Favorites</string>
+    <string name="comment_activity_title">Comment</string>
+    <string name="settings_activity_title">Settings</string>
+    <string name="feedback_activity_title">Feedback</string>
 
     <string name="sorting">Sorting&#8230;</string>
     <string name="researching">Researching&#8230;</string>
@@ -208,8 +209,8 @@
     <string name="change_password_hint_3">New password again</string>
     <string name="change_password_ok_2">OK</string>
     <string name="change_password_cancel_2">Cancel</string>
-    
-    
+
+
     <string name="check_update_text_1">Check Update</string>
     <string name="check_update_text_2">Let\'s make LeeCo better.</string>
     <string name="check_update_toast">Checking for newer version</string>
@@ -223,7 +224,19 @@
     <string name="check_update_downloading_content">Downloading the newest version.</string>
     <string name="new_version">New!</string>
 
-
     <string name="tags_post">&#160;tags</string>
+
+    <string name="feedback_helper">Let\'s make LeeCo better!</string>
+    <string name="feedback_not_title">Empty title</string>
+    <string name="feedback_invalid_title">Invalid title</string>
+    <string name="feedback_not_content">Empty content</string>
+    <string name="feedback_invalid_content">Invalid content</string>
+    <string name="feedback_send_successfully_2">Add feedback successfully, thank you!</string>
+    <string name="feedback_send_failed_2">Add failed, internet disconnected</string>
+    <string name="feedback_not_send_title">Add Feedback</string>
+    <string name="feedback_not_send_content">Your feedback has not been sent, sure to quit? The feedback you edited will not be saved.</string>
+    <string name="feedback_not_send_quit">Quit</string>
+    <string name="feedback_not_send_send">Send</string>
+    <string name="feedback_not_send_cancel">Cancel</string>
 
 </resources>

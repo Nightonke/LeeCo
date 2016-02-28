@@ -24,6 +24,10 @@ public class LeetCoderApplication extends Application {
     public static final int MAX_COMMENT_TITLE_LENGTH = 100;
     public static final int MIN_COMMENT_LENGTH = 10;
     public static final int MAX_COMMENT_LENGTH = 1000;
+    public static final int MIN_FEEDBACK_TITLE_LENGTH = 5;
+    public static final int MAX_FEEDBACK_TITLE_LENGTH = 100;
+    public static final int MIN_FEEDBACK_LENGTH = 10;
+    public static final int MAX_FEEDBACK_LENGTH = 500;
 
     private static Context mContext;
 
