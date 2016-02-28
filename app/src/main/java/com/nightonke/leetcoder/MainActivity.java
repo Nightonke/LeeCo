@@ -474,6 +474,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(mContext, FeedbackActivity.class));
                 break;
             case R.id.about:
+                startActivity(new Intent(mContext, AboutActivity.class));
                 break;
         }
     }

@@ -29,4 +29,9 @@
     <color name="level">#009688</color>
 
     <color name="snackbar_similar_problem">#E633B5E5</color>
+
+    <color name="load">#FF4081</color>
+    <color name="load_pressed">#ff73a3</color>
+
+    <color name="follow">#84D767</color>
 </resources>

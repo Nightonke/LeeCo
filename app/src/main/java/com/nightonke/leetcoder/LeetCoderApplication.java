@@ -3,7 +3,6 @@ package com.nightonke.leetcoder;
 import android.app.Application;
 import android.content.Context;
 
-import com.squareup.leakcanary.LeakCanary;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import java.util.ArrayList;
@@ -44,7 +43,6 @@ public class LeetCoderApplication extends Application {
         mContext = getApplicationContext();
         Bmob.initialize(this, Key.BMOB_KEY);
         CrashReport.initCrashReport(getApplicationContext(), Key.BUGLY_KEY, false);
-        LeakCanary.install(this);
     }
 
     public static Context getAppContext() {

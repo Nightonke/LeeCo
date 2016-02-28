@@ -63,7 +63,7 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/button_expand_comment"
+                        android:background="@drawable/background_expand_comment"
                         />
 
                 </RelativeLayout>

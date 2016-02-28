@@ -359,7 +359,7 @@ public class GetDataActivity extends AppCompatActivity {
             }
         }
 
-        problem.show();
+//        problem.show();
         problems.add(problem);
 
         Message msg = new Message();

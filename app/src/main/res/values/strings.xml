@@ -239,4 +239,63 @@
     <string name="feedback_not_send_send">Send</string>
     <string name="feedback_not_send_cancel">Cancel</string>
 
+    <string name="loading_data_title">Loading</string>
+    <string name="loading_data_content">Please wait for loading.</string>
+    <string name="loading_data_cancel">Cancel</string>
+    <string name="loading_data_failed">Loading failed, internet disconnected</string>
+
+    <string name="about_app_title">LeeCo</string>
+    <string name="about_app_content">LeeCo helps you practice algorithms and data structures.</string>
+    <string name="about_app_more">
+        LeeCo is a personal application for LeetCode(leetcode.com/problemset/algorithms/).
+        With LeeCo, you can read all the problems(including the locked problems), collect your favorite problems and see how many people collected them as well.
+        There is a sample solution for each problem for everyone to comment on.
+        The discusses on the LeetCode are list in LeeCo too, with these you can think more about algorithms and data structures.
+        And also, you can write comments for problems just like everyone does.
+        If you like some comments, you can vote for them or reply them.
+        You can get many votes for your own(that\'s a record for everyone) if your comments are so great.
+        For more information about LeeCo, you can check the help in the drawer menu in the left of the main page.
+        Now, join algorithms and data structures with LeeCo!
+    </string>
+    <string name="about_developer_title">Developer</string>
+    <string name="about_developer_content">Nightonke</string>
+    <string name="about_developer_tip">Follow Me!</string>
+    <string name="about_github_title">LeeCo Is Open Source</string>
+    <string name="about_github_content">github.com/Nightonke/LeetCoder2</string>
+    <string name="about_blog_title">Blog</string>
+    <string name="about_blog_content">blog.csdn.net/u012925008</string>
+    <string name="about_email_title">Email</string>
+    <string name="about_email_content">Nightonke@outlook.com</string>
+    <string name="about_email_me">Write Me A Letter</string>
+    <string name="about_lib_title">Libs</string>
+    <string name="about_lib_content">Thanks for the awesome libs follow</string>
+    <string name="about_lib_title_1">Images Loading</string>
+    <string name="about_lib_content_1">com.squareup.picasso</string>
+    <string name="about_lib_title_2">Smart Tab</string>
+    <string name="about_lib_content_2">com.ogaclejapan.smarttablayout</string>
+    <string name="about_lib_title_3">Finest WebView</string>
+    <string name="about_lib_content_3">com.thefinestartist</string>
+    <string name="about_lib_title_4">Bmob</string>
+    <string name="about_lib_content_4">cn.bmob.android</string>
+    <string name="about_lib_title_5">Tag Group</string>
+    <string name="about_lib_content_5">me.gujun.android.taggroup</string>
+    <string name="about_lib_title_6">Super RecyclerView</string>
+    <string name="about_lib_content_6">com.malinskiy:superrecyclerview</string>
+    <string name="about_lib_title_7">Auto Fit TextView</string>
+    <string name="about_lib_content_7">me.grantland:autofittextview</string>
+    <string name="about_lib_title_8">Animation</string>
+    <string name="about_lib_content_8">com.daimajia.androidanimations</string>
+    <string name="about_lib_title_9">Material Dialog</string>
+    <string name="about_lib_content_9">com.github.afollestad.material-dialogs</string>
+    <string name="about_lib_title_10">Cult</string>
+    <string name="about_lib_content_10">com.github.ppamorim</string>
+    <string name="about_lib_title_11">Text Drawable</string>
+    <string name="about_lib_content_11">com.amulyakhare:com.amulyakhare.textdrawable</string>
+    <string name="about_lib_title_12">Super Toast</string>
+    <string name="about_lib_content_12">com.github.johnpersano:supertoasts</string>
+    <string name="about_lib_title_13">Expandable Layout</string>
+    <string name="about_lib_content_13">com.github.aakira:expandable-layout</string>
+    <string name="about_lib_title_14">Bugly</string>
+    <string name="about_lib_content_14">com.tencent.bugly</string>
+
 </resources>

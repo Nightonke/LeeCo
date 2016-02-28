@@ -229,21 +229,30 @@ public class ProblemActivity extends AppCompatActivity
 
         snackbarLayout = (CoordinatorLayout)findViewById(R.id.container);
 
+        int id = getIntent().getIntExtra("id", -1);
+        if (id == -1) finish();  // error happens
         if (getIntent().getIntExtra("categoryPosition", -1) == -1 && getIntent().getIntExtra("problemPosition", -1) == -1) {
             // from search result
-            int id = getIntent().getIntExtra("id", -1);
-            for (ArrayList<Problem_Index> category : LeetCoderApplication.categories) {
-                for (Problem_Index problemIndex : category) {
-                    if (id == problemIndex.getId()) {
-                        problem_index = problemIndex;
+            if (LeetCoderApplication.categories == null) {
+                getProblemIndexFromId(id);
+            } else {
+                for (ArrayList<Problem_Index> category : LeetCoderApplication.categories) {
+                    for (Problem_Index problemIndex : category) {
+                        if (id == problemIndex.getId()) {
+                            problem_index = problemIndex;
+                        }
                     }
                 }
             }
         } else {
             // from categories
-            problem_index = LeetCoderApplication.categories.
-                    get(getIntent().getIntExtra("categoryPosition", -1)).
-                    get(getIntent().getIntExtra("problemPosition", -1));
+            if (LeetCoderApplication.categories == null) {
+                getProblemIndexFromId(id);
+            } else {
+                problem_index = LeetCoderApplication.categories.
+                        get(getIntent().getIntExtra("categoryPosition", -1)).
+                        get(getIntent().getIntExtra("problemPosition", -1));
+            }
         }
 
         likes.setText(problem_index.getLike() + "");
@@ -283,6 +292,46 @@ public class ProblemActivity extends AppCompatActivity
                 likes.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
             }
         }
+    }
+
+    private MaterialDialog loadingDialog;
+    private void getProblemIndexFromId(final int id) {
+        if (BuildConfig.DEBUG) Log.d("LeetCoder", "Get problem index: " + id + " ing");
+        loadingDialog = new MaterialDialog.Builder(this)
+                .title(R.string.loading_data_title)
+                .content(R.string.loading_data_content)
+                .negativeText(R.string.loading_data_cancel)
+                .cancelable(false)
+                .onAny(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        if (which == DialogAction.NEGATIVE) {
+                            finish();
+                        }
+                    }
+                })
+                .show();
+        BmobQuery<Problem_Index> queryProblemIndex = new BmobQuery<Problem_Index>();
+        queryProblemIndex.addWhereEqualTo("id", id);
+        queryProblemIndex.setLimit(1);
+        queryProblemIndex.findObjects(LeetCoderApplication.getAppContext(), new FindListener<Problem_Index>() {
+            @Override
+            public void onSuccess(List<Problem_Index> object) {
+                if (BuildConfig.DEBUG) Log.d("LeetCoder", "Get problem index: " + id + " " + object.get(0).getTitle());
+                if (loadingDialog != null) loadingDialog.dismiss();
+                problem_index = object.get(0);
+                likes.setText(problem_index.getLike() + "");
+                title.setText(problem_index.getTitle());
+                getData();
+            }
+            @Override
+            public void onError(int code, String msg) {
+                if (BuildConfig.DEBUG) Log.d("LeetCoder", "Get problem index failed: " + id);
+                if (loadingDialog != null) loadingDialog.dismiss();
+                LeetCoderUtil.showToast(mContext, R.string.loading_data_failed);
+                finish();
+            }
+        });
     }
 
     private void getData() {
@@ -332,7 +381,7 @@ public class ProblemActivity extends AppCompatActivity
                 problem.setDiscussLink(list.get(0).getDiscussLink());
                 problem.setProblemLink(list.get(0).getProblemLink());
                 problem.setSimilarProblems(list.get(0).getSimilarProblems());
-                problem.show();
+//                problem.show();
 
                 Fragment contentFragment = adapter.getPage(0);
                 if (contentFragment != null) {

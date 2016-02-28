@@ -119,9 +119,6 @@ public class ProblemDiscussFragment extends Fragment
     }
 
     public void setDiscuss() {
-        if (BuildConfig.DEBUG) {
-            Log.d("LeetCoder", "onMoreAsked start from: " + discusses.size());
-        }
         Problem problem = activity.problem;
         if (!SORT_STRINGS[sortType].equals(problem.getDiscussLink().substring(problem.getDiscussLink().length() - SORT_STRINGS[sortType].length(), problem.getDiscussLink().length()))) {
             discuss.loadUrl(problem.getDiscussLink() + SORT_STRINGS[sortType] + "&start=" + discusses.size());
