@@ -9,10 +9,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.johnpersano.supertoasts.SuperToast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -111,7 +111,8 @@ public class AppUpdateManager {
             @Override
             public void onSuccess(final List<APK> object) {
                 if (object.size() == 0 && showInfo) {
-                    LeetCoderUtil.showToast(context, R.string.check_update_newer_get_toast);
+                    if (BuildConfig.DEBUG) Log.d("LeetCoder", "This is newest version");
+                    LeetCoderUtil.showToast(context, R.string.check_update_newest_get_toast);
                 }
                 BmobQuery<APK> tooOldQuery = new BmobQuery<>();
                 tooOldQuery.addWhereEqualTo("version", LeetCoderApplication.VERSION);
@@ -120,11 +121,14 @@ public class AppUpdateManager {
                     @Override
                     public void onSuccess(List<APK> objectTooOld) {
                         if (objectTooOld.get(0).getTooOld()) {
+                            if (BuildConfig.DEBUG) Log.d("LeetCoder", "Must update");
                             mustUpdate = true;
                         } else {
+                            if (BuildConfig.DEBUG) Log.d("LeetCoder", "Needn't update");
                             mustUpdate = false;
                         }
                         if (object.size() > 0) {
+                            if (BuildConfig.DEBUG) Log.d("LeetCoder", "There is newer version");
                             int max = -1;
                             int maxPosition = 0;
                             for (int i = 0; i < object.size(); i++) {
@@ -138,6 +142,7 @@ public class AppUpdateManager {
                             setCanBeUpdated(true);
                             if (getRemindUpdate()) showNoticeDialog();
                         } else {
+                            if (BuildConfig.DEBUG) Log.d("LeetCoder", "No newer version");
                             setCanBeUpdated(false);
                         }
                     }

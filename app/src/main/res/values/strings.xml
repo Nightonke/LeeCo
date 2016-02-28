@@ -9,7 +9,7 @@
 
     <string name="original_problem">View This Problem In Web</string>
     <string name="reload">Reload</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading&#8230;</string>
 
     <string name="feedback_title">Feedback</string>
     <string name="feedback_hint">Write feedback here</string>
@@ -27,6 +27,7 @@
     <string name="click_to_login">Click to login</string>
     <string name="favorite">Favorites</string>
     <string name="like_postfix">&#160;Likes</string>
+    <string name="tag_postfix">&#160;Tags</string>
     <string name="settings">Settings</string>
     <string name="help">Help</string>
     <string name="feedback">Feedback</string>
@@ -60,7 +61,7 @@
     <string name="login_no_user">User not found</string>
     <string name="login_password_error">Password wrong</string>
     <string name="login_user_name_or_password_error">Incorrect user name or password</string>
-    <string name="login_ing">Signing in...</string>
+    <string name="login_ing">Signing in&#8230;</string>
     <string name="login_successfully">Sign in successfully</string>
 
     <string name="forget_password_title">Forget Password</string>
@@ -85,7 +86,7 @@
     <string name="register_internet_error">Internet disconnected</string>
     <string name="register_repeat_user">User name existed</string>
     <string name="register_password_error">Passwords are different</string>
-    <string name="register_ing">Signing up...</string>
+    <string name="register_ing">Signing up&#8230;</string>
     <string name="register_successfully">Sign up successfully</string>
 
     <string name="like_not_login">Please sign in first</string>
@@ -96,10 +97,11 @@
 
     <string name="favorite_title">Favorites</string>
     <string name="comment_title">Comment</string>
+    <string name="settings_title">Settings</string>
 
-    <string name="sorting">Sorting...</string>
-    <string name="researching">Researching...</string>
-    <string name="searching">Searching...</string>
+    <string name="sorting">Sorting&#8230;</string>
+    <string name="researching">Researching&#8230;</string>
+    <string name="searching">Searching&#8230;</string>
     <string name="data_not_found">Data not found,\nplease refresh data</string>
     <string name="loading_failed">Load failed, internet disconnected</string>
     <string name="view">VIEW</string>
@@ -161,6 +163,7 @@
     <string name="operate_like">Vote this Comment</string>
     <string name="operate_dislike">Veto this Comment</string>
 
+    <string name="problem_index_is_loading">Problems are still loading, please wait</string>
     <string name="problem_is_loading">Problem is still loading, please wait</string>
     <string name="solution_copied">Solution copied</string>
 
@@ -169,6 +172,13 @@
     <string name="similar_problem_hint">Similar Problem</string>
     <string name="similar_problems_hint">Similar Problems</string>
 
+    <string name="change_user_name_not_login">Please sign in first</string>
+    <string name="change_user_name_empty_user_name">Empty user name</string>
+    <string name="change_user_name_invalid_user_name">Invalid user name</string>
+    <string name="change_user_name_changing">Changing&#8230;</string>
+    <string name="change_user_name_successfully">Change user name successfully</string>
+    <string name="change_user_name_failed">Change failed, internet disconnected</string>
+    <string name="change_user_name_repeat">New user name existed</string>
     <string name="change_user_name_text_1">Change User Name</string>
     <string name="change_user_name_text_2">Others can see your user name on your comment.</string>
     <string name="change_user_name_title">Change User Name</string>
@@ -177,6 +187,16 @@
     <string name="change_user_name_new_helper">20 letters or 10 Chinese characters</string>
     <string name="change_user_name_ok">OK</string>
     <string name="change_user_name_cancel">Cancel</string>
+
+    <string name="change_password_changing">Changing&#8230;</string>
+    <string name="change_password_empty_old_password">Empty old password</string>
+    <string name="change_password_incorrect">Old password incorrect</string>
+    <string name="change_password_empty_password">Empty new password</string>
+    <string name="change_password_empty_password_again">Please type your new password again</string>
+    <string name="change_password_successfully">Change password successfully</string>
+    <string name="change_password_failed">Change failed, internet disconnected</string>
+    <string name="change_password_different_password">Passwords are different</string>
+    <string name="change_password_login">Please sign in first</string>
     <string name="change_password_text_1">Change Password</string>
     <string name="change_password_text_2">Protect your account.</string>
     <string name="change_password_title_1">Authentication</string>
@@ -188,6 +208,8 @@
     <string name="change_password_hint_3">New password again</string>
     <string name="change_password_ok_2">OK</string>
     <string name="change_password_cancel_2">Cancel</string>
+    
+    
     <string name="check_update_text_1">Check Update</string>
     <string name="check_update_text_2">Let\'s make LeeCo better.</string>
     <string name="check_update_toast">Checking for newer version</string>
@@ -195,9 +217,13 @@
     <string name="check_update_update">Update</string>
     <string name="check_update_dont_remind_this_version">Don\'t remind this version</string>
     <string name="check_update_cancel">Next time</string>
-    <string name="check_update_newer_get_toast">There is a newer version</string>
+    <string name="check_update_newest_get_toast">This is newest version</string>
     <string name="check_update_content">Update content:</string>
     <string name="check_update_downloading_title">Downloading</string>
     <string name="check_update_downloading_content">Downloading the newest version.</string>
+    <string name="new_version">New!</string>
+
+
+    <string name="tags_post">&#160;tags</string>
 
 </resources>

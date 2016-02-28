@@ -20,8 +20,9 @@
             <LinearLayout
                 android:id="@+id/change_user_name_layout"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:background="?android:selectableItemBackground"
                 >
 
                 <TextView
@@ -29,11 +30,137 @@
                     android:layout_height="40dp"
                     android:text="@string/change_user_name_text_1"
                     android:textColor="@color/colorPrimary"
+                    android:layout_gravity="center"
+                    android:textSize="16sp"
+                    android:gravity="left|bottom"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     />
 
-
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:text="@string/change_user_name_text_2"
+                    android:layout_gravity="center"
+                    android:textSize="12sp"
+                    android:gravity="left|top"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    />
 
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5sp"
+                android:background="?android:attr/listDivider"
+                android:layout_alignParentBottom="true"
+                />
+
+            <LinearLayout
+                android:id="@+id/change_password_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="?android:selectableItemBackground"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:text="@string/change_password_text_1"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_gravity="center"
+                    android:textSize="16sp"
+                    android:gravity="left|bottom"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:text="@string/change_password_text_2"
+                    android:layout_gravity="center"
+                    android:textSize="12sp"
+                    android:gravity="left|top"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5sp"
+                android:background="?android:attr/listDivider"
+                android:layout_alignParentBottom="true"
+                />
+
+            <LinearLayout
+                android:id="@+id/check_update_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="?android:selectableItemBackground"
+                >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:text="@string/check_update_text_1"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_gravity="center"
+                        android:textSize="16sp"
+                        android:gravity="left|bottom"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:text="@string/check_update_text_2"
+                        android:layout_gravity="center"
+                        android:textSize="12sp"
+                        android:gravity="left|top"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_alignParentBottom="true"
+                        />
+
+                    <TextView
+                        android:id="@+id/newer_version"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:textColor="@color/white"
+                        android:text="@string/new_version"
+                        android:background="@drawable/background_newer_version"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:gravity="center"
+                        />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5sp"
+                android:background="?android:attr/listDivider"
+                android:layout_alignParentBottom="true"
+                />
 
         </LinearLayout>
 

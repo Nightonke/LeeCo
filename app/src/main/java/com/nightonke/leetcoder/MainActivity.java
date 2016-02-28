@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity
     public static final int START_PROBLEM = 1;
     public static final int START_LIKES = 2;
     public static final int BACK_CATEGORY = 3;
+    public static final int START_SETTINGS = 4;
+    public static final int BACK_USER_NAME_CHANGED = 5;
 
     private Context mContext;
 
@@ -111,6 +113,7 @@ public class MainActivity extends AppCompatActivity
     private LinearLayout likeLayout;
     private TextView likes;
 
+    private LinearLayout tagDivider;
     private LeetCoderGridView gridView;
     private TagGridViewAdapter tagAdapter;
     private TextView tags;
@@ -265,8 +268,9 @@ public class MainActivity extends AppCompatActivity
                 }, 700);
             }
         });
+        tagDivider = (LinearLayout)findViewById(R.id.tag_divider);
+        tagDivider.setVisibility(View.GONE);
         tags = (TextView)findViewById(R.id.tags);
-        tags.setText("0 tags");
 
         settings = (LinearLayout)findViewById(R.id.settings);
         settings.setOnClickListener(this);
@@ -306,9 +310,9 @@ public class MainActivity extends AppCompatActivity
                 userName.setText(LeetCoderApplication.user.getUsername());
                 int votesNumber = LeetCoderApplication.user.getVotes();
                 if (votesNumber == 1 || votesNumber == -1) {
-                    votes.setText(votesNumber + " vote");
+                    votes.setText(votesNumber + " Vote");
                 } else {
-                    votes.setText(votesNumber + " votes");
+                    votes.setText(votesNumber + " Votes");
                 }
                 LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
                 LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
@@ -320,9 +324,9 @@ public class MainActivity extends AppCompatActivity
             userName.setText(LeetCoderApplication.user.getUsername());
             int votesNumber = LeetCoderApplication.user.getVotes();
             if (votesNumber == 1 || votesNumber == -1) {
-                votes.setText(votesNumber + " vote");
+                votes.setText(votesNumber + " Vote");
             } else {
-                votes.setText(votesNumber + " votes");
+                votes.setText(votesNumber + " Votes");
             }
             LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
             LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
@@ -454,6 +458,7 @@ public class MainActivity extends AppCompatActivity
                 startActivityForResult(new Intent(mContext, LikesActivity.class), START_LIKES);
                 break;
             case R.id.settings:
+                startActivity(new Intent(mContext, SettingsActivity.class));
                 break;
             case R.id.help:
                 break;
@@ -524,6 +529,7 @@ public class MainActivity extends AppCompatActivity
                                                             LeetCoderUtil.showToast(mContext, R.string.login_ing);
                                                             LeetCoderApplication.user = new User();
                                                             LeetCoderApplication.user.setUsername(userName);
+                                                            LeetCoderApplication.user.setMyPassword(password);
                                                             LeetCoderApplication.user.setPassword(password);
                                                             LeetCoderApplication.user.login(LeetCoderApplication.getAppContext(), new SaveListener() {
                                                                 @Override
@@ -533,9 +539,9 @@ public class MainActivity extends AppCompatActivity
                                                                     MainActivity.this.userName.setText(LeetCoderApplication.user.getUsername());
                                                                     int votesNumber = LeetCoderApplication.user.getVotes();
                                                                     if (votesNumber == 1 || votesNumber == -1) {
-                                                                        votes.setText(votesNumber + " vote");
+                                                                        votes.setText(votesNumber + " Vote");
                                                                     } else {
-                                                                        votes.setText(votesNumber + " votes");
+                                                                        votes.setText(votesNumber + " Votes");
                                                                     }
                                                                     LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
                                                                     LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
@@ -636,6 +642,7 @@ public class MainActivity extends AppCompatActivity
                                                             LeetCoderUtil.showToast(mContext, R.string.register_ing);
                                                             LeetCoderApplication.user = new User();
                                                             LeetCoderApplication.user.setUsername(userName);
+                                                            LeetCoderApplication.user.setMyPassword(password);
                                                             LeetCoderApplication.user.setPassword(password);
                                                             LeetCoderApplication.user.signUp(LeetCoderApplication.getAppContext(), new SaveListener() {
                                                                 @Override
@@ -645,9 +652,9 @@ public class MainActivity extends AppCompatActivity
                                                                     MainActivity.this.userName.setText(LeetCoderApplication.user.getUsername());
                                                                     int votesNumber = LeetCoderApplication.user.getVotes();
                                                                     if (votesNumber == 1 || votesNumber == -1) {
-                                                                        votes.setText(votesNumber + " vote");
+                                                                        votes.setText(votesNumber + " Vote");
                                                                     } else {
-                                                                        votes.setText(votesNumber + " votes");
+                                                                        votes.setText(votesNumber + " Votes");
                                                                     }
                                                                     LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
                                                                     LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
@@ -681,9 +688,9 @@ public class MainActivity extends AppCompatActivity
                 userName.setText(LeetCoderApplication.user.getUsername());
                 int votesNumber = LeetCoderApplication.user.getVotes();
                 if (votesNumber == 1 || votesNumber == -1) {
-                    votes.setText(votesNumber + " vote");
+                    votes.setText(votesNumber + " Vote");
                 } else {
-                    votes.setText(votesNumber + " votes");
+                    votes.setText(votesNumber + " Votes");
                 }
                 LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
                 likeDivider.setVisibility(View.VISIBLE);
@@ -718,7 +725,7 @@ public class MainActivity extends AppCompatActivity
 
     private void sort() {
         if (LeetCoderApplication.categories == null || LeetCoderApplication.categoriesTag == null) {
-            Toast.makeText(mContext, "Data not found, please refresh data.", Toast.LENGTH_SHORT).show();
+            LeetCoderUtil.showToast(mContext, R.string.problem_index_is_loading);
         } else {
             new MaterialDialog.Builder(mContext)
                     .title(R.string.sort_title)
@@ -744,7 +751,7 @@ public class MainActivity extends AppCompatActivity
                                     }
                                 }
                             }
-                            Toast.makeText(mContext, "Sorting...", Toast.LENGTH_SHORT).show();
+                            LeetCoderUtil.showToast(mContext, R.string.sorting);
                             dialog.dismiss();
                             return true;
                         }
@@ -923,7 +930,11 @@ public class MainActivity extends AppCompatActivity
                 tagAdapter = new TagGridViewAdapter(mContext);
                 gridView.setAdapter(tagAdapter);
                 gridView.setFocusable(false);
-                tags.setText(LeetCoderApplication.categories.size() + " tags");
+                tagDivider.setVisibility(View.VISIBLE);
+                int tagSize = LeetCoderApplication.categories.size();
+                if (tagSize == 1) tags.setText(LeetCoderApplication.categories.size() + " Tag");
+                else tags.setText(LeetCoderApplication.categories.size() + " Tags");
+
 
                 reload.setText(mContext.getResources().getString(R.string.reload));  // for refreshing
                 reload.setVisibility(View.GONE);
@@ -1015,7 +1026,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onRefresh() {
-        Toast.makeText(mContext, "Researching...", Toast.LENGTH_SHORT).show();
+        LeetCoderUtil.showToast(mContext, R.string.researching);
         search(searchInput.getText().toString());
     }
 
