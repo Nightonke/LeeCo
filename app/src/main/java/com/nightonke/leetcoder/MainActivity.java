@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -406,8 +407,15 @@ public class MainActivity extends AppCompatActivity
         if (cultView.isSecondViewAdded()) {
             cultView.hideSlideTop();
             return;
+        } else if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawers();
+            return;
+        } else {
+            Intent i = new Intent(Intent.ACTION_MAIN);
+            i.addCategory(Intent.CATEGORY_HOME);
+            startActivity(i);
+            return;
         }
-        super.onBackPressed();
     }
 
     private void hideKeyboard() {

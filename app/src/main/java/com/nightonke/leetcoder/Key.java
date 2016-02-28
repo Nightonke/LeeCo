@@ -3,8 +3,9 @@ package com.nightonke.leetcoder;
 /**
  * Created by Weiping on 2016/2/5.
  */
-public class BmobKey {
+public class Key {
 
     public static final String BMOB_KEY = "82df41f73cbf475dbebf12b77e581a54";
+    public static final String BUGLY_KEY = "AxGUGKX9z6krbK0y";
 
 }

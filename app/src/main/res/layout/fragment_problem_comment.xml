@@ -37,9 +37,9 @@
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_empty="@layout/super_recyclerview_discuss_empty"
-        app:layout_moreProgress="@layout/super_recyclerview_discuss_more"
-        app:layout_progress="@layout/super_recyclerview_discuss_progress"
+        app:layout_empty="@layout/super_recyclerview_comment_empty"
+        app:layout_moreProgress="@layout/super_recyclerview_comment_progress"
+        app:layout_progress="@layout/super_recyclerview_comment_progress"
         app:mainLayoutId="@layout/layout_recyclerview_verticalscroll"
         app:recyclerClipToPadding="false"
         app:scrollbarStyle="insideOverlay"/>

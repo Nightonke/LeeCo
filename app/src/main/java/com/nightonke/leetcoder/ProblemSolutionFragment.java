@@ -3,8 +3,10 @@ package com.nightonke.leetcoder;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -73,6 +75,14 @@ public class ProblemSolutionFragment extends Fragment
             }
         });
         code.setLongClickable(false);
+        code.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getPointerCount() > 1) return true;
+                else return false;
+            }
+        });
+        code.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
 
         return solutionFragment;
     }

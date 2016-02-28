@@ -214,17 +214,16 @@ public class SettingsActivity extends AppCompatActivity
                                                                     LeetCoderUtil.showToast(mContext, R.string.change_password_different_password);
                                                                 } else {
                                                                     LeetCoderUtil.showToast(mContext, R.string.change_password_changing);
-                                                                    User newUser = new User();
-                                                                    newUser.setMyPassword(password);
-                                                                    newUser.setPassword(password);
-                                                                    User currentUser = BmobUser.getCurrentUser(LeetCoderApplication.getAppContext(), User.class);
-                                                                    newUser.update(LeetCoderApplication.getAppContext(), currentUser.getObjectId(), new UpdateListener() {
+                                                                    final String oldPassword = LeetCoderApplication.user.getMyPassword();
+                                                                    LeetCoderApplication.user.setPassword(password);
+                                                                    LeetCoderApplication.user.setMyPassword(password);
+                                                                    LeetCoderApplication.user.update(LeetCoderApplication.getAppContext(), new UpdateListener() {
                                                                         @Override
                                                                         public void onSuccess() {
                                                                             if (BuildConfig.DEBUG) Log.d("LeetCoder", "Change password successfully: " + password);
                                                                             LeetCoderUtil.showToast(mContext, R.string.change_password_successfully);
-                                                                            LeetCoderApplication.user.setPassword(password);
-                                                                            LeetCoderApplication.user.setMyPassword(password);
+                                                                            LeetCoderApplication.user.setPassword(oldPassword);
+                                                                            LeetCoderApplication.user.setMyPassword(oldPassword);
                                                                             dialog.dismiss();
                                                                         }
                                                                         @Override
