@@ -24,7 +24,7 @@
             android:layout_height="25dp"
             android:layout_width="200dp"
             android:layout_below="@id/progressBar"
-            android:background="@drawable/button_original_problem"
+            android:background="@drawable/button_load"
             android:textColor="@color/finestWhite"
             android:text="@string/reload"
             android:gravity="center"
