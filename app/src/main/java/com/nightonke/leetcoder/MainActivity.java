@@ -293,10 +293,20 @@ public class MainActivity extends AppCompatActivity
             mDrawerToggle.syncState();
         }
         if (LeetCoderApplication.categories == null || LeetCoderApplication.categoriesTag == null) {
+            if (BuildConfig.DEBUG) Log.d("LeetCoder", "categories == null || categoriesTag == null: getData()");
             reloadLayout.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.VISIBLE);
             reload.setText(mContext.getResources().getString(R.string.loading));
             getData();
+        } else {
+            if (BuildConfig.DEBUG) Log.d("LeetCoder", "categories != null && categoriesTag != null: writeData()");
+            if (adapter == null) {
+                if (BuildConfig.DEBUG) Log.d("LeetCoder", "adapter == null, just set");
+                setView();
+            } else {
+                if (BuildConfig.DEBUG) Log.d("LeetCoder", "adapter != null, don't call");
+            }
+
         }
         if (LeetCoderApplication.user == null || LeetCoderApplication.likes == null || LeetCoderApplication.comments == null) {
             LeetCoderApplication.user = BmobUser.getCurrentUser(LeetCoderApplication.getAppContext(), User.class);
@@ -463,7 +473,11 @@ public class MainActivity extends AppCompatActivity
                 login();
                 break;
             case R.id.like_layout:
-                startActivityForResult(new Intent(mContext, LikesActivity.class), START_LIKES);
+                if (LeetCoderApplication.categories == null) {
+                    LeetCoderUtil.showToast(mContext, R.string.loading_data_content);
+                } else {
+                    startActivityForResult(new Intent(mContext, LikesActivity.class), START_LIKES);
+                }
                 break;
             case R.id.settings:
                 startActivity(new Intent(mContext, SettingsActivity.class));
@@ -553,6 +567,7 @@ public class MainActivity extends AppCompatActivity
                                                                     } else {
                                                                         votes.setText(votesNumber + " Votes");
                                                                     }
+                                                                    LeetCoderApplication.user = BmobUser.getCurrentUser(LeetCoderApplication.getAppContext(), User.class);
                                                                     LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
                                                                     LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
                                                                     likeDivider.setVisibility(View.VISIBLE);
@@ -666,6 +681,7 @@ public class MainActivity extends AppCompatActivity
                                                                     } else {
                                                                         votes.setText(votesNumber + " Votes");
                                                                     }
+                                                                    LeetCoderApplication.user = BmobUser.getCurrentUser(LeetCoderApplication.getAppContext(), User.class);
                                                                     LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
                                                                     LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
                                                                     likeDivider.setVisibility(View.VISIBLE);
@@ -926,29 +942,10 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
                 sortByDate();
-                FragmentPagerItems pages = new FragmentPagerItems(mContext);
                 for (String tag : LeetCoderApplication.categoriesTag) {
                     LeetCoderApplication.categories.add(hash.get(tag));
-                    pages.add(FragmentPagerItem.of(tag, CategoryFragment.class));
                 }
-                adapter = new FragmentPagerItemAdapter(
-                        getSupportFragmentManager(), pages);
-                viewPager.setOffscreenPageLimit(1);
-                viewPager.setAdapter(adapter);
-                smartTabLayout.setViewPager(viewPager);
-
-                tagAdapter = new TagGridViewAdapter(mContext);
-                gridView.setAdapter(tagAdapter);
-                gridView.setFocusable(false);
-                tagDivider.setVisibility(View.VISIBLE);
-                int tagSize = LeetCoderApplication.categories.size();
-                if (tagSize == 1) tags.setText(LeetCoderApplication.categories.size() + " Tag");
-                else tags.setText(LeetCoderApplication.categories.size() + " Tags");
-
-
-                reload.setText(mContext.getResources().getString(R.string.reload));  // for refreshing
-                reload.setVisibility(View.GONE);
-                reloadLayout.setVisibility(View.GONE);
+                setView();
             }
             @Override
             public void onError(int code, String msg) {
@@ -969,6 +966,31 @@ public class MainActivity extends AppCompatActivity
                 reload.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    private void setView() {
+        FragmentPagerItems pages = new FragmentPagerItems(mContext);
+        for (String tag : LeetCoderApplication.categoriesTag) {
+            pages.add(FragmentPagerItem.of(tag, CategoryFragment.class));
+        }
+        adapter = new FragmentPagerItemAdapter(
+                getSupportFragmentManager(), pages);
+        viewPager.setOffscreenPageLimit(1);
+        viewPager.setAdapter(adapter);
+        smartTabLayout.setViewPager(viewPager);
+
+        tagAdapter = new TagGridViewAdapter(mContext);
+        gridView.setAdapter(tagAdapter);
+        gridView.setFocusable(false);
+        tagDivider.setVisibility(View.VISIBLE);
+        int tagSize = LeetCoderApplication.categories.size();
+        if (tagSize == 1) tags.setText(LeetCoderApplication.categories.size() + " Tag");
+        else tags.setText(LeetCoderApplication.categories.size() + " Tags");
+
+
+        reload.setText(mContext.getResources().getString(R.string.reload));  // for refreshing
+        reload.setVisibility(View.GONE);
+        reloadLayout.setVisibility(View.GONE);
     }
 
     private SwipeRefreshLayout swipeRefreshLayout;
