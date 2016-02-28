@@ -38,10 +38,11 @@
         <activity android:name=".GetDataActivity" />
         <activity
             android:name=".LikesActivity"
-            android:theme="@style/LikesActivityTheme"></activity>
+            android:theme="@style/LikesActivityTheme" />
         <activity
             android:name=".EditCommentActivity"
-            android:theme="@style/EditCommentActivityTheme"></activity>
+            android:theme="@style/EditCommentActivityTheme" />
+        <activity android:name=".SettingsActivity"></activity>
     </application>
 
 </manifest>

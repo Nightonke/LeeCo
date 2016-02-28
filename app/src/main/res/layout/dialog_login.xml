@@ -10,8 +10,19 @@
         android:layout_weight="1"
         android:textCursorDrawable="@null"
         android:textColor="@color/colorPrimary"
-        android:hint="@string/login_user_name_hint"
         android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="right|top"
+        android:text="@string/login_user_name_hint"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12sp"
+        android:layout_marginTop="-5dp"
+        android:layout_marginRight="35dp"
         android:layout_marginLeft="30dp"
         />
 
@@ -22,9 +33,20 @@
         android:layout_weight="1"
         android:textCursorDrawable="@null"
         android:textColor="@color/colorPrimary"
-        android:hint="@string/login_password_hint"
         android:inputType="textPassword"
         android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="right|top"
+        android:text="@string/register_password_hint"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12sp"
+        android:layout_marginTop="-5dp"
+        android:layout_marginRight="35dp"
         android:layout_marginLeft="30dp"
         />
 

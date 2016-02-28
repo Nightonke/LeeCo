@@ -15,6 +15,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
+        // remember to change the number version in application file
         versionName "1.0.0"
     }
     buildTypes {

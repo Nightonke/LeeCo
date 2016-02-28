@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity
     private TextView userName;
     private TextView votes;
 
+    private LinearLayout likeDivider;
     private LinearLayout likeLayout;
     private TextView likes;
 
@@ -241,6 +242,7 @@ public class MainActivity extends AppCompatActivity
         userName = (TextView)findViewById(R.id.username);
         votes = (TextView)findViewById(R.id.votes);
 
+        likeDivider = (LinearLayout)findViewById(R.id.like_divider);
         likeLayout = (LinearLayout)findViewById(R.id.like_layout);
         likeLayout.setOnClickListener(this);
         likes = (TextView)findViewById(R.id.likes);
@@ -274,6 +276,9 @@ public class MainActivity extends AppCompatActivity
         feedback.setOnClickListener(this);
         about = (LinearLayout)findViewById(R.id.about);
         about.setOnClickListener(this);
+
+        AppUpdateManager appUpdateManager = new AppUpdateManager(mContext);
+        appUpdateManager.checkUpdateInfo(false);
     }
 
     @Override
@@ -295,6 +300,7 @@ public class MainActivity extends AppCompatActivity
                 votes.setText("");
                 LeetCoderApplication.likes = null;
                 LeetCoderApplication.comments = null;
+                likeDivider.setVisibility(View.GONE);
                 likeLayout.setVisibility(View.GONE);
             } else {
                 userName.setText(LeetCoderApplication.user.getUsername());
@@ -306,6 +312,7 @@ public class MainActivity extends AppCompatActivity
                 }
                 LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
                 LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
+                likeDivider.setVisibility(View.VISIBLE);
                 likeLayout.setVisibility(View.VISIBLE);
                 likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.like_postfix));
             }
@@ -319,6 +326,7 @@ public class MainActivity extends AppCompatActivity
             }
             LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
             LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
+            likeDivider.setVisibility(View.VISIBLE);
             likeLayout.setVisibility(View.VISIBLE);
             likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.like_postfix));
         }
@@ -531,6 +539,7 @@ public class MainActivity extends AppCompatActivity
                                                                     }
                                                                     LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
                                                                     LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
+                                                                    likeDivider.setVisibility(View.VISIBLE);
                                                                     likeLayout.setVisibility(View.VISIBLE);
                                                                     likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.like_postfix));
                                                                 }
@@ -642,6 +651,7 @@ public class MainActivity extends AppCompatActivity
                                                                     }
                                                                     LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
                                                                     LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
+                                                                    likeDivider.setVisibility(View.VISIBLE);
                                                                     likeLayout.setVisibility(View.VISIBLE);
                                                                     likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.like_postfix));
                                                                 }
@@ -676,6 +686,7 @@ public class MainActivity extends AppCompatActivity
                     votes.setText(votesNumber + " votes");
                 }
                 LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
+                likeDivider.setVisibility(View.VISIBLE);
                 likeLayout.setVisibility(View.VISIBLE);
                 likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.like_postfix));
             }
@@ -696,6 +707,7 @@ public class MainActivity extends AppCompatActivity
                                 votes.setText("");
                                 LeetCoderApplication.likes = null;
                                 LeetCoderApplication.comments = null;
+                                likeDivider.setVisibility(View.GONE);
                                 likeLayout.setVisibility(View.GONE);
                             }
                         }

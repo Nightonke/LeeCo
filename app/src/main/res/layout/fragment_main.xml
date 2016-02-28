@@ -197,6 +197,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/like_divider"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LeetCoder</string>
+    <string name="app_name">LeeCo</string>
 
     <string name="cancel">cancel</string>
     <string name="ok">OK</string>
@@ -17,7 +17,7 @@
     <string name="feedback_send_failed">Failed to send your feedback.</string>
     <string name="better_solution_title">Better Solution</string>
     <string name="better_solution_email_title">Send Your Better Solution</string>
-    <string name="better_solution_content">You can send your better solution and the problem title to me. After checking your wonderful solution, I will update the solution. Thanks for making LeetCoder better! My e-mail address is\nNightonke@outlook.com</string>
+    <string name="better_solution_content">You can send your better solution and the problem title to me. After checking your wonderful solution, I will update the solution. Thanks for making LeeCo better! My e-mail address is\nNightonke@outlook.com</string>
     <string name="better_solution_copy">Copy e-mail address</string>
     <string name="better_solution_copied">E-mail address copied.</string>
     <string name="better_solution_write">Write the e-mail</string>
@@ -30,20 +30,20 @@
     <string name="settings">Settings</string>
     <string name="help">Help</string>
     <string name="feedback">Feedback</string>
-    <string name="about">About LeetCoder</string>
+    <string name="about">About LeeCo</string>
 
     <string name="logout_title">Sign Out</string>
     <string name="logout_content">Sure to sign out?</string>
     <string name="logout_ok">sign out</string>
     <string name="logout_cancel">cancel</string>
 
-    <string name="login_or_register_title">LeetCoder</string>
-    <string name="login_or_register_content_1">Welcome to LeetCoder! After signing in, you can</string>
+    <string name="login_or_register_title">LeeCo</string>
+    <string name="login_or_register_content_1">Welcome to LeeCo! After signing in, you can</string>
     <string name="login_or_register_content_2">COLLECT your favorite problems</string>
     <string name="login_or_register_content_3">WRITE comments</string>
     <string name="login_or_register_content_4">VOTE for comments</string>
     <string name="login_or_register_content_5">GET VOTES from comments</string>
-    <string name="login_or_register_content_6">Let\'s join LeetCoder right now!</string>
+    <string name="login_or_register_content_6">Let\'s join LeeCo right now!</string>
     <string name="login_or_register_login">sign in</string>
     <string name="login_or_register_register">sign up</string>
     <string name="login_or_register_cancel">cancel</string>
@@ -73,7 +73,7 @@
 
     <string name="register_title">Sign Up</string>
     <string name="register_user_name_hint">User name</string>
-    <string name="register_user_name_length">20 letters or 10 Chinese character</string>
+    <string name="register_user_name_length">20 letters or 10 Chinese characters</string>
     <string name="register_password_hint">Password</string>
     <string name="register_password_hint_again">Password again</string>
     <string name="register_ok">sign up</string>
@@ -168,5 +168,36 @@
     <string name="tags_hint">Tags</string>
     <string name="similar_problem_hint">Similar Problem</string>
     <string name="similar_problems_hint">Similar Problems</string>
+
+    <string name="change_user_name_text_1">Change User Name</string>
+    <string name="change_user_name_text_2">Others can see your user name on your comment.</string>
+    <string name="change_user_name_title">Change User Name</string>
+    <string name="change_user_name_old_helper">Old user name</string>
+    <string name="change_user_name_new_hint">New user name</string>
+    <string name="change_user_name_new_helper">20 letters or 10 Chinese characters</string>
+    <string name="change_user_name_ok">OK</string>
+    <string name="change_user_name_cancel">Cancel</string>
+    <string name="change_password_text_1">Change Password</string>
+    <string name="change_password_text_2">Protect your account.</string>
+    <string name="change_password_title_1">Authentication</string>
+    <string name="change_password_hint_1">Old password</string>
+    <string name="change_password_ok_1">Next step</string>
+    <string name="change_password_cancel_1">Cancel</string>
+    <string name="change_password_title_2">Change Password</string>
+    <string name="change_password_hint_2">New password</string>
+    <string name="change_password_hint_3">New password again</string>
+    <string name="change_password_ok_2">OK</string>
+    <string name="change_password_cancel_2">Cancel</string>
+    <string name="check_update_text_1">Check Update</string>
+    <string name="check_update_text_2">Let\'s make LeeCo better.</string>
+    <string name="check_update_toast">Checking for newer version</string>
+    <string name="check_update_title">Newer Version</string>
+    <string name="check_update_update">Update</string>
+    <string name="check_update_dont_remind_this_version">Don\'t remind this version</string>
+    <string name="check_update_cancel">Next time</string>
+    <string name="check_update_newer_get_toast">There is a newer version</string>
+    <string name="check_update_content">Update content:</string>
+    <string name="check_update_downloading_title">Downloading</string>
+    <string name="check_update_downloading_content">Downloading the newest version.</string>
 
 </resources>

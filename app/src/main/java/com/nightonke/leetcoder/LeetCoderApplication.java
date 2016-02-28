@@ -14,6 +14,9 @@ import cn.bmob.v3.Bmob;
  */
 public class LeetCoderApplication extends Application {
 
+    // version number, just for update
+    public static final int VERSION = 100;
+
     public static final int KEYBOARD_CULT_DELAY = 400;
 
     public static final int MIN_COMMENT_TITLE_LENGTH = 5;
