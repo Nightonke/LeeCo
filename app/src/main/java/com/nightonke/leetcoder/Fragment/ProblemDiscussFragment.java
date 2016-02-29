@@ -96,7 +96,6 @@ public class ProblemDiscussFragment extends Fragment
         superRecyclerView.getSwipeToRefresh().setColorSchemeResources(R.color.colorPrimary);
         superRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         superRecyclerView.setRefreshListener(this);
-        // Todo
 //        superRecyclerView.setupMoreListener(this, Integer.MAX_VALUE);
         superRecyclerView.getMoreProgressView().setDrawingCacheBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
         adapter = new ProblemDiscussAdapter(discusses, this);

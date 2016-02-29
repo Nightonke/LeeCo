@@ -636,9 +636,8 @@ public class ProblemActivity extends AppCompatActivity
                                                     if (which == DialogAction.POSITIVE) {
                                                         final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
                                                         emailIntent.setType("plain/text");
-                                                        // Todo
                                                         emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"Nightonke@outlook.com"});
-                                                        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Better Solution For " + problem_index.getTitle());
+                                                        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, mContext.getResources().getString(R.string.better_solution_title_for) + problem_index.getTitle());
                                                         emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "");
                                                         mContext.startActivity(Intent.createChooser(emailIntent, mContext.getResources().getString(R.string.better_solution_email_title)));
                                                     } else if (which == DialogAction.NEGATIVE) {

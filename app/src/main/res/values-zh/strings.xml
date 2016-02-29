@@ -16,6 +16,7 @@
     <string name="feedback_send_successfully">您的反馈已经成功发送，谢谢反馈！</string>
     <string name="feedback_send_failed">反馈发送失败</string>
     <string name="better_solution_title">更好的解法</string>
+    <string name="better_solution_title_for">更好的解法：</string>
     <string name="better_solution_email_title">发送您的更好解法</string>
     <string name="better_solution_content">
         您可以将您的更好解法连同对应题目的标题一起通过邮件发给我，
@@ -30,8 +31,8 @@
 
     <string name="click_to_login">登录</string>
     <string name="favorite">收藏夹</string>
-    <string name="like_postfix">&#160;Likes</string>
-    <string name="tag_postfix">&#160;Tags</string>
+    <string name="like_postfix">个收藏</string>
+    <string name="tag_postfix">个标签</string>
     <string name="settings">设置</string>
     <string name="help">帮助</string>
     <string name="feedback">反馈</string>
@@ -239,8 +240,6 @@
     <string name="check_update_downloading_content">正在下载最新版本。</string>
     <string name="new_version">新版本！</string>
 
-    <string name="tags_post">&#160;tags</string>
-
     <string name="feedback_helper">让LeeCo变得更好</string>
     <string name="feedback_not_title">标题为空</string>
     <string name="feedback_invalid_title">标题过长</string>
@@ -313,5 +312,12 @@
     <string name="about_lib_content_13">com.github.aakira:expandable-layout</string>
     <string name="about_lib_title_14">Bugly</string>
     <string name="about_lib_content_14">com.tencent.bugly</string>
+
+    <string name="vote_post">个赞同</string>
+    <string name="votes_post">个赞同</string>
+    <string name="like_post">个收藏</string>
+    <string name="likes_post">个收藏</string>
+    <string name="tag_post">个标签</string>
+    <string name="tags_post">个标签</string>
 
 </resources>

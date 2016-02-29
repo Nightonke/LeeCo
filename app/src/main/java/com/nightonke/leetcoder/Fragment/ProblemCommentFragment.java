@@ -25,6 +25,7 @@ import com.malinskiy.superrecyclerview.SuperRecyclerView;
 import com.nightonke.leetcoder.Activity.EditCommentActivity;
 import com.nightonke.leetcoder.Activity.ProblemActivity;
 import com.nightonke.leetcoder.BuildConfig;
+import com.nightonke.leetcoder.Model.Vote;
 import com.nightonke.leetcoder.Utils.LeetCoderApplication;
 import com.nightonke.leetcoder.Utils.LeetCoderUtil;
 import com.nightonke.leetcoder.Model.Comment;
@@ -274,6 +275,7 @@ public class ProblemCommentFragment extends Fragment
                     .positiveText(R.string.operate_edit)
                     .negativeText(R.string.operate_delete)
                     .neutralText(R.string.operate_copy)
+                    .forceStacking(true)
                     .onAny(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -319,8 +321,9 @@ public class ProblemCommentFragment extends Fragment
             new MaterialDialog.Builder(mContext)
                     .title(R.string.operate_title)
                     .positiveText(R.string.operate_reply)
-                    .negativeText(like ? R.string.operate_dislike : R.string.operate_dislike)
+                    .negativeText(like ? R.string.operate_dislike : R.string.operate_like)
                     .neutralText(R.string.operate_copy)
+                    .forceStacking(true)
                     .onAny(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -339,43 +342,7 @@ public class ProblemCommentFragment extends Fragment
                                 }
                             } else if (which == DialogAction.NEGATIVE) {
                                 // like or dislike
-                                if (LeetCoderApplication.user == null) {
-                                    LeetCoderUtil.showToast(mContext, R.string.comment_not_login);
-                                } else {
-                                    if (like) {
-                                        // dislike
-                                        comments.get(position).getLikers().remove(LeetCoderApplication.user.getUsername());
-                                        comments.get(position).update(LeetCoderApplication.getAppContext(), comments.get(position).getObjectId(), new UpdateListener() {
-                                            @Override
-                                            public void onSuccess() {
-                                                likeNumber.setText(comments.get(position).getLikers().size() + "");
-                                                LeetCoderUtil.showToast(mContext, R.string.comment_dislike_successfully);
-                                            }
-                                            @Override
-                                            public void onFailure(int i, String s) {
-                                                if (BuildConfig.DEBUG) Log.d("LeetCoder", "Dislike comment failed: " + s);
-                                                LeetCoderUtil.showToast(mContext, R.string.comment_dislike_failed);
-                                                comments.get(position).getLikers().add(LeetCoderApplication.user.getUsername());
-                                            }
-                                        });
-                                    } else {
-                                        // like
-                                        comments.get(position).getLikers().add(LeetCoderApplication.user.getUsername());
-                                        comments.get(position).update(LeetCoderApplication.getAppContext(), comments.get(position).getObjectId(), new UpdateListener() {
-                                            @Override
-                                            public void onSuccess() {
-                                                likeNumber.setText(comments.get(position).getLikers().size() + "");
-                                                LeetCoderUtil.showToast(mContext, R.string.comment_like_successfully);
-                                            }
-                                            @Override
-                                            public void onFailure(int i, String s) {
-                                                if (BuildConfig.DEBUG) Log.d("LeetCoder", "Like comment failed: " + s);
-                                                LeetCoderUtil.showToast(mContext, R.string.comment_like_failed);
-                                                comments.get(position).getLikers().remove(LeetCoderApplication.user.getUsername());
-                                            }
-                                        });
-                                    }
-                                }
+                                onLikeClick(likeNumber, position);
                             } else {
                                 // copy content
                                 ClipboardManager clipboard = (ClipboardManager)activity.getSystemService(Activity.CLIPBOARD_SERVICE);
@@ -402,17 +369,17 @@ public class ProblemCommentFragment extends Fragment
                 comments.get(position).update(LeetCoderApplication.getAppContext(), comments.get(position).getObjectId(), new UpdateListener() {
                     @Override
                     public void onSuccess() {
-                        // find the writer
-                        BmobQuery<User> query = new BmobQuery<User>();
-                        query.addWhereEqualTo("username", comments.get(position).getUserName());
+                        // find the vote
+                        BmobQuery<Vote> query = new BmobQuery<Vote>();
+                        query.addWhereEqualTo("userName", comments.get(position).getUserName());
                         query.setLimit(1);
-                        query.findObjects(LeetCoderApplication.getAppContext(), new FindListener<User>() {
+                        query.findObjects(LeetCoderApplication.getAppContext(), new FindListener<Vote>() {
                             @Override
-                            public void onSuccess(List<User> object) {
-                                // update the votes of the user
-                                int votes = object.get(0).getVotes();
+                            public void onSuccess(List<Vote> object) {
+                                int votes = object.get(0).getVote();
                                 final int targetVotes = (votes == 0 ? 0 : votes - 1);  // impossible less than zero
-                                object.get(0).setVotes(targetVotes);
+                                object.get(0).setVote(targetVotes);
+                                // update the vote
                                 object.get(0).update(LeetCoderApplication.getAppContext(), object.get(0).getObjectId(), new UpdateListener() {
                                     @Override
                                     public void onSuccess() {
@@ -426,8 +393,8 @@ public class ProblemCommentFragment extends Fragment
                                         }
                                     }
                                     @Override
-                                    public void onFailure(int code, String msg) {
-                                        if (BuildConfig.DEBUG) Log.d("LeetCoder", "Dislike comment failed: " + msg);
+                                    public void onFailure(int i, String s) {
+                                        if (BuildConfig.DEBUG) Log.d("LeetCoder", "Dislike comment failed: " + s);
                                         LeetCoderUtil.showToast(mContext, R.string.comment_dislike_failed);
                                         comments.get(position).getLikers().add(LeetCoderApplication.user.getUsername());
                                     }
@@ -454,16 +421,17 @@ public class ProblemCommentFragment extends Fragment
                 comments.get(position).update(LeetCoderApplication.getAppContext(), comments.get(position).getObjectId(), new UpdateListener() {
                     @Override
                     public void onSuccess() {
-                        BmobQuery<User> query = new BmobQuery<User>();
-                        query.addWhereEqualTo("username", comments.get(position).getUserName());
+                        // find the vote
+                        BmobQuery<Vote> query = new BmobQuery<Vote>();
+                        query.addWhereEqualTo("userName", comments.get(position).getUserName());
                         query.setLimit(1);
-                        query.findObjects(LeetCoderApplication.getAppContext(), new FindListener<User>() {
+                        query.findObjects(LeetCoderApplication.getAppContext(), new FindListener<Vote>() {
                             @Override
-                            public void onSuccess(List<User> object) {
-                                // update the votes of the user
-                                int votes = object.get(0).getVotes();
+                            public void onSuccess(List<Vote> object) {
+                                int votes = object.get(0).getVote();
                                 final int targetVotes = votes + 1;
-                                object.get(0).setVotes(targetVotes);
+                                object.get(0).setVote(targetVotes);
+                                // update the vote
                                 object.get(0).update(LeetCoderApplication.getAppContext(), object.get(0).getObjectId(), new UpdateListener() {
                                     @Override
                                     public void onSuccess() {
@@ -471,14 +439,14 @@ public class ProblemCommentFragment extends Fragment
                                         LeetCoderUtil.showToast(mContext, R.string.comment_like_successfully);
                                         if (LeetCoderApplication.user != null) {
                                             if (LeetCoderApplication.user.getUsername().equals(comments.get(position).getUserName())) {
-                                                //like self comment
+                                                // like self comment
                                                 LeetCoderApplication.user.setVotes(targetVotes);
                                             }
                                         }
                                     }
                                     @Override
-                                    public void onFailure(int code, String msg) {
-                                        if (BuildConfig.DEBUG) Log.d("LeetCoder", "Like comment failed: " + msg);
+                                    public void onFailure(int i, String s) {
+                                        if (BuildConfig.DEBUG) Log.d("LeetCoder", "Like comment failed: " + s);
                                         LeetCoderUtil.showToast(mContext, R.string.comment_like_failed);
                                         comments.get(position).getLikers().remove(LeetCoderApplication.user.getUsername());
                                     }

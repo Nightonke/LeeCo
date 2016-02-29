@@ -16,6 +16,7 @@
     <string name="feedback_send_successfully">Your feedback has been sent! Thank you!</string>
     <string name="feedback_send_failed">Failed to send your feedback.</string>
     <string name="better_solution_title">Better Solution</string>
+    <string name="better_solution_title_for">Better Solution For&#160;</string>
     <string name="better_solution_email_title">Send Your Better Solution</string>
     <string name="better_solution_content">You can send your better solution and the problem title to me. After checking your wonderful solution, I will update the solution. Thanks for making LeeCo better! My e-mail address is\nNightonke@outlook.com</string>
     <string name="better_solution_copy">Copy e-mail address</string>
@@ -225,8 +226,6 @@
     <string name="check_update_downloading_content">Downloading the newest version.</string>
     <string name="new_version">New!</string>
 
-    <string name="tags_post">&#160;tags</string>
-
     <string name="feedback_helper">Let\'s make LeeCo better!</string>
     <string name="feedback_not_title">Empty title</string>
     <string name="feedback_invalid_title">Invalid title</string>
@@ -298,5 +297,12 @@
     <string name="about_lib_content_13">com.github.aakira:expandable-layout</string>
     <string name="about_lib_title_14">Bugly</string>
     <string name="about_lib_content_14">com.tencent.bugly</string>
+
+    <string name="vote_post">&#160;Vote</string>
+    <string name="votes_post">&#160;Votes</string>
+    <string name="like_post">&#160;Like</string>
+    <string name="likes_post">&#160;Likes</string>
+    <string name="tag_post">&#160;Tag</string>
+    <string name="tags_post">&#160;Tags</string>
 
 </resources>

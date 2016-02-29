@@ -42,6 +42,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.github.ppamorim.cult.CultView;
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
+import com.nightonke.leetcoder.Model.Vote;
 import com.nightonke.leetcoder.Utils.AppUpdateManager;
 import com.nightonke.leetcoder.BuildConfig;
 import com.nightonke.leetcoder.Fragment.CategoryFragment;
@@ -314,7 +315,6 @@ public class MainActivity extends AppCompatActivity
             } else {
                 if (BuildConfig.DEBUG) Log.d("LeetCoder", "adapter != null, don't call");
             }
-
         }
         if (LeetCoderApplication.user == null || LeetCoderApplication.likes == null || LeetCoderApplication.comments == null) {
             LeetCoderApplication.user = BmobUser.getCurrentUser(LeetCoderApplication.getAppContext(), User.class);
@@ -329,30 +329,55 @@ public class MainActivity extends AppCompatActivity
                 userName.setText(LeetCoderApplication.user.getUsername());
                 int votesNumber = LeetCoderApplication.user.getVotes();
                 if (votesNumber == 1 || votesNumber == -1) {
-                    votes.setText(votesNumber + " Vote");
+                    votes.setText(votesNumber + mContext.getResources().getString(R.string.vote_post));
                 } else {
-                    votes.setText(votesNumber + " Votes");
+                    votes.setText(votesNumber + mContext.getResources().getString(R.string.votes_post));
                 }
                 LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
                 LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
                 likeDivider.setVisibility(View.VISIBLE);
                 likeLayout.setVisibility(View.VISIBLE);
-                likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.like_postfix));
+                if (LeetCoderApplication.likes.size() == 1) likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.like_post));
+                else likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.likes_post));
             }
         } else {
+            getVote();
             userName.setText(LeetCoderApplication.user.getUsername());
-            int votesNumber = LeetCoderApplication.user.getVotes();
-            if (votesNumber == 1 || votesNumber == -1) {
-                votes.setText(votesNumber + " Vote");
-            } else {
-                votes.setText(votesNumber + " Votes");
-            }
             LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
             LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
             likeDivider.setVisibility(View.VISIBLE);
             likeLayout.setVisibility(View.VISIBLE);
-            likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.like_postfix));
+            if (LeetCoderApplication.likes.size() == 1) likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.like_post));
+            else likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.likes_post));
         }
+    }
+
+    private void getVote() {
+        BmobQuery<Vote> query = new BmobQuery<Vote>();
+        query.addWhereEqualTo("userName", LeetCoderApplication.user.getUsername());
+        query.setLimit(1);
+        query.findObjects(LeetCoderApplication.getAppContext(), new FindListener<Vote>() {
+            @Override
+            public void onSuccess(List<Vote> object) {
+                LeetCoderApplication.user.setVotes(object.get(0).getVote());
+                int votesNumber = object.get(0).getVote();
+                if (votesNumber == 1 || votesNumber == -1) {
+                    votes.setText(votesNumber + mContext.getResources().getString(R.string.vote_post));
+                } else {
+                    votes.setText(votesNumber + mContext.getResources().getString(R.string.votes_post));
+                }
+            }
+            @Override
+            public void onError(int code, String msg) {
+                if (BuildConfig.DEBUG) Log.d("LeetCoder", "Get vote failed: " + msg);
+                int votesNumber = LeetCoderApplication.user.getVotes();
+                if (votesNumber == 1 || votesNumber == -1) {
+                    votes.setText(votesNumber + mContext.getResources().getString(R.string.vote_post));
+                } else {
+                    votes.setText(votesNumber + mContext.getResources().getString(R.string.votes_post));
+                }
+            }
+        });
     }
 
     @Override
@@ -551,7 +576,7 @@ public class MainActivity extends AppCompatActivity
                                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                                     if (which == DialogAction.POSITIVE) {
                                                         // login
-                                                        String userName = ((EditText)loginView.findViewById(R.id.username)).getText().toString();
+                                                        final String userName = ((EditText)loginView.findViewById(R.id.username)).getText().toString();
                                                         String password = ((EditText)loginView.findViewById(R.id.password)).getText().toString();
                                                         if ("".equals(userName)) {
                                                             LeetCoderUtil.showToast(mContext, R.string.login_empty_user_name);
@@ -566,21 +591,38 @@ public class MainActivity extends AppCompatActivity
                                                             LeetCoderApplication.user.login(LeetCoderApplication.getAppContext(), new SaveListener() {
                                                                 @Override
                                                                 public void onSuccess() {
-                                                                    loginDialog.dismiss();
-                                                                    LeetCoderUtil.showToast(mContext, R.string.login_successfully);
-                                                                    MainActivity.this.userName.setText(LeetCoderApplication.user.getUsername());
-                                                                    int votesNumber = LeetCoderApplication.user.getVotes();
-                                                                    if (votesNumber == 1 || votesNumber == -1) {
-                                                                        votes.setText(votesNumber + " Vote");
-                                                                    } else {
-                                                                        votes.setText(votesNumber + " Votes");
-                                                                    }
-                                                                    LeetCoderApplication.user = BmobUser.getCurrentUser(LeetCoderApplication.getAppContext(), User.class);
-                                                                    LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
-                                                                    LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
-                                                                    likeDivider.setVisibility(View.VISIBLE);
-                                                                    likeLayout.setVisibility(View.VISIBLE);
-                                                                    likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.like_postfix));
+                                                                    // find the vote
+                                                                    BmobQuery<Vote> query = new BmobQuery<Vote>();
+                                                                    query.addWhereEqualTo("userName", userName);
+                                                                    query.setLimit(1);
+                                                                    query.findObjects(LeetCoderApplication.getAppContext(), new FindListener<Vote>() {
+                                                                        @Override
+                                                                        public void onSuccess(List<Vote> object) {
+                                                                            loginDialog.dismiss();
+                                                                            LeetCoderUtil.showToast(mContext, R.string.login_successfully);
+                                                                            MainActivity.this.userName.setText(LeetCoderApplication.user.getUsername());
+                                                                            int votesNumber = object.get(0).getVote();
+                                                                            LeetCoderApplication.user.setVotes(votesNumber);
+                                                                            if (votesNumber == 1 || votesNumber == -1) {
+                                                                                votes.setText(votesNumber + mContext.getResources().getString(R.string.vote_post));
+                                                                            } else {
+                                                                                votes.setText(votesNumber + mContext.getResources().getString(R.string.votes_post));
+                                                                            }
+                                                                            LeetCoderApplication.user = BmobUser.getCurrentUser(LeetCoderApplication.getAppContext(), User.class);
+                                                                            LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
+                                                                            LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
+                                                                            likeDivider.setVisibility(View.VISIBLE);
+                                                                            likeLayout.setVisibility(View.VISIBLE);
+                                                                            if (LeetCoderApplication.likes.size() == 1) likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.like_post));
+                                                                            else likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.likes_post));
+                                                                        }
+                                                                        @Override
+                                                                        public void onError(int code, String msg) {
+                                                                            if (BuildConfig.DEBUG) Log.d("LeetCoder", "Sign in failed: " + msg);
+                                                                            LeetCoderUtil.showToast(mContext, R.string.login_internet_error);
+                                                                        }
+                                                                    });
+
                                                                 }
                                                                 @Override
                                                                 public void onFailure(int code, String msg) {
@@ -658,7 +700,7 @@ public class MainActivity extends AppCompatActivity
                                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                                     if (which == DialogAction.POSITIVE) {
                                                         // register
-                                                        String userName = ((EditText)registerView.findViewById(R.id.username)).getText().toString();
+                                                        final String userName = ((EditText)registerView.findViewById(R.id.username)).getText().toString();
                                                         String password = ((EditText)registerView.findViewById(R.id.password)).getText().toString();
                                                         String passwordAgain = ((EditText)registerView.findViewById(R.id.password_again)).getText().toString();
                                                         if ("".equals(userName)) {
@@ -680,21 +722,31 @@ public class MainActivity extends AppCompatActivity
                                                             LeetCoderApplication.user.signUp(LeetCoderApplication.getAppContext(), new SaveListener() {
                                                                 @Override
                                                                 public void onSuccess() {
-                                                                    registerDialog.dismiss();
-                                                                    LeetCoderUtil.showToast(mContext, R.string.register_successfully);
-                                                                    MainActivity.this.userName.setText(LeetCoderApplication.user.getUsername());
-                                                                    int votesNumber = LeetCoderApplication.user.getVotes();
-                                                                    if (votesNumber == 1 || votesNumber == -1) {
-                                                                        votes.setText(votesNumber + " Vote");
-                                                                    } else {
-                                                                        votes.setText(votesNumber + " Votes");
-                                                                    }
-                                                                    LeetCoderApplication.user = BmobUser.getCurrentUser(LeetCoderApplication.getAppContext(), User.class);
-                                                                    LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
-                                                                    LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
-                                                                    likeDivider.setVisibility(View.VISIBLE);
-                                                                    likeLayout.setVisibility(View.VISIBLE);
-                                                                    likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.like_postfix));
+                                                                    Vote vote = new Vote();
+                                                                    vote.setUserName(userName);
+                                                                    vote.setVote(0);
+                                                                    vote.save(LeetCoderApplication.getAppContext(), new SaveListener() {
+                                                                        @Override
+                                                                        public void onSuccess() {
+                                                                            registerDialog.dismiss();
+                                                                            LeetCoderUtil.showToast(mContext, R.string.register_successfully);
+                                                                            MainActivity.this.userName.setText(LeetCoderApplication.user.getUsername());
+                                                                            LeetCoderApplication.user.setVotes(0);
+                                                                            votes.setText(LeetCoderApplication.user.getVotes() + mContext.getResources().getString(R.string.votes_post));
+                                                                            LeetCoderApplication.user = BmobUser.getCurrentUser(LeetCoderApplication.getAppContext(), User.class);
+                                                                            LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
+                                                                            LeetCoderApplication.comments = LeetCoderApplication.user.getComments();
+                                                                            likeDivider.setVisibility(View.VISIBLE);
+                                                                            likeLayout.setVisibility(View.VISIBLE);
+                                                                            if (LeetCoderApplication.likes.size() == 1) likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.like_post));
+                                                                            else likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.likes_post));
+                                                                        }
+                                                                        @Override
+                                                                        public void onFailure(int code, String arg0) {
+                                                                            if (BuildConfig.DEBUG) Log.d("LeetCoder", "Sign up failed: " + arg0);
+                                                                            LeetCoderUtil.showToast(mContext, R.string.register_internet_error);
+                                                                        }
+                                                                    });
                                                                 }
                                                                 @Override
                                                                 public void onFailure(int code, String msg) {
@@ -722,14 +774,15 @@ public class MainActivity extends AppCompatActivity
                 userName.setText(LeetCoderApplication.user.getUsername());
                 int votesNumber = LeetCoderApplication.user.getVotes();
                 if (votesNumber == 1 || votesNumber == -1) {
-                    votes.setText(votesNumber + " Vote");
+                    votes.setText(votesNumber + mContext.getResources().getString(R.string.vote_post));
                 } else {
-                    votes.setText(votesNumber + " Votes");
+                    votes.setText(votesNumber + mContext.getResources().getString(R.string.votes_post));
                 }
                 LeetCoderApplication.likes = LeetCoderApplication.user.getLikeProblems();
                 likeDivider.setVisibility(View.VISIBLE);
                 likeLayout.setVisibility(View.VISIBLE);
-                likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.like_postfix));
+                if (LeetCoderApplication.likes.size() == 1) likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.like_post));
+                else likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.likes_post));
             }
         } else {
             // log out
@@ -992,8 +1045,8 @@ public class MainActivity extends AppCompatActivity
         gridView.setFocusable(false);
         tagDivider.setVisibility(View.VISIBLE);
         int tagSize = LeetCoderApplication.categories.size();
-        if (tagSize == 1) tags.setText(LeetCoderApplication.categories.size() + " Tag");
-        else tags.setText(LeetCoderApplication.categories.size() + " Tags");
+        if (tagSize == 1) tags.setText(LeetCoderApplication.categories.size() + mContext.getResources().getString(R.string.tag_post));
+        else tags.setText(LeetCoderApplication.categories.size() + mContext.getResources().getString(R.string.tags_post));
 
 
         reload.setText(mContext.getResources().getString(R.string.reload));  // for refreshing
@@ -1095,7 +1148,8 @@ public class MainActivity extends AppCompatActivity
                                                 @Override
                                                 public void onSuccess() {
                                                     LeetCoderUtil.showToast(mContext, R.string.like_dislike_successfully);
-                                                    likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.like_postfix));
+                                                    if (LeetCoderApplication.likes.size() == 1) likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.like_post));
+                                                    else likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.likes_post));
                                                 }
                                                 @Override
                                                 public void onFailure(int i, String s) {
@@ -1135,7 +1189,8 @@ public class MainActivity extends AppCompatActivity
                                                 @Override
                                                 public void onSuccess() {
                                                     LeetCoderUtil.showToast(mContext, R.string.like_like_successfully);
-                                                    likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.like_postfix));
+                                                    if (LeetCoderApplication.likes.size() == 1) likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.like_post));
+                                                    else likes.setText(LeetCoderApplication.likes.size() + mContext.getResources().getString(R.string.likes_post));
                                                 }
                                                 @Override
                                                 public void onFailure(int i, String s) {
