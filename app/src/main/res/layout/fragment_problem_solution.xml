@@ -44,7 +44,7 @@
         android:layout_marginBottom="-3dp"
         >
 
-        <com.nightonke.leetcoder.CodeView
+        <com.nightonke.leetcoder.UI.CodeView
             android:id="@+id/code"
             android:layout_height="match_parent"
             android:layout_width="match_parent"

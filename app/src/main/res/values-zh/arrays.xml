@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="month_short_name">
+        <item>一月&#160;</item>
+        <item>二月&#160;</item>
+        <item>三月&#160;</item>
+        <item>四月&#160;</item>
+        <item>五月&#160;</item>
+        <item>六月&#160;</item>
+        <item>七月&#160;</item>
+        <item>八月&#160;</item>
+        <item>九月&#160;</item>
+        <item>十月&#160;</item>
+        <item>十一月&#160;</item>
+        <item>十二月&#160;</item>
+    </string-array>
+
+    <string-array name="sort_types_likes">
+        <item>收藏日期</item>
+        <item>收藏日期倒序</item>
+        <item>题目发布日期</item>
+        <item>题目发布日期倒序</item>
+        <item>标题</item>
+        <item>标题倒序</item>
+        <item>难易程度</item>
+        <item>难易程度倒序</item>
+        <item>被收藏数</item>
+        <item>被收藏数倒序</item>
+    </string-array>
+
+    <string-array name="sort_types_problem">
+        <item>题目发布日期</item>
+        <item>题目发布日期倒序</item>
+        <item>标题</item>
+        <item>标题倒序</item>
+        <item>难易程度</item>
+        <item>难易程度倒序</item>
+        <item>被收藏数</item>
+        <item>被收藏数倒序</item>
+    </string-array>
+
+    <string-array name="sort_types_discuss">
+        <item>时间</item>
+        <item>热度</item>
+        <item>赞同次数</item>
+        <item>评论次数</item>
+        <item>查看次数</item>
+    </string-array>
+
+    <string-array name="sort_types_comment">
+        <item>评论发布日期</item>
+        <item>评论发布日期倒序</item>
+        <item>赞同数</item>
+        <item>赞同数倒序</item>
+    </string-array>
+
+    <string-array name="feedback_types">
+        <item>题目内容不正确</item>
+        <item>解法不正确</item>
+        <item>题目讨论不正确</item>
+        <item>我有更好的解法！</item>
+        <item>其他&#8230;</item>
+    </string-array>
+
+</resources>

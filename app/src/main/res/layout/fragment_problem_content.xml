@@ -185,7 +185,7 @@
 
                 </LinearLayout>
 
-                <com.nightonke.leetcoder.RichText
+                <com.nightonke.leetcoder.UI.RichText
                     android:id="@+id/content"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"

@@ -30,6 +30,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:paddingBottom="4dp"
+                    app:stl_customTabTextLayoutId="@layout/item_custom_tab"
                     app:stl_defaultTabTextColor="@color/white"
                     app:stl_defaultTabTextHorizontalPadding="24dp"
                     app:stl_indicatorColor="@color/white"
@@ -226,7 +227,7 @@
 
                     </LinearLayout>
 
-                    <com.nightonke.leetcoder.LeetCoderGridView
+                    <com.nightonke.leetcoder.UI.LeetCoderGridView
                         android:id="@+id/gridview"
                         android:layout_width="250dp"
                         android:layout_height="wrap_content"

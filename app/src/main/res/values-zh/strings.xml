@@ -1,0 +1,317 @@
+<resources>
+    <string name="app_name">LeeCo</string>
+
+    <string name="cancel">取消</string>
+    <string name="ok">确认</string>
+    <string name="search">搜索</string>
+    <string name="sort">排序</string>
+    <string name="send">发送</string>
+
+    <string name="original_problem">查看原题</string>
+    <string name="reload">重新加载</string>
+    <string name="loading">加载中&#8230;</string>
+
+    <string name="feedback_title">反馈</string>
+    <string name="feedback_hint">在此填写反馈</string>
+    <string name="feedback_send_successfully">您的反馈已经成功发送，谢谢反馈！</string>
+    <string name="feedback_send_failed">反馈发送失败</string>
+    <string name="better_solution_title">更好的解法</string>
+    <string name="better_solution_email_title">发送您的更好解法</string>
+    <string name="better_solution_content">
+        您可以将您的更好解法连同对应题目的标题一起通过邮件发给我，
+        在确认您的解法后，我将会更新此题目的解法。
+        感谢您为LeeCo做出的贡献。我的电子邮箱是：\n
+        Nightonke@outlook.com</string>
+    <string name="better_solution_copy">复制邮箱地址</string>
+    <string name="better_solution_copied">已复制邮箱地址</string>
+    <string name="better_solution_write">写邮件</string>
+    <string name="sort_title">排序</string>
+    <string name="sort_content">排序方式</string>
+
+    <string name="click_to_login">登录</string>
+    <string name="favorite">收藏夹</string>
+    <string name="like_postfix">&#160;Likes</string>
+    <string name="tag_postfix">&#160;Tags</string>
+    <string name="settings">设置</string>
+    <string name="help">帮助</string>
+    <string name="feedback">反馈</string>
+    <string name="about">关于LeeCo</string>
+
+    <string name="logout_title">登出</string>
+    <string name="logout_content">确定登出吗？</string>
+    <string name="logout_ok">登出</string>
+    <string name="logout_cancel">取消</string>
+
+    <string name="login_or_register_title">LeeCo</string>
+    <string name="login_or_register_content_1">欢迎使用LeeCo！在登录后，您可以：</string>
+    <string name="login_or_register_content_2">收藏您喜欢的题目</string>
+    <string name="login_or_register_content_3">对题目发表评论</string>
+    <string name="login_or_register_content_4">赞同他人的评论</string>
+    <string name="login_or_register_content_5">他人对您的评论的赞同会积累到您的赞同数</string>
+    <string name="login_or_register_content_6">现在就加入LeeCo吧！</string>
+    <string name="login_or_register_login">登录</string>
+    <string name="login_or_register_register">注册</string>
+    <string name="login_or_register_cancel">取消</string>
+
+    <string name="login_title">登录</string>
+    <string name="login_user_name_hint">用户名</string>
+    <string name="login_password_hint">密码</string>
+    <string name="login_ok">登录</string>
+    <string name="login_forget_password">忘记密码</string>
+    <string name="login_cancel">取消</string>
+    <string name="login_empty_user_name">用户名为空</string>
+    <string name="login_empty_password">密码为空</string>
+    <string name="login_internet_error">网络连接失败</string>
+    <string name="login_no_user">用户名不存在</string>
+    <string name="login_password_error">密码错误</string>
+    <string name="login_user_name_or_password_error">用户名或密码错误</string>
+    <string name="login_ing">登录中&#8230;</string>
+    <string name="login_successfully">登录成功</string>
+
+    <string name="forget_password_title">忘记密码</string>
+    <string name="forget_password_content">
+        很抱歉您忘记了自己的密码，
+        您可以通过发邮件给我来取回密码。
+        我的电子邮箱是：\n
+        Nightonke@outlook.com</string>
+    <string name="forget_password_write">写邮件</string>
+    <string name="forget_password_copy">复制邮箱地址</string>
+    <string name="forget_password_cancel">取消</string>
+    <string name="forget_password_email_title">取回密码</string>
+    <string name="forget_password_copied">已复制邮箱地址</string>
+
+    <string name="register_title">注册</string>
+    <string name="register_user_name_hint">用户名</string>
+    <string name="register_user_name_length">20个英文字母或10个中文字符</string>
+    <string name="register_password_hint">密码</string>
+    <string name="register_password_hint_again">请再次输入密码</string>
+    <string name="register_ok">注册</string>
+    <string name="register_cancel">取消</string>
+    <string name="register_empty_user_name">用户名为空</string>
+    <string name="register_invalid_user_name">用户名过长</string>
+    <string name="register_empty_password">密码为空</string>
+    <string name="register_empty_password_again">请再次输入您的密码</string>
+    <string name="register_internet_error">注册失败，网络连接失败</string>
+    <string name="register_repeat_user">用户名已存在</string>
+    <string name="register_password_error">密码不一致</string>
+    <string name="register_ing">注册中&#8230;</string>
+    <string name="register_successfully">注册成功</string>
+
+    <string name="like_not_login">请先登录</string>
+    <string name="like_like_successfully">题目已收藏</string>
+    <string name="like_like_failed">无法收藏题目，网络连接失败</string>
+    <string name="like_dislike_successfully">题目已取消收藏</string>
+    <string name="like_dislike_failed">无法取消收藏题目，网络连接失败</string>
+
+    <string name="favorite_activity_title">收藏夹</string>
+    <string name="comment_activity_title">评论</string>
+    <string name="settings_activity_title">设置</string>
+    <string name="feedback_activity_title">反馈</string>
+    <string name="about_activity_title">关于</string>
+
+    <string name="sorting">排序中&#8230;</string>
+    <string name="researching">重新搜索中&#8230;</string>
+    <string name="searching">搜索中&#8230;</string>
+    <string name="data_not_found">未能找到数据，请刷新</string>
+    <string name="loading_failed">载入失败，网络连接失败</string>
+    <string name="view">查看</string>
+
+    <string name="collect_title">收藏</string>
+    <string name="collect_content">收藏该题目吗？</string>
+    <string name="collect_ok">收藏</string>
+    <string name="collect_cancel">取消</string>
+
+    <string name="dis_collect_title">取消收藏</string>
+    <string name="dis_collect_content">取消收藏该题目吗？</string>
+    <string name="dis_collect_ok">取消收藏</string>
+    <string name="dis_collect_cancel">取消</string>
+
+    <string name="refresh">刷新</string>
+    <string name="share">分享</string>
+    <string name="copy_link">复制链接</string>
+    <string name="copy_link_toast">链接已复制</string>
+    <string name="open_with">以&#8230;打开</string>
+
+    <string name="comment_re">回复：&#160;</string>
+    <string name="comment_by"></string>
+    <string name="comment_title_hint">标题</string>
+    <string name="comment_content_hint">评论正文</string>
+    <string name="comment_helper">为了更好的解法！</string>
+    <string name="comment_unchanged">评论标题和正文未修改</string>
+    <string name="comment_not_login">请先登录</string>
+    <string name="comment_not_title">标题为空</string>
+    <string name="comment_invalid_title">标题长度过长</string>
+    <string name="comment_not_content">评论正文为空</string>
+    <string name="comment_invalid_content">评论正文过长</string>
+    <string name="comment_send_successfully">发表评论成功</string>
+    <string name="comment_send_failed">无法发表评论，网络连接失败</string>
+    <string name="comment_not_send_title">发表评论</string>
+    <string name="comment_not_send_content">
+        您的评论尚未发表，确定退出吗？
+        您编辑的评论将不会被保存。
+    </string>
+    <string name="comment_not_send_quit">退出</string>
+    <string name="comment_not_send_send">添加</string>
+    <string name="comment_not_send_cancel">取消</string>
+    <string name="comment_update_successfully">更新评论成功</string>
+    <string name="comment_update_failed">无法更新评论，网络连接失败</string>
+    <string name="comment_not_update_title">更新评论</string>
+    <string name="comment_not_update_content">
+        您的评论尚未更新，确定退出吗？
+        您编辑的评论将不会被保存。
+    </string>
+    <string name="comment_not_update_quit">退出</string>
+    <string name="comment_not_update_update">更新</string>
+    <string name="comment_not_update_cancel">取消</string>
+    <string name="comment_delete_successfully">删除评论成功</string>
+    <string name="comment_delete_failed">无法删除评论，网络连接失败</string>
+    <string name="comment_like_successfully">赞同成功</string>
+    <string name="comment_like_failed">无法赞同，网络连接失败</string>
+    <string name="comment_dislike_successfully">取消赞同成功</string>
+    <string name="comment_dislike_failed">无法取消赞同，网络连接失败</string>
+    <string name="comment_copy">已复制评论内容</string>
+
+    <string name="operate_title">操作</string>
+    <string name="operate_edit">编辑</string>
+    <string name="operate_delete">删除</string>
+    <string name="operate_copy">复制内容</string>
+    <string name="operate_reply">回复</string>
+    <string name="operate_like">赞同</string>
+    <string name="operate_dislike">取消赞同</string>
+
+    <string name="problem_index_is_loading">正在加载，请稍候</string>
+    <string name="problem_is_loading">正在加载，请稍候</string>
+    <string name="solution_copied">已复制解法代码</string>
+
+    <string name="tag_hint">标签</string>
+    <string name="tags_hint">标签</string>
+    <string name="similar_problem_hint">类似题目</string>
+    <string name="similar_problems_hint">类似题目</string>
+
+    <string name="change_user_name_not_login">请先登录</string>
+    <string name="change_user_name_empty_user_name">用户名为空</string>
+    <string name="change_user_name_invalid_user_name">用户名过长</string>
+    <string name="change_user_name_changing">修改中&#8230;</string>
+    <string name="change_user_name_successfully">修改用户名成功</string>
+    <string name="change_user_name_failed">无法修改用户名，网络连接失败</string>
+    <string name="change_user_name_repeat">新用户名已存在</string>
+    <string name="change_user_name_text_1">修改用户名</string>
+    <string name="change_user_name_text_2">其他用户可以在您发表的评论上看到您的用户名</string>
+    <string name="change_user_name_title">修改用户名</string>
+    <string name="change_user_name_old_helper">旧用户名</string>
+    <string name="change_user_name_new_hint">新用户名</string>
+    <string name="change_user_name_new_helper">20个英文字母或10个中文字符</string>
+    <string name="change_user_name_ok">确认</string>
+    <string name="change_user_name_cancel">取消</string>
+
+    <string name="change_password_changing">修改中&#8230;</string>
+    <string name="change_password_empty_old_password">旧密码为空</string>
+    <string name="change_password_incorrect">旧密码不正确</string>
+    <string name="change_password_empty_password">新密码为空</string>
+    <string name="change_password_empty_password_again">请再次输入您的新密码</string>
+    <string name="change_password_successfully">密码修改成功</string>
+    <string name="change_password_failed">无法修改密码，网络连接失败</string>
+    <string name="change_password_different_password">密码不一致</string>
+    <string name="change_password_login">请先登录</string>
+    <string name="change_password_text_1">修改密码</string>
+    <string name="change_password_text_2">保护您的账号。</string>
+    <string name="change_password_title_1">验证</string>
+    <string name="change_password_hint_1">旧密码</string>
+    <string name="change_password_ok_1">下一步</string>
+    <string name="change_password_cancel_1">取消</string>
+    <string name="change_password_title_2">修改密码</string>
+    <string name="change_password_hint_2">新密码</string>
+    <string name="change_password_hint_3">请再次输入新密码</string>
+    <string name="change_password_ok_2">确认修改</string>
+    <string name="change_password_cancel_2">取消</string>
+
+
+    <string name="check_update_text_1">检查更新</string>
+    <string name="check_update_text_2">让LeeCo变得更好。</string>
+    <string name="check_update_toast">正在检查更新</string>
+    <string name="check_update_title">新版本</string>
+    <string name="check_update_update">更新</string>
+    <string name="check_update_dont_remind_this_version">该版本不提示</string>
+    <string name="check_update_cancel">下次</string>
+    <string name="check_update_newest_get_toast">已是最新版本</string>
+    <string name="check_update_content">更新内容：</string>
+    <string name="check_update_downloading_title">下载</string>
+    <string name="check_update_downloading_content">正在下载最新版本。</string>
+    <string name="new_version">新版本！</string>
+
+    <string name="tags_post">&#160;tags</string>
+
+    <string name="feedback_helper">让LeeCo变得更好</string>
+    <string name="feedback_not_title">标题为空</string>
+    <string name="feedback_invalid_title">标题过长</string>
+    <string name="feedback_not_content">反馈内容为空</string>
+    <string name="feedback_invalid_content">反馈内容过长</string>
+    <string name="feedback_send_successfully_2">反馈已发送，感谢！</string>
+    <string name="feedback_send_failed_2">无法发送反馈，网络连接失败</string>
+    <string name="feedback_not_send_title">发送反馈</string>
+    <string name="feedback_not_send_content">
+        您的反馈尚未发送，确认退出吗？
+        您编辑的反馈将不会被保存。
+    </string>
+    <string name="feedback_not_send_quit">退出</string>
+    <string name="feedback_not_send_send">发送</string>
+    <string name="feedback_not_send_cancel">取消</string>
+
+    <string name="loading_data_title">加载中</string>
+    <string name="loading_data_content">加载中，请稍候。</string>
+    <string name="loading_data_cancel">取消</string>
+    <string name="loading_data_failed">无法加载题目，网络连接失败</string>
+
+    <string name="about_app_title">LeeCo</string>
+    <string name="about_app_content">LeeCo帮助您练习算法和数据结构，提高编程水平。</string>
+    <string name="about_app_more">
+        LeeCo是LeetCode网站（leetcode.com/problemset/algorithms/）算法和数据结构的个人APP版本。
+        您可以在LeeCo中查阅LeetCode上所有的面试算法题（包括付费部分）、收藏您喜欢的题目、查看每一道题目的收藏数。
+        每一道题都有一个参考解法，如果您觉得解法有误或者不够高效，可以给我发送反馈以便更新更优解法。
+        LeeCo也有LeetCode上的Discuss部分，让您对题目和解法有更深入的认识。
+        您还可以对每一道题目发表您的评论、赞同和回复他人的评论。
+        其他人对您发表评论的赞同数会累计到您的账户中。
+        获取更多帮助信息，您可以查阅主页面菜单的帮助部分。现在就通过LeeCo来提升自己吧！
+    </string>
+    <string name="about_developer_title">开发者</string>
+    <string name="about_developer_content">Nightonke</string>
+    <string name="about_developer_tip">Follow Me!</string>
+    <string name="about_github_title">LeeCo已开源</string>
+    <string name="about_github_content">github.com/Nightonke/LeetCoder2</string>
+    <string name="about_blog_title">博客</string>
+    <string name="about_blog_content">blog.csdn.net/u012925008</string>
+    <string name="about_email_title">邮箱</string>
+    <string name="about_email_content">Nightonke@outlook.com</string>
+    <string name="about_email_me">给我写信</string>
+    <string name="about_lib_title">开源库</string>
+    <string name="about_lib_content">感谢以下开源库</string>
+    <string name="about_lib_title_1">Images Loading</string>
+    <string name="about_lib_content_1">com.squareup.picasso</string>
+    <string name="about_lib_title_2">Smart Tab</string>
+    <string name="about_lib_content_2">com.ogaclejapan.smarttablayout</string>
+    <string name="about_lib_title_3">Finest WebView</string>
+    <string name="about_lib_content_3">com.thefinestartist</string>
+    <string name="about_lib_title_4">Bmob</string>
+    <string name="about_lib_content_4">cn.bmob.android</string>
+    <string name="about_lib_title_5">Tag Group</string>
+    <string name="about_lib_content_5">me.gujun.android.taggroup</string>
+    <string name="about_lib_title_6">Super RecyclerView</string>
+    <string name="about_lib_content_6">com.malinskiy:superrecyclerview</string>
+    <string name="about_lib_title_7">Auto Fit TextView</string>
+    <string name="about_lib_content_7">me.grantland:autofittextview</string>
+    <string name="about_lib_title_8">Animation</string>
+    <string name="about_lib_content_8">com.daimajia.androidanimations</string>
+    <string name="about_lib_title_9">Material Dialog</string>
+    <string name="about_lib_content_9">com.github.afollestad.material-dialogs</string>
+    <string name="about_lib_title_10">Cult</string>
+    <string name="about_lib_content_10">com.github.ppamorim</string>
+    <string name="about_lib_title_11">Text Drawable</string>
+    <string name="about_lib_content_11">com.amulyakhare:com.amulyakhare.textdrawable</string>
+    <string name="about_lib_title_12">Super Toast</string>
+    <string name="about_lib_content_12">com.github.johnpersano:supertoasts</string>
+    <string name="about_lib_title_13">Expandable Layout</string>
+    <string name="about_lib_content_13">com.github.aakira:expandable-layout</string>
+    <string name="about_lib_title_14">Bugly</string>
+    <string name="about_lib_content_14">com.tencent.bugly</string>
+
+</resources>
