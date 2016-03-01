@@ -7,6 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/login_or_register_content_1"
+        android:textSize="16sp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="25dp"
         />
@@ -127,6 +128,7 @@
         android:text="@string/login_or_register_content_6"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="25dp"
+        android:textSize="16sp"
         />
 
 </LinearLayout>

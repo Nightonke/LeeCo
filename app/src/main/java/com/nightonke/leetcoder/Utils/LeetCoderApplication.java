@@ -44,7 +44,7 @@ public class LeetCoderApplication extends Application {
         super.onCreate();
         mContext = getApplicationContext();
         Bmob.initialize(this, Key.BMOB_KEY);
-        CrashReport.initCrashReport(getApplicationContext(), Key.BUGLY_KEY, false);
+        CrashReport.initCrashReport(getApplicationContext(), Key.BUGLY_APP_ID, false);
     }
 
     public static Context getAppContext() {

@@ -15,7 +15,7 @@
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:inputType="text"
-        android:hint="@string/comment_title_hint"
+        android:hint="@string/feedback_title"
         android:textCursorDrawable="@null"
         android:textColorHint="@color/white"
         android:textSize="25sp"
@@ -48,7 +48,7 @@
                 android:paddingBottom="10dp"
                 android:background="@null"
                 android:minLines="3"
-                android:hint="@string/comment_content_hint"
+                android:hint="@string/feedback_hint"
                 android:gravity="left|top"
                 />
 
@@ -71,7 +71,7 @@
                     android:id="@+id/helper"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:text="@string/comment_helper"
+                    android:text="@string/feedback_helper"
                     android:gravity="left|center_vertical"
                     android:textColor="@color/colorPrimary"
                     android:paddingLeft="10dp"

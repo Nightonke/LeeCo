@@ -6,6 +6,6 @@ package com.nightonke.leetcoder.Utils;
 public class Key {
 
     public static final String BMOB_KEY = "82df41f73cbf475dbebf12b77e581a54";
-    public static final String BUGLY_KEY = "AxGUGKX9z6krbK0y";
+    public static final String BUGLY_APP_ID = "900020343";
 
 }
