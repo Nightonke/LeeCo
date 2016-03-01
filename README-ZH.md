@@ -19,6 +19,10 @@ LeeCo，超过300道面试算法题，29个分类，详尽的题解、讨论和�
 拉开菜单可以看到用户信息（登陆后）、所有标签（点击标签可以导航到相应页面）、设置、帮助、反馈和关于。
 主页面的右上角有排序和搜索按钮，以便找到相应算法题。  
 
+###注册和登录
+![注册和登录](https://github.com/Nightonke/LeeCo/blob/master/PNG/user.png)  
+您可以注册并登录LeeCo，登录后可以进行收藏题目、发表、回复和赞同评论。  
+
 ###收藏夹
 ![收藏夹](https://github.com/Nightonke/LeeCo/blob/master/PNG/favorite.png)  
 登录之后便可以在菜单中看到收藏夹，点击便可以看到收藏的所有题目。
