@@ -3,7 +3,7 @@
 LeeCo is an awesome app for algorithem problems(including unlock), solutions, discuss(from leetcode) and comments.
 
 #中文文档
-[README-ZH.md](https://github.com/Nightonke/CoCoin/blob/master/README-ZH.md)
+[README-ZH.md](https://github.com/Nightonke/LeeCo/blob/master/README-ZH.md)
 
 #Download
 [APK from Github](https://github.com/Nightonke/LeeCo/blob/master/APK/LeeCo%20V1.0.0.apk)  
