@@ -19,6 +19,10 @@ Click a problem then you can check the details of the content, solution, discuss
 Open the drawer menu, there are the information of user(after signing in), all the tags(click to jump to the corresponding sub page), settings, help, feedback and about. 
 There are sorting and searching icons at the top right-hand corner to help you search and read problems.  
 
+###Sign Up and Sign In
+![Sign Up and Sign In](https://github.com/Nightonke/LeeCo/blob/master/PNG/user.png)  
+You can sign up and sign in to LeeCo. After signing in, you can collect problems, publish, reply and vote comments.  
+
 ###Favorite
 ![Favorite](https://github.com/Nightonke/LeeCo/blob/master/PNG/favorite.png)  
 After signing in, you can click the favorite button in the drawer menu in the main page to check all the problems collected by you. 
