@@ -320,4 +320,54 @@
     <string name="tag_post">个标签</string>
     <string name="tags_post">个标签</string>
 
+    <string name="basic_title">主页面</string>
+    <string name="basic_content">
+        在主界面，罗列了所有来自LeetCode（leetcode.com/problemset/algorithms/）的算法题。
+        算法题都按照所属标签分类，目前有29个标签。
+        每一道题目都有难度等级（难中易）和收藏次数，点击问题可以查看算法题的题目、解答、讨论（来自LeetCode）和评论（来自LeeCo）。
+        拉开菜单可以看到用户信息（登陆后）、所有标签（点击标签可以导航到相应页面）、设置、帮助、反馈和关于。
+        主页面的右上角有排序和搜索按钮，以便找到相应算法题。
+    </string>
+    <string name="favorite_title">收藏夹</string>
+    <string name="favorite_content">
+        登录之后便可以在菜单中看到收藏夹，点击便可以看到收藏的所有题目。
+        在主页面长按题目可以收藏或取消收藏，也可以在收藏夹长按题目或者在接下来的题目界面来进行收藏和取消收藏操作。
+        收藏夹中也可以进行和主页面一样的排序和搜索操作。
+    </string>
+    <string name="problem_title">题目</string>
+    <string name="problem_content">
+        点击题目进入题目界面后，可以看到关于题目的详细信息，包括标题、标签、难度、收藏次数、题目内容、类似题目。
+        点击右上角的飞机按钮可以查看官网原题，点击爱心可以进行收藏和取消收藏的操作。
+        如果您想查看题目所属的标签，可以点击标签后点击查看按钮（弹出的提示窗上的眼睛）导航到相应标签。
+        同样的，您也可以点击类似题目来跳转到相应题目。
+    </string>
+    <string name="solution_title">解法</string>
+    <string name="solution_content">
+        在题目页面左滑向右进入解法页面，这里是LeeCo提供的解法。
+        点击右上角复制按钮可以进行解法代码复制操作。
+        如果您觉得题目内容有误、解法有误或不是最优，都可以点击右上角的小手掌来进行反馈，我会及时更新解法和题目。
+    </string>
+    <string name="discuss_title">讨论</string>
+    <string name="discuss_content">
+        在解法页面左滑向右进入讨论页面，这里是来自于LeetCode的讨论。
+        您可以对发表的讨论进行排序操作，点击讨论便可以打开所在网址。
+    </string>
+    <string name="comment_title">评论</string>
+    <string name="comment_content">
+        在讨论页面左滑向右进入评论页面，在这里，你可以自由发表对题目和解法的评论。
+        点击评论可以收起或展开某一评论。
+        长按评论可以进行回复、赞同或取消赞同、复制内容（如果评论不是您发表的）和编辑、删除、复制内容（如果评论是您发表的）。
+        点击评论的右下角的按钮可以进行评论、赞同或取消赞同操作。
+        如果您想对评论进行排序或者发表评论，可以点击右上角的按钮。
+        他人对您发表的评论的赞同会累积到您个人账户中，积累的赞同数可以在主页面的菜单中看到。
+    </string>
+    <string name="other_title">其他</string>
+    <string name="other_content">
+        在主页面的菜单中您可以：
+        通过设置来修改自己的密码和检查版本更新；
+        通过帮助来查看此文档；
+        通过反馈来帮助LeeCo进步；
+        通过关于来查看开发者相关信息、LeeCo源码地址。
+    </string>
+
 </resources>

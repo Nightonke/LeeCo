@@ -305,4 +305,56 @@
     <string name="tag_post">&#160;Tag</string>
     <string name="tags_post">&#160;Tags</string>
 
+    <string name="basic_title">Main Page</string>
+    <string name="basic_content">
+        In the main page of LeeCo, there are algorithm problems from LeetCode(leetcode.com/problemset/algorithms/).
+        All the algorithm problems are classified into 29 tags in the sub pages.
+        You can see the degree of difficulty and the being collected times of every problem.
+        Click a problem then you can check the details of the content, solution, discusses(from LeetCode) and comments(from LeeCo) of the problem.
+        Open the drawer menu, there are the information of user(after signing in), all the tags(click to jump to the corresponding sub page), settings, help, feedback and about.
+        There are sorting and searching icons at the top right-hand corner to help you search and read problems.
+    </string>
+    <string name="favorite_title">Favorite</string>
+    <string name="favorite_content">
+        After signing in, you can click the favorite button in the drawer menu in the main page to check all the problems collected by you.
+        There are 2 ways to collect or cancel the collection of problems: long press the problem in the main page or in the favorite page, click the "heart" button in the problem page introduced below.
+        And also, you can sort or search problems in the favorite just as in main page.
+    </string>
+    <string name="problem_title">Problem</string>
+    <string name="problem_content">
+        After clicking a problem to jump to the problem page, you can find all the details of the problem, including title, tags, difficulty level, times of being collected, problem content and similar problems.
+        Try to click the "airplane" button at the top right-hand corner to check the problem in LeetCode or click the "heart" to collect this problem or cancel it.
+        If you want to check the tags of the problem, just click the tag and click the check icon(the eye in toast) to jump to the sub page of the tag.
+        Similarly, click the similar problems to jump to the corresponding problems.
+    </string>
+    <string name="solution_title">Solution</string>
+    <string name="solution_content">
+        Swipe to left to enter the solution page at the right of problem page, where there is the solution provided by LeeCo for the problem.
+        Click the copy button to copy the codes of the solution.
+        If you find some mistakes of problem and solution or just think the solution is just so so, you can click the "hand" button to feedback.
+    </string>
+    <string name="discuss_title">Discuss</string>
+    <string name="discuss_content">
+        In the discuss page at the right of solution page, there are discusser from LeetCode.
+        You can sort the discusses or click them to view in web.
+    </string>
+    <string name="comment_title">Comment</string>
+    <string name="comment_content">
+        In the comment page, you can comment on problems and solutions.
+        Click a comment then you can expand or collapse it.
+        Long press a comment then you can reply to, vote or veto for and copy the content of the comment if the comment is not published by you.
+        Long press a comment published by you, you can edit, delete it or just copy the content of the comment.
+        Click the buttons at the bottom right-hand corner of a comment to reply, vote or veto quickly.
+        You can sort the comments or publish your comments through the buttons at the top right-hand corner.
+        The times of vote to your comments will be add up to your account.
+        You can check this in the drawer in the main page.
+    </string>
+    <string name="other_title">Other</string>
+    <string name="other_content">
+        In the drawer of main page, you can also:
+        set your password or check the update in settings,
+        check this document in help,
+        feedback to help LeeCo be better and check the information of the developer and the open-source address of LeeCo.
+    </string>
+
 </resources>
