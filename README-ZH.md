@@ -1,5 +1,5 @@
 # LeeCo
-![LeeCo](https://github.com/Nightonke/LeeCo/blob/master/PNG/LeeCo_Show_Red.png)  
+![LeeCo](https://github.com/Nightonke/LeeCo/blob/master/PNG/LeeCo_Show_White.png)  
 LeeCo，超过300道面试算法题，29个分类，详尽的题解、讨论和评论
 
 #英文文档
