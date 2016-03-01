@@ -101,6 +101,7 @@
     <string name="settings_activity_title">Settings</string>
     <string name="feedback_activity_title">Feedback</string>
     <string name="about_activity_title">About</string>
+    <string name="help_activity_title">Help</string>
 
     <string name="sorting">Sorting&#8230;</string>
     <string name="researching">Researching&#8230;</string>
@@ -313,6 +314,10 @@
         Click a problem then you can check the details of the content, solution, discusses(from LeetCode) and comments(from LeeCo) of the problem.
         Open the drawer menu, there are the information of user(after signing in), all the tags(click to jump to the corresponding sub page), settings, help, feedback and about.
         There are sorting and searching icons at the top right-hand corner to help you search and read problems.
+    </string>
+    <string name="user_title">Sign Up and Sign In</string>
+    <string name="user_content">
+        You can sign up and sign in to LeeCo. After signing in, you can collect problems, publish, reply and vote comments.
     </string>
     <string name="favorite_title">Favorite</string>
     <string name="favorite_content">

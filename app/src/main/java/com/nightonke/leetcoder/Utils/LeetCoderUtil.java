@@ -317,6 +317,13 @@ public class LeetCoderUtil {
         }
     }
 
+    public static int GetScreenWidth(Context context) {
+        Display display = ((Activity)context).getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return size.x;
+    }
+
 
 
 

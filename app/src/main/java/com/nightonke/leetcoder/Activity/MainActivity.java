@@ -516,6 +516,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(mContext, SettingsActivity.class));
                 break;
             case R.id.help:
+                startActivity(new Intent(mContext, HelpActivity.class));
                 break;
             case R.id.feedback:
                 startActivity(new Intent(mContext, FeedbackActivity.class));

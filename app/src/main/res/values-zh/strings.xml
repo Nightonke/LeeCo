@@ -109,6 +109,7 @@
     <string name="settings_activity_title">设置</string>
     <string name="feedback_activity_title">反馈</string>
     <string name="about_activity_title">关于</string>
+    <string name="help_activity_title">帮助</string>
 
     <string name="sorting">排序中&#8230;</string>
     <string name="researching">重新搜索中&#8230;</string>
@@ -327,6 +328,10 @@
         每一道题目都有难度等级（难中易）和收藏次数，点击问题可以查看算法题的题目、解答、讨论（来自LeetCode）和评论（来自LeeCo）。
         拉开菜单可以看到用户信息（登陆后）、所有标签（点击标签可以导航到相应页面）、设置、帮助、反馈和关于。
         主页面的右上角有排序和搜索按钮，以便找到相应算法题。
+    </string>
+    <string name="user_title">注册和登录</string>
+    <string name="user_content">
+        您可以注册并登录LeeCo，登录后可以进行收藏题目、发表、回复和赞同评论。
     </string>
     <string name="favorite_title">收藏夹</string>
     <string name="favorite_content">
