@@ -7,8 +7,11 @@ LeeCo is an awesome app for algorithem problems(including unlock), solutions, di
 
 #Download
 [APK from Github](https://github.com/Nightonke/LeeCo/blob/master/APK/LeeCo%20V1.0.0.apk)  
-QR code:  
-![LeeCo](https://github.com/Nightonke/LeeCo/blob/master/APK/LeeCo%20V1.0.0.png)
+QR code from Bugly:  
+![LeeCo](https://github.com/Nightonke/LeeCo/blob/master/APK/LeeCo%20V1.0.0.png)  
+[APK from Fir](http://fir.im/21e7)  
+QR code from Fir:  
+![LeeCo](https://github.com/Nightonke/LeeCo/blob/master/APK/LeeCo%20V1.0.0%20fir.png)  
 
 #Intro
 ###Main Page
