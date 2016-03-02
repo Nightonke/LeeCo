@@ -6,9 +6,12 @@ LeeCo，超过300道面试算法题，29个分类，详尽的题解、讨论和�
 [README.md](https://github.com/Nightonke/LeeCo/blob/master/README.md)
 
 #下载
-[APK](https://github.com/Nightonke/LeeCo/blob/master/APK/LeeCo%20V1.0.0.apk)  
-二维码:  
-![LeeCo](https://github.com/Nightonke/LeeCo/blob/master/APK/LeeCo%20V1.0.0.png)
+[APK Github](https://github.com/Nightonke/LeeCo/blob/master/APK/LeeCo%20V1.0.0.apk)  
+二维码 Bugly:  
+![LeeCo](https://github.com/Nightonke/LeeCo/blob/master/APK/LeeCo%20V1.0.0.png)  
+[APK Fir](http://fir.im/21e7)  
+二维码 Fir:  
+![LeeCo](https://github.com/Nightonke/LeeCo/blob/master/APK/LeeCo%20V1.0.0%20fir.png)  
 
 #介绍
 ###主页面
