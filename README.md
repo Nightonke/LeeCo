@@ -1,5 +1,5 @@
 # LeeCo
-![LeeCo](https://github.com/Nightonke/LeeCo/blob/master/PNG/LeeCo_Show_Red.png)  
+![LeeCo](https://github.com/Nightonke/LeeCo/blob/master/PNG/LeeCo_Show_White.png)  
 LeeCo is an awesome app for algorithem problems(including unlock), solutions, discuss(from leetcode) and comments.
 
 #中文文档
